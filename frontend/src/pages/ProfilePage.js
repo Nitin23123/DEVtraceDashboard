@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
+import Spinner from '../components/Spinner';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
@@ -21,18 +22,18 @@ function contribColor(count) {
 
 function StatBadge({ label, value, sub, color }) {
   return (
-    <div style={{ textAlign: 'center', minWidth: '64px' }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: color || '#1e293b' }}>{value ?? '—'}</div>
-      <div style={{ fontSize: '11px', color: '#64748b', marginTop: '2px' }}>{label}</div>
-      {sub && <div style={{ fontSize: '10px', color: '#94a3b8' }}>{sub}</div>}
+    <div className="text-center min-w-[64px]">
+      <div className="text-2xl font-bold" style={{ color: color || 'var(--text)' }}>{value ?? '—'}</div>
+      <div className="text-xs text-text/60 mt-0.5">{label}</div>
+      {sub && <div className="text-[10px] text-text/40">{sub}</div>}
     </div>
   );
 }
 
 function Section({ title, children }) {
   return (
-    <div style={{ marginTop: '20px' }}>
-      <h3 style={{ fontSize: '13px', fontWeight: 600, color: '#374151', margin: '0 0 10px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{title}</h3>
+    <div className="mt-5">
+      <h3 className="text-xs font-bold text-text/50 uppercase tracking-wider mb-3">{title}</h3>
       {children}
     </div>
   );
@@ -146,17 +147,26 @@ const ProfilePage = () => {
       .finally(() => setPrsLoading(false));
   }, [githubData]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (loading) return <div style={{ padding: '24px' }}><h1>Profile</h1><p>Loading...</p></div>;
+  if (loading) {
+    return (
+      <div className="p-6">
+        <h1 className="text-2xl font-bold text-text mb-6">Profile</h1>
+        <Spinner size="lg" className="mt-16" />
+      </div>
+    );
+  }
 
   if (!githubData) {
     return (
-      <div style={{ padding: '24px', maxWidth: '500px', margin: '0 auto', textAlign: 'center' }}>
-        <h1>Profile</h1>
-        <div style={{ backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '48px 24px' }}>
-          <p style={{ color: '#64748b', marginBottom: '24px' }}>Connect your GitHub account to see your developer dashboard.</p>
-          {error && <p style={{ color: '#dc2626', marginBottom: '16px' }}>{error}</p>}
-          <a href={`${API_URL}/api/auth/github?token=${token}`}
-            style={{ display: 'inline-block', backgroundColor: '#1e293b', color: 'white', padding: '10px 24px', borderRadius: '8px', textDecoration: 'none', fontWeight: '600' }}>
+      <div className="p-6 max-w-4xl mx-auto">
+        <h1 className="text-2xl font-bold text-text mb-6">Profile</h1>
+        <div className="bg-surface border border-border rounded-2xl p-12 text-center max-w-sm mx-auto mt-8">
+          <p className="text-text/60 mb-6">Connect your GitHub account to see your developer dashboard.</p>
+          {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+          <a
+            href={`${API_URL}/api/auth/github?token=${token}`}
+            className="inline-block bg-accent text-accent-fg px-6 py-2.5 rounded-lg font-semibold hover:opacity-80 transition-opacity no-underline"
+          >
             Connect GitHub
           </a>
         </div>
@@ -170,51 +180,72 @@ const ProfilePage = () => {
   const weekTrendColor = c.this_week > c.last_week ? '#10b981' : c.this_week < c.last_week ? '#ef4444' : '#64748b';
 
   return (
-    <div style={{ padding: '24px', maxWidth: '860px' }}>
-      <h1 style={{ marginBottom: '20px' }}>Profile</h1>
+    <div className="p-6 max-w-4xl mx-auto">
+      <h1 className="text-2xl font-bold text-text mb-5">Profile</h1>
 
       {/* Identity card */}
-      <div style={{ backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '24px', marginBottom: '16px' }}>
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '20px' }}>
-          <img src={githubData.avatar_url} alt="avatar"
-            style={{ width: 72, height: 72, borderRadius: '50%', border: '2px solid #e2e8f0', flexShrink: 0 }} />
-          <div style={{ flex: 1 }}>
-            <h2 style={{ margin: 0, fontSize: '20px' }}>{githubData.name || githubData.login}</h2>
-            <p style={{ margin: '2px 0 0', color: '#64748b', fontSize: '14px' }}>@{githubData.login}</p>
-            {githubData.bio && <p style={{ margin: '6px 0 0', color: '#475569', fontSize: '14px' }}>{githubData.bio}</p>}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '8px' }}>
-              {githubData.location && <span style={{ fontSize: '13px', color: '#64748b' }}>📍 {githubData.location}</span>}
-              {githubData.company && <span style={{ fontSize: '13px', color: '#64748b' }}>🏢 {githubData.company}</span>}
+      <div className="bg-surface border border-border rounded-xl p-5 mb-4">
+        <div className="flex items-start gap-5">
+          <img
+            src={githubData.avatar_url}
+            alt="avatar"
+            className="w-20 h-20 rounded-full border-2 border-border shrink-0"
+          />
+          <div className="flex-1 min-w-0">
+            <h2 className="text-xl font-bold text-text">{githubData.name || githubData.login}</h2>
+            <p className="text-sm text-text/60 mt-0.5">@{githubData.login}</p>
+            {githubData.bio && <p className="text-sm text-text/70 mt-1">{githubData.bio}</p>}
+            <div className="flex flex-wrap gap-2.5 mt-2">
+              {githubData.location && <span className="text-sm text-text/60">📍 {githubData.location}</span>}
+              {githubData.company && <span className="text-sm text-text/60">🏢 {githubData.company}</span>}
               {githubData.blog && (
-                <a href={githubData.blog.startsWith('http') ? githubData.blog : `https://${githubData.blog}`}
-                  target="_blank" rel="noreferrer" style={{ fontSize: '13px', color: '#3b82f6', textDecoration: 'none' }}>
+                <a
+                  href={githubData.blog.startsWith('http') ? githubData.blog : `https://${githubData.blog}`}
+                  target="_blank" rel="noreferrer"
+                  className="text-sm text-blue-500 hover:underline"
+                >
                   🔗 {githubData.blog}
                 </a>
               )}
               {githubData.twitter_username && (
-                <a href={`https://twitter.com/${githubData.twitter_username}`} target="_blank" rel="noreferrer"
-                  style={{ fontSize: '13px', color: '#3b82f6', textDecoration: 'none' }}>
+                <a
+                  href={`https://twitter.com/${githubData.twitter_username}`}
+                  target="_blank" rel="noreferrer"
+                  className="text-sm text-blue-500 hover:underline"
+                >
                   🐦 @{githubData.twitter_username}
                 </a>
               )}
-              {memberSince && <span style={{ fontSize: '13px', color: '#64748b' }}>📅 Since {memberSince}</span>}
+              {memberSince && <span className="text-sm text-text/60">📅 Since {memberSince}</span>}
             </div>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', alignItems: 'flex-end' }}>
-            <a href={githubData.html_url} target="_blank" rel="noreferrer"
-              style={{ fontSize: '13px', color: '#3b82f6', textDecoration: 'none', fontWeight: 500 }}>View on GitHub</a>
-            <a href={`${API_URL}/api/auth/github?token=${token}`}
-              style={{ fontSize: '12px', color: '#94a3b8', textDecoration: 'none' }}>Reconnect</a>
+          <div className="flex flex-col gap-1.5 items-end shrink-0">
+            <a
+              href={githubData.html_url}
+              target="_blank" rel="noreferrer"
+              className="text-sm text-blue-500 font-medium hover:underline"
+            >
+              View on GitHub
+            </a>
+            <a
+              href={`${API_URL}/api/auth/github?token=${token}`}
+              className="text-xs text-text/40 hover:underline"
+            >
+              Reconnect
+            </a>
           </div>
         </div>
       </div>
 
       {/* Contribution Dashboard */}
-      <div style={{ backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '24px', marginBottom: '16px' }}>
-        <h2 style={{ margin: '0 0 16px', fontSize: '16px', color: '#1e293b' }}>Contribution Dashboard <span style={{ fontSize: '12px', color: '#94a3b8', fontWeight: 400 }}>{new Date().getFullYear()}</span></h2>
+      <div className="bg-surface border border-border rounded-xl p-5 mb-4">
+        <h2 className="text-base font-semibold text-text mb-4">
+          Contribution Dashboard{' '}
+          <span className="text-xs text-text/40 font-normal">{new Date().getFullYear()}</span>
+        </h2>
 
         {/* Key stats */}
-        <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginBottom: '20px', padding: '16px', backgroundColor: '#f8fafc', borderRadius: '8px' }}>
+        <div className="bg-bg rounded-lg p-4 flex flex-wrap gap-4 mb-5">
           <StatBadge label="Total Contributions" value={c.total_this_year} color="#3b82f6" />
           <StatBadge label="Commits" value={c.total_commits} />
           <StatBadge label="Pull Requests" value={c.total_prs} />
@@ -229,14 +260,14 @@ const ProfilePage = () => {
         </div>
 
         {/* Streak stats */}
-        <div style={{ display: 'flex', gap: '12px', marginBottom: '20px' }}>
-          <div style={{ flex: 1, backgroundColor: '#1e293b', color: 'white', borderRadius: '10px', padding: '16px', textAlign: 'center' }}>
-            <div style={{ fontSize: '32px', fontWeight: 700 }}>🔥 {c.current_streak}</div>
-            <div style={{ fontSize: '12px', color: '#94a3b8', marginTop: '4px' }}>Current Streak (days)</div>
+        <div className="flex gap-3 mb-5">
+          <div className="flex-1 bg-slate-900 text-white rounded-xl p-4 text-center">
+            <div className="text-3xl font-bold">🔥 {c.current_streak}</div>
+            <div className="text-xs text-slate-400 mt-1">Current Streak (days)</div>
           </div>
-          <div style={{ flex: 1, backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '16px', textAlign: 'center' }}>
-            <div style={{ fontSize: '32px', fontWeight: 700, color: '#1e293b' }}>{c.longest_streak}</div>
-            <div style={{ fontSize: '12px', color: '#64748b', marginTop: '4px' }}>Longest Streak (days)</div>
+          <div className="flex-1 bg-surface border border-border rounded-xl p-4 text-center">
+            <div className="text-3xl font-bold text-text">{c.longest_streak}</div>
+            <div className="text-xs text-text/60 mt-1">Longest Streak (days)</div>
           </div>
         </div>
 
@@ -245,11 +276,11 @@ const ProfilePage = () => {
       </div>
 
       {/* Profile stats + languages side by side */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         {/* Repo stats */}
-        <div style={{ backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '20px' }}>
-          <h3 style={{ margin: '0 0 14px', fontSize: '13px', fontWeight: 600, color: '#374151', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Repository Stats</h3>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+        <div className="bg-surface border border-border rounded-xl p-5">
+          <h3 className="text-xs font-bold text-text/50 uppercase tracking-wider mb-3">Repository Stats</h3>
+          <div className="flex flex-wrap gap-4">
             <StatBadge label="Repos" value={githubData.public_repos} />
             <StatBadge label="Stars" value={githubData.total_stars} color="#f59e0b" />
             <StatBadge label="Forks" value={githubData.total_forks} />
@@ -260,36 +291,34 @@ const ProfilePage = () => {
         </div>
 
         {/* Languages */}
-        <div style={{ backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '20px' }}>
-          <h3 style={{ margin: '0 0 14px', fontSize: '13px', fontWeight: 600, color: '#374151', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Top Languages</h3>
+        <div className="bg-surface border border-border rounded-xl p-5">
+          <h3 className="text-xs font-bold text-text/50 uppercase tracking-wider mb-3">Top Languages</h3>
           {githubData.languages && githubData.languages.length > 0 ? (
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+            <div className="flex flex-wrap gap-1.5">
               {githubData.languages.map(({ lang, count }) => (
-                <span key={lang} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '20px', padding: '3px 9px', fontSize: '12px', color: '#374151' }}>
+                <span key={lang} className="inline-flex items-center gap-1 bg-bg border border-border rounded-full px-3 py-1 text-xs text-text">
                   <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: LANG_COLORS[lang] || '#94a3b8', display: 'inline-block' }} />
-                  {lang} <span style={{ color: '#94a3b8' }}>({count})</span>
+                  {lang} <span className="text-text/40">({count})</span>
                 </span>
               ))}
             </div>
-          ) : <p style={{ color: '#94a3b8', fontSize: '13px' }}>No language data</p>}
+          ) : <p className="text-text/40 text-sm">No language data</p>}
         </div>
       </div>
 
       {/* Top Repositories */}
       {githubData.top_repos && githubData.top_repos.length > 0 && (
-        <div style={{ backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '20px', marginBottom: '16px' }}>
-          <h3 style={{ margin: '0 0 12px', fontSize: '13px', fontWeight: 600, color: '#374151', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Top Repositories</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div className="bg-surface border border-border rounded-xl p-5 mb-4">
+          <h3 className="text-xs font-bold text-text/50 uppercase tracking-wider mb-3">Top Repositories</h3>
+          <div className="flex flex-col gap-2">
             {githubData.top_repos.map(repo => (
-              <a key={repo.name} href={repo.html_url} target="_blank" rel="noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
-                <div style={{ border: '1px solid #e2e8f0', borderRadius: '8px', padding: '12px 14px' }}
-                  onMouseEnter={e => e.currentTarget.style.borderColor = '#93c5fd'}
-                  onMouseLeave={e => e.currentTarget.style.borderColor = '#e2e8f0'}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontWeight: 600, fontSize: '14px', color: '#3b82f6' }}>{repo.name}</span>
-                    <div style={{ display: 'flex', gap: '10px', fontSize: '12px', color: '#64748b' }}>
+              <a key={repo.name} href={repo.html_url} target="_blank" rel="noreferrer" className="no-underline">
+                <div className="border border-border rounded-lg px-4 py-3 hover:border-blue-300 transition">
+                  <div className="flex justify-between items-center">
+                    <span className="font-semibold text-sm text-blue-500">{repo.name}</span>
+                    <div className="flex gap-2.5 text-xs text-text/60">
                       {repo.language && (
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <span className="flex items-center gap-1">
                           <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: LANG_COLORS[repo.language] || '#94a3b8', display: 'inline-block' }} />
                           {repo.language}
                         </span>
@@ -299,7 +328,7 @@ const ProfilePage = () => {
                     </div>
                   </div>
                   {repo.description && (
-                    <p style={{ margin: '4px 0 0', fontSize: '12px', color: '#64748b', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    <p className="text-xs text-text/60 mt-1 overflow-hidden text-ellipsis whitespace-nowrap">
                       {repo.description}
                     </p>
                   )}
@@ -312,16 +341,16 @@ const ProfilePage = () => {
 
       {/* Recent Activity */}
       {githubData.recent_activity && githubData.recent_activity.length > 0 && (
-        <div style={{ backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '20px', marginBottom: '16px' }}>
-          <h3 style={{ margin: '0 0 12px', fontSize: '13px', fontWeight: 600, color: '#374151', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Recent Activity</h3>
-          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '6px' }}>
+        <div className="bg-surface border border-border rounded-xl p-5 mb-4">
+          <h3 className="text-xs font-bold text-text/50 uppercase tracking-wider mb-3">Recent Activity</h3>
+          <ul className="list-none p-0 m-0 flex flex-col gap-1.5">
             {githubData.recent_activity.map((event, i) => (
-              <li key={i} style={{ fontSize: '13px', color: '#475569', display: 'flex', gap: '8px', alignItems: 'center' }}>
-                <span style={{ backgroundColor: '#f1f5f9', borderRadius: '4px', padding: '1px 6px', fontSize: '11px', fontWeight: 600, color: '#64748b', whiteSpace: 'nowrap' }}>
+              <li key={i} className="flex items-center gap-2 text-sm text-text/70">
+                <span className="bg-bg border border-border rounded px-1.5 py-0.5 text-xs font-semibold text-text/60 whitespace-nowrap">
                   {event.type.replace('Event', '')}
                 </span>
-                <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{event.repo}</span>
-                <span style={{ color: '#94a3b8', whiteSpace: 'nowrap', fontSize: '11px' }}>
+                <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">{event.repo}</span>
+                <span className="text-text/40 whitespace-nowrap text-xs">
                   {new Date(event.created_at).toLocaleDateString()}
                 </span>
               </li>
@@ -331,23 +360,23 @@ const ProfilePage = () => {
       )}
 
       {/* Open Pull Requests */}
-      <div style={{ marginTop: 0 }}>
-        <h3 style={{ color: '#1e293b', marginBottom: 12, fontSize: '13px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Open Pull Requests</h3>
-        {prsLoading && <p style={{ color: '#64748b' }}>Loading PRs...</p>}
-        {prsError && <p style={{ color: '#ef4444' }}>{prsError}</p>}
+      <div>
+        <h3 className="text-xs font-bold text-text/50 uppercase tracking-wider mb-3">Open Pull Requests</h3>
+        {prsLoading && <Spinner size="sm" className="py-4" />}
+        {prsError && <p className="text-red-500 text-sm">{prsError}</p>}
         {!prsLoading && !prsError && prs.length === 0 && (
-          <p style={{ color: '#94a3b8', fontSize: '13px' }}>No open PRs found.</p>
+          <p className="text-text/40 text-sm">No open PRs found.</p>
         )}
         {prs.map(pr => (
-          <div key={pr.html_url} style={{ backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: 8, padding: '12px 16px', marginBottom: 10 }}>
-            <a href={pr.html_url} target="_blank" rel="noreferrer" style={{ color: '#6366f1', fontWeight: 600, textDecoration: 'none' }}>
+          <div key={pr.html_url} className="bg-surface border border-border rounded-lg px-4 py-3 mb-3">
+            <a href={pr.html_url} target="_blank" rel="noreferrer" className="text-accent font-semibold no-underline hover:underline">
               {pr.title}
             </a>
-            <div style={{ marginTop: 6, display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-              <span style={{ background: '#334155', color: '#94a3b8', padding: '2px 8px', borderRadius: 12, fontSize: 12 }}>{pr.repo}</span>
-              <span style={{ fontSize: 12, color: '#94a3b8' }}>{new Date(pr.created_at).toLocaleDateString()}</span>
+            <div className="mt-1.5 flex gap-2 flex-wrap items-center">
+              <span className="bg-border/60 text-text/60 px-2 py-0.5 rounded-full text-xs">{pr.repo}</span>
+              <span className="text-xs text-text/40">{new Date(pr.created_at).toLocaleDateString()}</span>
               {(pr.labels || []).map(l => (
-                <span key={l} style={{ background: '#1e3a5f', color: '#60a5fa', padding: '2px 8px', borderRadius: 12, fontSize: 11 }}>{l}</span>
+                <span key={l} className="bg-accent/10 text-accent px-2 py-0.5 rounded-full text-xs">{l}</span>
               ))}
             </div>
           </div>
