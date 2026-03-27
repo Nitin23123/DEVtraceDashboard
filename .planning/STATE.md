@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: in_progress
-last_updated: "2026-03-27"
+status: unknown
+last_updated: "2026-03-27T14:46:16.980Z"
 progress:
-  total_phases: 5
-  completed_phases: 2
-  total_plans: 18
-  completed_plans: 11
+  total_phases: 3
+  completed_phases: 1
+  total_plans: 15
+  completed_plans: 10
 ---
 
 # Project State
@@ -42,6 +42,8 @@ Progress: [██████░░░░] 55%
 - [Phase 02-core-crud]: COALESCE for partial updates across all controllers
 - [Phase 02-core-crud 02-05]: PUT /:id/complete declared before PUT /:id in router
 - [Phase 02-core-crud 02-07]: Nested route pattern (ProtectedRoute > Layout > Outlet)
+- [Phase 03-advanced-features]: COUNT(*)::int cast for pg bigint to JS-safe integer in dashboard queries
+- [Phase 03-advanced-features]: Streak logic: SELECT then branch on diffDays (0/1/2+) for same-day no-op, increment, and reset
 
 ### Blockers/Concerns
 
@@ -50,5 +52,5 @@ Progress: [██████░░░░] 55%
 ## Session Continuity
 
 Last session: 2026-03-27
-Stopped at: Phase 2 complete — all 7 plans done
-Resume file: .planning/phases/02-core-crud/02-07-SUMMARY.md
+Stopped at: Completed 03-advanced-features 03-03-PLAN.md
+Resume file: .planning/phases/03-advanced-features/03-03-SUMMARY.md

@@ -44,9 +44,9 @@
 
 ### Dashboard
 
-- [ ] **DASH-01**: Dashboard shows task count by status
-- [ ] **DASH-02**: Dashboard shows total notes and goals count
-- [ ] **DASH-03**: Daily streak counter increments on login/activity
+- [x] **DASH-01**: Dashboard shows task count by status
+- [x] **DASH-02**: Dashboard shows total notes and goals count
+- [x] **DASH-03**: Daily streak counter increments on login/activity
 - [ ] **DASH-04**: Framer Motion animations on modal open/close
 
 ### DevOps
@@ -106,9 +106,9 @@
 | APIT-02 | Phase 3 | Pending |
 | APIT-03 | Phase 3 | Pending |
 | APIT-04 | Phase 3 | Pending |
-| DASH-01 | Phase 3 | Pending |
-| DASH-02 | Phase 3 | Pending |
-| DASH-03 | Phase 3 | Pending |
+| DASH-01 | Phase 3 | Complete |
+| DASH-02 | Phase 3 | Complete |
+| DASH-03 | Phase 3 | Complete |
 | DASH-04 | Phase 3 | Pending |
 | DEVOPS-02 | Phase 5 | Pending |
 
