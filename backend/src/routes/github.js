@@ -146,14 +146,39 @@ profileRouter.get('/github', verifyToken, async (req, res) => {
       eventsRes.json(),
     ]);
 
-    // Sum stargazers_count across all owned repos
-    const totalStars = Array.isArray(repos)
-      ? repos.reduce((sum, r) => sum + (r.stargazers_count || 0), 0)
-      : 0;
+    const repoList = Array.isArray(repos) ? repos : [];
 
-    // Shape recent activity (at most 5 events)
+    // Aggregate stats from repos
+    const totalStars = repoList.reduce((sum, r) => sum + (r.stargazers_count || 0), 0);
+    const totalForks = repoList.reduce((sum, r) => sum + (r.forks_count || 0), 0);
+
+    // Top 5 repos by stars
+    const topRepos = repoList
+      .filter(r => !r.fork)
+      .sort((a, b) => (b.stargazers_count || 0) - (a.stargazers_count || 0))
+      .slice(0, 5)
+      .map(r => ({
+        name: r.name,
+        description: r.description,
+        html_url: r.html_url,
+        language: r.language,
+        stars: r.stargazers_count || 0,
+        forks: r.forks_count || 0,
+      }));
+
+    // Most used languages (by repo count, excluding null)
+    const langCount = {};
+    repoList.filter(r => !r.fork && r.language).forEach(r => {
+      langCount[r.language] = (langCount[r.language] || 0) + 1;
+    });
+    const languages = Object.entries(langCount)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 8)
+      .map(([lang, count]) => ({ lang, count }));
+
+    // Shape recent activity (at most 10 events)
     const recentActivity = Array.isArray(events)
-      ? events.slice(0, 5).map(e => ({
+      ? events.slice(0, 10).map(e => ({
           type: e.type,
           repo: e.repo ? e.repo.name : '',
           created_at: e.created_at,
@@ -165,11 +190,20 @@ profileRouter.get('/github', verifyToken, async (req, res) => {
       name: profile.name,
       avatar_url: profile.avatar_url,
       bio: profile.bio,
+      location: profile.location,
+      company: profile.company,
+      blog: profile.blog,
+      twitter_username: profile.twitter_username,
       public_repos: profile.public_repos,
+      public_gists: profile.public_gists,
       total_stars: totalStars,
+      total_forks: totalForks,
       followers: profile.followers,
       following: profile.following,
       html_url: profile.html_url,
+      created_at: profile.created_at,
+      top_repos: topRepos,
+      languages,
       recent_activity: recentActivity,
     });
   } catch (err) {
