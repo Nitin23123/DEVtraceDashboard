@@ -82,19 +82,43 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01–05 | Phase 1 | Pending |
-| DEVOPS-01–03 | Phase 1 | Pending |
-| TASK-01–05 | Phase 2 | Pending |
-| NOTE-01–04 | Phase 2 | Pending |
-| GOAL-01–04 | Phase 2 | Pending |
-| APIT-01–04 | Phase 3 | Pending |
-| DASH-01–04 | Phase 3 | Pending |
+| AUTH-01 | Phase 1 | Pending |
+| AUTH-02 | Phase 1 | Pending |
+| AUTH-03 | Phase 1 | Pending |
+| AUTH-04 | Phase 1 | Pending |
+| AUTH-05 | Phase 1 | Pending |
+| DEVOPS-01 | Phase 1 | Pending |
+| DEVOPS-03 | Phase 1 | Pending |
+| TASK-01 | Phase 2 | Pending |
+| TASK-02 | Phase 2 | Pending |
+| TASK-03 | Phase 2 | Pending |
+| TASK-04 | Phase 2 | Pending |
+| TASK-05 | Phase 2 | Pending |
+| NOTE-01 | Phase 2 | Pending |
+| NOTE-02 | Phase 2 | Pending |
+| NOTE-03 | Phase 2 | Pending |
+| NOTE-04 | Phase 2 | Pending |
+| GOAL-01 | Phase 2 | Pending |
+| GOAL-02 | Phase 2 | Pending |
+| GOAL-03 | Phase 2 | Pending |
+| GOAL-04 | Phase 2 | Pending |
+| APIT-01 | Phase 3 | Pending |
+| APIT-02 | Phase 3 | Pending |
+| APIT-03 | Phase 3 | Pending |
+| APIT-04 | Phase 3 | Pending |
+| DASH-01 | Phase 3 | Pending |
+| DASH-02 | Phase 3 | Pending |
+| DASH-03 | Phase 3 | Pending |
+| DASH-04 | Phase 3 | Pending |
+| DEVOPS-02 | Phase 5 | Pending |
 
 **Coverage:**
 - v1 requirements: 27 total
 - Mapped to phases: 27
 - Unmapped: 0 ✓
 
+**Phase 4 note:** Phase 4 (UI Polish) refines the visual delivery of DASH-04 and overall UX coherence across all prior phases. It carries no new requirements but is essential for the resume-quality goal.
+
 ---
 *Requirements defined: 2026-03-27*
-*Last updated: 2026-03-27 after initial definition*
+*Last updated: 2026-03-27 after roadmap creation (5-phase traceability)*
