@@ -133,17 +133,53 @@ profileRouter.get('/github', verifyToken, async (req, res) => {
       'User-Agent': 'devtrackr',
     };
 
-    // Fetch profile, repos (for star count), and recent events in parallel
-    const [profileRes, reposRes, eventsRes] = await Promise.all([
+    // GraphQL query for contribution calendar + stats (this year)
+    const now = new Date();
+    const yearStart = new Date(now.getFullYear(), 0, 1).toISOString();
+    const yearEnd = now.toISOString();
+    const graphqlQuery = {
+      query: `query($username: String!, $from: DateTime!, $to: DateTime!) {
+        user(login: $username) {
+          contributionsCollection(from: $from, to: $to) {
+            totalCommitContributions
+            totalPullRequestContributions
+            totalIssueContributions
+            contributionCalendar {
+              totalContributions
+              weeks {
+                contributionDays {
+                  contributionCount
+                  date
+                }
+              }
+            }
+          }
+        }
+      }`,
+      variables: { username: ghUsername, from: yearStart, to: yearEnd },
+    };
+
+    // Fetch everything in parallel
+    const [profileRes, reposRes, eventsRes, contribRes, prsMergedRes, prsOpenRes] = await Promise.all([
       fetch('https://api.github.com/user', { headers: ghHeaders }),
       fetch('https://api.github.com/user/repos?per_page=100&type=owner', { headers: ghHeaders }),
-      fetch(`https://api.github.com/users/${ghUsername}/events?per_page=5`, { headers: ghHeaders }),
+      fetch(`https://api.github.com/users/${ghUsername}/events?per_page=10`, { headers: ghHeaders }),
+      fetch('https://api.github.com/graphql', {
+        method: 'POST',
+        headers: { ...ghHeaders, 'Authorization': `bearer ${ghToken}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify(graphqlQuery),
+      }),
+      fetch(`https://api.github.com/search/issues?q=author:${ghUsername}+type:pr+is:merged&per_page=1`, { headers: ghHeaders }),
+      fetch(`https://api.github.com/search/issues?q=author:${ghUsername}+type:pr+is:open&per_page=1`, { headers: ghHeaders }),
     ]);
 
-    const [profile, repos, events] = await Promise.all([
+    const [profile, repos, events, contribData, prsMergedData, prsOpenData] = await Promise.all([
       profileRes.json(),
       reposRes.json(),
       eventsRes.json(),
+      contribRes.json(),
+      prsMergedRes.json(),
+      prsOpenRes.json(),
     ]);
 
     const repoList = Array.isArray(repos) ? repos : [];
@@ -185,6 +221,41 @@ profileRouter.get('/github', verifyToken, async (req, res) => {
         }))
       : [];
 
+    // Process contribution calendar
+    const contributions = contribData.data?.user?.contributionsCollection;
+    const calendarWeeks = contributions?.contributionCalendar?.weeks || [];
+    const allDays = calendarWeeks.flatMap(w => w.contributionDays);
+
+    // Compute current streak (consecutive days with commits, ending today or yesterday)
+    const todayStr = new Date().toISOString().split('T')[0];
+    const yesterdayStr = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+    const reverseDays = [...allDays].reverse();
+    let currentStreak = 0;
+    let streakStarted = false;
+    for (const day of reverseDays) {
+      if (!streakStarted) {
+        if (day.date === todayStr || day.date === yesterdayStr) {
+          if (day.contributionCount > 0) { streakStarted = true; currentStreak = 1; }
+          else if (day.date === todayStr) continue; // no commits today, check yesterday
+          else break;
+        }
+      } else {
+        if (day.contributionCount > 0) currentStreak++;
+        else break;
+      }
+    }
+
+    // Compute longest streak this year
+    let longestStreak = 0, tempStreak = 0;
+    for (const day of allDays) {
+      if (day.contributionCount > 0) { tempStreak++; longestStreak = Math.max(longestStreak, tempStreak); }
+      else tempStreak = 0;
+    }
+
+    // This week vs last week commits
+    const thisWeekCommits = allDays.slice(-7).reduce((s, d) => s + d.contributionCount, 0);
+    const lastWeekCommits = allDays.slice(-14, -7).reduce((s, d) => s + d.contributionCount, 0);
+
     res.json({
       login: profile.login,
       name: profile.name,
@@ -205,6 +276,20 @@ profileRouter.get('/github', verifyToken, async (req, res) => {
       top_repos: topRepos,
       languages,
       recent_activity: recentActivity,
+      // Contribution dashboard
+      contributions: {
+        total_this_year: contributions?.contributionCalendar?.totalContributions || 0,
+        total_commits: contributions?.totalCommitContributions || 0,
+        total_prs: contributions?.totalPullRequestContributions || 0,
+        total_issues: contributions?.totalIssueContributions || 0,
+        current_streak: currentStreak,
+        longest_streak: longestStreak,
+        this_week: thisWeekCommits,
+        last_week: lastWeekCommits,
+        calendar_weeks: calendarWeeks,
+      },
+      prs_merged: prsMergedData.total_count || 0,
+      prs_open: prsOpenData.total_count || 0,
     });
   } catch (err) {
     console.error('GitHub profile route error:', err);
