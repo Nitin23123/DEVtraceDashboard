@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-28T18:44:00Z"
+last_updated: "2026-03-27T18:54:41.357Z"
 progress:
-  total_phases: 5
-  completed_phases: 4
-  total_plans: 19
-  completed_plans: 18
+  total_phases: 6
+  completed_phases: 5
+  total_plans: 22
+  completed_plans: 19
 ---
 
 # Project State
@@ -23,8 +23,8 @@ See: .planning/PROJECT.md (updated 2026-03-27)
 ## Current Position
 
 Phase: 5 of 5 (UI Polish)
-Status: Phase 5 Plan 2 COMPLETE — All 9 inner pages restyled with Tailwind, Spinner component created, dark-mode-safe ProfilePage.
-Last activity: 2026-03-28 — Completed Phase 5 Plan 2 (Spinner component, 9 pages Tailwind restyle, modal overlays, loading/empty states).
+Status: Phase 5 Plan 3 CHECKPOINT — Framer Motion animations wired (page transitions, modals, stagger, DSA accordion, Pomodoro SVG ring). Awaiting human visual verification.
+Last activity: 2026-03-28 — Completed Phase 5 Plan 3 tasks 1+2. Stopped at human-verify checkpoint.
 
 Progress: [█████████▉] 95%
 
@@ -62,6 +62,9 @@ Progress: [█████████▉] 95%
 - [Phase 05-ui-polish 05-02]: Snippets form moved from inline to modal overlay for consistency with Tasks/Notes/Goals pattern
 - [Phase 05-ui-polish 05-02]: ContribHeatmap GitHub green scale preserved as data-driven inline styles — not replaceable with CSS var tokens
 - [Phase 05-ui-polish 05-02]: Pomodoro accentColor kept as dynamic inline style — computed from work/break mode state at runtime
+- [Phase 05-ui-polish]: AnimatedRoutes extracted from App.js so useLocation is inside BrowserRouter context
+- [Phase 05-ui-polish]: Pomodoro SVG ring uses CSS transition on strokeDashoffset instead of motion.circle for simplicity
+- [Phase 05-ui-polish]: AnimatePresence initial=false on DSA accordion prevents expand animation firing on page load
 
 ### Roadmap Evolution
 
@@ -74,5 +77,5 @@ Progress: [█████████▉] 95%
 ## Session Continuity
 
 Last session: 2026-03-28
-Stopped at: Completed 05-ui-polish 05-02-PLAN.md — all 3 tasks complete
-Resume file: .planning/phases/05-ui-polish/05-02-SUMMARY.md
+Stopped at: Checkpoint 05-03 task 3 — awaiting human visual verification of Framer Motion animations
+Resume file: .planning/phases/05-ui-polish/05-03-SUMMARY.md
