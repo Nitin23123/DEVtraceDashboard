@@ -37,6 +37,7 @@ const Layout = () => {
         <NavLink to="/tasks" style={linkStyle}>Tasks</NavLink>
         <NavLink to="/notes" style={linkStyle}>Notes</NavLink>
         <NavLink to="/goals" style={linkStyle}>Goals</NavLink>
+        <NavLink to="/api-tester" style={linkStyle}>API Tester</NavLink>
         <span style={{ marginLeft: 'auto', fontSize: '14px', color: '#94a3b8' }}>{user?.email}</span>
         <button
           onClick={logout}
