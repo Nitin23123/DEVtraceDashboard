@@ -1,10 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { getTasks, createTask, updateTask, deleteTask } from '../api/tasks';
+import Spinner from '../components/Spinner';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 const nextStatus = { todo: 'in_progress', in_progress: 'done', done: 'todo' };
+
+const statusClass = {
+  todo: 'bg-slate-100 text-slate-600',
+  in_progress: 'bg-yellow-100 text-yellow-700',
+  done: 'bg-green-100 text-green-700',
+};
+
+const priorityClass = {
+  high: 'bg-red-100 text-red-700',
+  medium: 'bg-yellow-100 text-yellow-700',
+  low: 'bg-blue-100 text-blue-700',
+};
 
 export default function TasksPage() {
   const { token } = useAuth();
@@ -89,64 +102,132 @@ export default function TasksPage() {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Tasks</h1>
-      <button onClick={() => setShowCreateModal(true)}>+ New Task</button>
+    <div className="p-6 max-w-3xl mx-auto">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold text-text">Tasks</h1>
+        <button
+          onClick={() => setShowCreateModal(true)}
+          className="px-4 py-2 bg-accent text-accent-fg rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
+        >
+          + New Task
+        </button>
+      </div>
 
-      {loading && <p>Loading...</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {!loading && tasks.length === 0 && <p>No tasks yet. Create your first task!</p>}
+      {loading && <Spinner size="lg" className="mt-12" />}
+      {error && (
+        <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm mb-4">
+          {error}
+        </div>
+      )}
+      {!loading && tasks.length === 0 && (
+        <div className="text-center py-16 text-text/50">
+          <p className="text-lg mb-1">No tasks yet</p>
+          <p className="text-sm">Create your first task to get started.</p>
+        </div>
+      )}
 
       {tasks.map(task => (
-        <div key={task.id} style={{ border: '1px solid var(--border, #ccc)', background: 'var(--surface, #fff)', margin: '8px 0', padding: '12px', borderRadius: '4px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <strong>{task.title}</strong>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+        <div key={task.id} className="bg-surface border border-border rounded-xl p-4 mb-3 hover:shadow-sm transition-shadow">
+          <div className="flex justify-between items-start gap-2">
+            <strong className="text-text font-semibold flex-1">{task.title}</strong>
+            <div className="flex items-center gap-1 shrink-0">
               <button
                 onClick={() => togglePin(task.id)}
                 title={task.pinned ? 'Unpin' : 'Pin task'}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '18px', opacity: task.pinned ? 1 : 0.4 }}
+                className={`text-lg transition-opacity ${task.pinned ? 'opacity-100' : 'opacity-30 hover:opacity-60'}`}
               >
                 📌
               </button>
-              <button onClick={() => cycleStatus(task)}>{task.status}</button>
-              <button onClick={() => openEditModal(task)}>Edit</button>
-              <button onClick={() => handleDelete(task.id)}>Delete</button>
+              <button
+                onClick={() => cycleStatus(task)}
+                className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusClass[task.status] || 'bg-slate-100 text-slate-600'}`}
+              >
+                {task.status}
+              </button>
+              <button
+                onClick={() => openEditModal(task)}
+                className="text-xs px-2 py-1 rounded text-text/60 hover:text-text hover:bg-border/40 transition"
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => handleDelete(task.id)}
+                className="text-xs px-2 py-1 rounded text-red-400 hover:text-red-600 transition"
+              >
+                Delete
+              </button>
             </div>
           </div>
-          {task.description && <p>{task.description}</p>}
-          <small>Priority: {task.priority} | Due: {task.due_date || 'none'}</small>
+          {task.description && <p className="text-text/70 text-sm mt-1">{task.description}</p>}
+          <div className="flex items-center gap-2 mt-2">
+            <span className={`text-xs px-2 py-0.5 rounded-full ${priorityClass[task.priority] || 'bg-slate-100 text-slate-600'}`}>
+              {task.priority}
+            </span>
+            {task.due_date && (
+              <span className="text-xs text-text/40">Due: {task.due_date}</span>
+            )}
+          </div>
         </div>
       ))}
 
       {(showCreateModal || editTask) && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ background: 'var(--surface, #fff)', padding: '24px', borderRadius: '8px', width: '400px' }}>
-            <h2>{editTask ? 'Edit Task' : 'New Task'}</h2>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-surface rounded-2xl p-6 w-full max-w-md shadow-xl">
+            <h2 className="text-xl font-bold text-text mb-5">{editTask ? 'Edit Task' : 'New Task'}</h2>
             <form onSubmit={handleSubmit}>
-              <div>
-                <label>Title *</label>
-                <input value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} required />
+              <div className="mb-3">
+                <label className="block text-sm font-medium text-text/80 mb-1">Title *</label>
+                <input
+                  value={formData.title}
+                  onChange={e => setFormData({...formData, title: e.target.value})}
+                  required
+                  className="w-full px-3 py-2 border border-border rounded-lg bg-bg text-text text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
+                />
               </div>
-              <div>
-                <label>Description</label>
-                <textarea value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} />
+              <div className="mb-3">
+                <label className="block text-sm font-medium text-text/80 mb-1">Description</label>
+                <textarea
+                  value={formData.description}
+                  onChange={e => setFormData({...formData, description: e.target.value})}
+                  rows={3}
+                  className="w-full px-3 py-2 border border-border rounded-lg bg-bg text-text text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
+                />
               </div>
-              <div>
-                <label>Priority</label>
-                <select value={formData.priority} onChange={e => setFormData({...formData, priority: e.target.value})}>
+              <div className="mb-3">
+                <label className="block text-sm font-medium text-text/80 mb-1">Priority</label>
+                <select
+                  value={formData.priority}
+                  onChange={e => setFormData({...formData, priority: e.target.value})}
+                  className="w-full px-3 py-2 border border-border rounded-lg bg-bg text-text text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
+                >
                   <option value="low">Low</option>
                   <option value="medium">Medium</option>
                   <option value="high">High</option>
                 </select>
               </div>
-              <div>
-                <label>Due Date</label>
-                <input type="date" value={formData.due_date} onChange={e => setFormData({...formData, due_date: e.target.value})} />
+              <div className="mb-5">
+                <label className="block text-sm font-medium text-text/80 mb-1">Due Date</label>
+                <input
+                  type="date"
+                  value={formData.due_date}
+                  onChange={e => setFormData({...formData, due_date: e.target.value})}
+                  className="w-full px-3 py-2 border border-border rounded-lg bg-bg text-text text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
+                />
               </div>
-              <div>
-                <button type="submit">{editTask ? 'Save Changes' : 'Create Task'}</button>
-                <button type="button" onClick={closeModal}>Cancel</button>
+              <div className="flex gap-3">
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-accent text-accent-fg rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
+                >
+                  {editTask ? 'Save Changes' : 'Create Task'}
+                </button>
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  className="px-4 py-2 border border-border rounded-lg text-sm text-text/70 hover:text-text transition"
+                >
+                  Cancel
+                </button>
               </div>
             </form>
           </div>

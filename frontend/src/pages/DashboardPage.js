@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { getStats } from '../api/dashboard';
+import Spinner from '../components/Spinner';
 
 const MODAL_CONTENT = {
   tasks: (data) => ({
@@ -30,21 +31,11 @@ function StatCard({ title, value, subtitle, color, onClick }) {
   return (
     <div
       onClick={onClick}
-      style={{
-        backgroundColor: 'white',
-        border: '1px solid #e2e8f0',
-        borderRadius: '12px',
-        padding: '24px',
-        cursor: 'pointer',
-        transition: 'box-shadow 0.15s',
-        minWidth: '180px',
-      }}
-      onMouseEnter={e => e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)'}
-      onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}
+      className="bg-surface border border-border rounded-xl p-6 text-center cursor-pointer hover:shadow-md transition-shadow flex-1 min-w-[160px]"
     >
-      <div style={{ fontSize: '14px', color: '#64748b', marginBottom: '8px', fontWeight: '500' }}>{title}</div>
-      <div style={{ fontSize: '40px', fontWeight: 'bold', color: color, lineHeight: 1 }}>{value}</div>
-      {subtitle && <div style={{ fontSize: '13px', color: '#94a3b8', marginTop: '8px' }}>{subtitle}</div>}
+      <div className="text-sm text-text/60 mb-2 font-medium">{title}</div>
+      <div className="text-4xl font-bold leading-none" style={{ color }}>{value}</div>
+      {subtitle && <div className="text-xs text-text/40 mt-2">{subtitle}</div>}
     </div>
   );
 }
@@ -75,32 +66,28 @@ export default function DashboardPage() {
   const modalData = activeModal && stats ? MODAL_CONTENT[activeModal](stats[activeModal]) : null;
 
   return (
-    <div style={{ padding: '24px', maxWidth: '900px' }}>
-      <h1 style={{ marginBottom: '8px' }}>Dashboard</h1>
-      <p style={{ color: '#64748b', marginBottom: '32px', marginTop: 0 }}>Your productivity at a glance</p>
+    <div className="p-6 max-w-4xl mx-auto">
+      <h1 className="text-2xl font-bold tracking-tight text-text mb-1">Dashboard</h1>
+      <p className="text-sm text-text/60 mb-8">Your productivity at a glance</p>
 
-      {loading && <p>Loading stats...</p>}
-      {error && <p style={{ color: '#dc2626' }}>{error}</p>}
+      {loading && <Spinner size="lg" className="mt-16" />}
+      {error && <p className="text-red-500 text-sm">{error}</p>}
 
       {stats && (
         <>
-          <div style={{
-            display: 'flex', alignItems: 'center', gap: '16px',
-            backgroundColor: '#1e293b', color: 'white',
-            borderRadius: '12px', padding: '20px 24px', marginBottom: '32px',
-          }}>
-            <span style={{ fontSize: '36px' }}>🔥</span>
+          <div className="bg-slate-900 text-white rounded-xl p-5 flex items-center gap-4 mb-6">
+            <span className="text-4xl">🔥</span>
             <div>
-              <div style={{ fontSize: '28px', fontWeight: 'bold', lineHeight: 1 }}>
+              <div className="text-3xl font-bold leading-none">
                 {stats.streak.current} day streak
               </div>
-              <div style={{ fontSize: '14px', color: '#94a3b8', marginTop: '4px' }}>
+              <div className="text-sm text-slate-400 mt-1">
                 Longest streak: {stats.streak.longest} days
               </div>
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginBottom: '16px' }}>
+          <div className="flex gap-4 flex-wrap mb-4">
             <StatCard title="Tasks" value={stats.tasks.total}
               subtitle={`${stats.tasks.done} done · ${stats.tasks.in_progress} in progress`}
               color="#3b82f6" onClick={() => setActiveModal('tasks')} />
@@ -110,40 +97,28 @@ export default function DashboardPage() {
               subtitle={`${stats.goals.completed} completed`}
               color="#10b981" onClick={() => setActiveModal('goals')} />
           </div>
-          <p style={{ fontSize: '12px', color: '#94a3b8' }}>Click a card to see details</p>
+          <p className="text-xs text-text/40">Click a card to see details</p>
         </>
       )}
 
       {activeModal && modalData && (
-        <>
-          <div onClick={closeModal} style={{
-            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-            backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 100,
-          }} />
-          <div style={{
-            position: 'fixed', top: '50%', left: '50%',
-            transform: 'translate(-50%, -50%)',
-            backgroundColor: 'white', borderRadius: '12px',
-            padding: '32px', width: '360px', zIndex: 101,
-            boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
-          }}>
-            <h2 style={{ marginTop: 0, marginBottom: '20px' }}>{modalData.title}</h2>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={closeModal}>
+          <div className="bg-surface rounded-2xl p-6 w-full max-w-sm shadow-xl" onClick={e => e.stopPropagation()}>
+            <h2 className="text-xl font-bold text-text mb-5">{modalData.title}</h2>
             {modalData.items.map(item => (
-              <div key={item.label} style={{
-                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                padding: '12px 0', borderBottom: '1px solid #f1f5f9',
-              }}>
-                <span style={{ color: '#475569' }}>{item.label}</span>
-                <span style={{ fontWeight: 'bold', fontSize: '20px', color: item.color }}>{item.value}</span>
+              <div key={item.label} className="flex justify-between items-center py-3 border-b border-border last:border-0">
+                <span className="text-text/60">{item.label}</span>
+                <span className="font-bold text-xl" style={{ color: item.color }}>{item.value}</span>
               </div>
             ))}
-            <button onClick={closeModal} style={{
-              marginTop: '20px', width: '100%', padding: '10px',
-              backgroundColor: '#1e293b', color: 'white', border: 'none',
-              borderRadius: '8px', cursor: 'pointer', fontSize: '14px',
-            }}>Close</button>
+            <button
+              onClick={closeModal}
+              className="mt-5 w-full py-2.5 bg-accent text-accent-fg rounded-lg font-medium hover:opacity-80 transition-opacity"
+            >
+              Close
+            </button>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
