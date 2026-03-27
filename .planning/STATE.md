@@ -1,3 +1,16 @@
+---
+gsd_state_version: 1.0
+milestone: v1.0
+milestone_name: milestone
+status: unknown
+last_updated: "2026-03-27T12:45:30.083Z"
+progress:
+  total_phases: 1
+  completed_phases: 0
+  total_plans: 4
+  completed_plans: 3
+---
+
 # Project State
 
 ## Project Reference
@@ -10,27 +23,27 @@ See: .planning/PROJECT.md (updated 2026-03-27)
 ## Current Position
 
 Phase: 1 of 5 (Foundation)
-Plan: 2 of 4 in current phase
+Plan: 3 of 4 in current phase
 Status: In progress
-Last activity: 2026-03-27 — Completed 01-02 PostgreSQL schema and pg Pool module
+Last activity: 2026-03-27 — Completed 01-03 Auth backend (register/login/getMe + verifyToken middleware)
 
-Progress: [██░░░░░░░░] 10%
+Progress: [███░░░░░░░] 15%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2
-- Average duration: 10 min
-- Total execution time: 0.33 hours
+- Total plans completed: 3
+- Average duration: 8 min
+- Total execution time: 0.42 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-foundation | 2 | 20 min | 10 min |
+| 01-foundation | 3 | 25 min | 8 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (15 min), 01-02 (5 min)
+- Last 5 plans: 01-01 (15 min), 01-02 (5 min), 01-03 (5 min)
 - Trend: -
 
 *Updated after each plan completion*
@@ -54,6 +67,9 @@ Recent decisions affecting current work:
 - ON DELETE CASCADE on all FK references: deleting user removes all associated data automatically
 - UNIQUE constraint on streaks.user_id: one-streak-per-user enforced at DB level
 - pg Pool singleton via require cache: single pool instance shared across all route handlers
+- [Phase 01-foundation]: verifyToken attaches req.user = { id, email } — minimal payload sufficient for all Phase 2+ route authorization
+- [Phase 01-foundation]: Email normalized to lowercase at every write/read — prevents case-sensitive duplicate accounts
+- [Phase 01-foundation]: bcrypt salt rounds = 12 for password hashing in auth backend
 
 ### Pending Todos
 
@@ -66,5 +82,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-27
-Stopped at: Completed 01-02-PLAN.md — PostgreSQL schema and pg Pool module
-Resume file: .planning/phases/01-foundation/01-02-SUMMARY.md
+Stopped at: Completed 01-03-PLAN.md — Auth backend (register/login/getMe + verifyToken middleware)
+Resume file: .planning/phases/01-foundation/01-03-SUMMARY.md
