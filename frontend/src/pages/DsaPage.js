@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
 import Spinner from '../components/Spinner';
 
@@ -141,39 +141,50 @@ export default function DsaPage() {
               </div>
             </button>
 
-            {/* Problems list */}
-            {isExpanded && (
-              <div className="border-t border-border">
-                {day.problems.map(problem => (
-                  <div
-                    key={problem.id}
-                    onClick={() => toggleProblem(problem.id)}
-                    className="flex items-center gap-3 px-4 py-2.5 cursor-pointer hover:bg-bg/60 transition"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={problem.completed}
-                      onChange={() => toggleProblem(problem.id)}
-                      onClick={e => e.stopPropagation()}
-                      className="w-4 h-4 cursor-pointer accent-accent"
-                    />
-                    <span className={`flex-1 text-sm text-text ${problem.completed ? 'line-through opacity-50' : ''}`}>
-                      {problem.title}
-                    </span>
-                    {/* Difficulty badge — data-driven hex colors preserved */}
-                    <span
-                      className="text-xs font-semibold px-2 py-0.5 rounded-full"
-                      style={{
-                        color: DIFFICULTY_COLORS[problem.difficulty] || '#94a3b8',
-                        background: `${DIFFICULTY_COLORS[problem.difficulty] || '#94a3b8'}18`,
-                      }}
-                    >
-                      {problem.difficulty}
-                    </span>
+            {/* Problems list — animated height accordion */}
+            <AnimatePresence initial={false}>
+              {isExpanded && (
+                <motion.div
+                  key="problems"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.22, ease: 'easeInOut' }}
+                  style={{ overflow: 'hidden' }}
+                >
+                  <div className="border-t border-border">
+                    {day.problems.map(problem => (
+                      <div
+                        key={problem.id}
+                        onClick={() => toggleProblem(problem.id)}
+                        className="flex items-center gap-3 px-4 py-2.5 cursor-pointer hover:bg-bg/60 transition"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={problem.completed}
+                          onChange={() => toggleProblem(problem.id)}
+                          onClick={e => e.stopPropagation()}
+                          className="w-4 h-4 cursor-pointer accent-accent"
+                        />
+                        <span className={`flex-1 text-sm text-text ${problem.completed ? 'line-through opacity-50' : ''}`}>
+                          {problem.title}
+                        </span>
+                        {/* Difficulty badge — data-driven hex colors preserved */}
+                        <span
+                          className="text-xs font-semibold px-2 py-0.5 rounded-full"
+                          style={{
+                            color: DIFFICULTY_COLORS[problem.difficulty] || '#94a3b8',
+                            background: `${DIFFICULTY_COLORS[problem.difficulty] || '#94a3b8'}18`,
+                          }}
+                        >
+                          {problem.difficulty}
+                        </span>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            )}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         );
       })}

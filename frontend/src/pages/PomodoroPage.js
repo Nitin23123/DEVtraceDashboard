@@ -9,6 +9,8 @@ const pageVariants = {
 
 const WORK_DURATION = 25 * 60;
 const BREAK_DURATION = 5 * 60;
+const RADIUS = 80;
+const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
 function formatTime(seconds) {
   const m = Math.floor(seconds / 60).toString().padStart(2, '0');
@@ -76,6 +78,7 @@ export default function PomodoroPage() {
   const accentColor = isWork ? '#6366f1' : '#10b981';
   const totalDuration = isWork ? WORK_DURATION : BREAK_DURATION;
   const progress = ((totalDuration - secondsLeft) / totalDuration) * 100;
+  const strokeDashoffset = CIRCUMFERENCE * (1 - progress / 100);
 
   return (
     <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit">
@@ -86,29 +89,55 @@ export default function PomodoroPage() {
         className="bg-surface rounded-2xl p-8 text-center shadow-sm mt-6"
         style={{ border: `2px solid ${accentColor}` }}
       >
-        {/* Mode indicator */}
-        <div
-          className="text-xs font-bold uppercase tracking-widest mb-4"
-          style={{ color: accentColor }}
-        >
-          {isWork ? 'Work Session' : 'Break Time'}
-        </div>
+        {/* SVG ring with countdown overlaid in center */}
+        <div className="relative flex items-center justify-center mb-6" style={{ height: 200 }}>
+          <svg
+            width="200"
+            height="200"
+            viewBox="0 0 200 200"
+            className="-rotate-90"
+            style={{ position: 'absolute', top: 0, left: 0 }}
+          >
+            {/* Track circle */}
+            <circle
+              cx="100"
+              cy="100"
+              r={RADIUS}
+              fill="none"
+              stroke="var(--border)"
+              strokeWidth="10"
+            />
+            {/* Progress circle */}
+            <circle
+              cx="100"
+              cy="100"
+              r={RADIUS}
+              fill="none"
+              stroke={accentColor}
+              strokeWidth="10"
+              strokeLinecap="round"
+              strokeDasharray={CIRCUMFERENCE}
+              strokeDashoffset={strokeDashoffset}
+              style={{ transition: 'stroke-dashoffset 0.8s ease, stroke 0.3s ease' }}
+            />
+          </svg>
 
-        {/* Countdown */}
-        <div className="text-7xl font-bold font-mono mb-6 text-text leading-none">
-          {formatTime(secondsLeft)}
-        </div>
-
-        {/* Progress bar */}
-        <div className="bg-border rounded-full h-2 w-full mb-8">
-          <div
-            className="h-2 rounded-full transition-all duration-500"
-            style={{ background: accentColor, width: `${progress}%` }}
-          />
+          {/* Countdown + mode overlaid in center */}
+          <div className="absolute inset-0 flex items-center justify-center flex-col">
+            <div className="text-5xl font-bold font-mono text-text">
+              {formatTime(secondsLeft)}
+            </div>
+            <div
+              className="text-xs font-bold uppercase tracking-widest mt-1"
+              style={{ color: accentColor }}
+            >
+              {isWork ? 'Work' : 'Break'}
+            </div>
+          </div>
         </div>
 
         {/* Controls */}
-        <div className="flex gap-3 justify-center">
+        <div className="flex gap-3 justify-center mb-7">
           {!running ? (
             <button
               onClick={handleStart}
@@ -134,7 +163,7 @@ export default function PomodoroPage() {
         </div>
 
         {/* Session count badge */}
-        <div className="mt-7 inline-flex items-center gap-2 bg-bg border border-border rounded-full px-4 py-1.5 text-sm text-text">
+        <div className="inline-flex items-center gap-2 bg-bg border border-border rounded-full px-4 py-1.5 text-sm text-text">
           <span className="text-lg">🍅</span>
           Sessions completed: <strong>{sessions}</strong>
         </div>
