@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-27T14:58:39.438Z"
+last_updated: "2026-03-27T22:29:00.000Z"
 progress:
-  total_phases: 3
+  total_phases: 4
   completed_phases: 2
-  total_plans: 15
-  completed_plans: 12
+  total_plans: 17
+  completed_plans: 13
 ---
 
 # Project State
@@ -22,9 +22,9 @@ See: .planning/PROJECT.md (updated 2026-03-27)
 
 ## Current Position
 
-Phase: 3 of 5 (API Tester + Dashboard)
-Status: Phase 2 complete — ready to plan Phase 3
-Last activity: 2026-03-27 — Completed Phase 2 (all 7 plans). Tasks/Notes/Goals CRUD + Layout nav wired.
+Phase: 4 of 5 (Developer Profiles)
+Status: Phase 4 in progress — Plan 1 complete (GitHub OAuth backend)
+Last activity: 2026-03-27 — Completed Phase 4 Plan 1 (GitHub OAuth migration, routes, and app wiring).
 
 Progress: [██████░░░░] 55%
 
@@ -46,6 +46,8 @@ Progress: [██████░░░░] 55%
 - [Phase 03-advanced-features 03-01]: Network fetch errors captured as status=0 and logged, not propagated as 500s
 - [Phase 03-advanced-features]: COUNT(*)::int cast for pg bigint to JS-safe integer in dashboard queries
 - [Phase 03-advanced-features]: Streak logic: SELECT then branch on diffDays (0/1/2+) for same-day no-op, increment, and reset
+- [Phase 04-developer-profiles]: JWT carried through OAuth flow as base64-encoded state param — no cookies or sessions
+- [Phase 04-developer-profiles]: Dual-router single-file pattern: authRouter and profileRouter exported from github.js to avoid mount path collision
 
 ### Blockers/Concerns
 
@@ -54,5 +56,5 @@ Progress: [██████░░░░] 55%
 ## Session Continuity
 
 Last session: 2026-03-27
-Stopped at: Completed 03-advanced-features 03-03-PLAN.md
-Resume file: .planning/phases/03-advanced-features/03-03-SUMMARY.md
+Stopped at: Completed 04-developer-profiles 04-01-PLAN.md
+Resume file: .planning/phases/04-developer-profiles/04-01-SUMMARY.md
