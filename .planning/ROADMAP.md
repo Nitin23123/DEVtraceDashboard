@@ -114,12 +114,12 @@ Plans:
   2. Modals and key UI transitions animate smoothly with Framer Motion
   3. The layout is usable on both desktop and tablet viewports
   4. Loading and empty states are handled gracefully (no blank pages or raw JSON errors)
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 05-01: Global layout, navigation, and Tailwind design system
-- [ ] 05-02: Framer Motion animations (modals, page transitions, card entrances)
-- [ ] 05-03: Responsive layout pass and empty/loading state handling
+- [ ] 05-01-PLAN.md — Tailwind install + design system config + responsive Layout nav + Login/Register polish
+- [ ] 05-02-PLAN.md — Restyle all 9 inner pages with Tailwind + Spinner component + loading/empty states + modal consistency
+- [ ] 05-03-PLAN.md — Framer Motion animations: page transitions, modal scale/fade, staggered card lists, DSA accordion, Pomodoro SVG ring
 
 ### Phase 6: DevOps
 **Goal**: The repo has a passing CI pipeline on GitHub and a README that lets anyone clone and run the project in one command
