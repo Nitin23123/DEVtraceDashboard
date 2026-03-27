@@ -1,4 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
+
+const pageVariants = {
+  initial: { opacity: 0, y: 16 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.25, ease: 'easeOut' } },
+  exit:    { opacity: 0, y: -8, transition: { duration: 0.15 } },
+};
 
 const WORK_DURATION = 25 * 60;
 const BREAK_DURATION = 5 * 60;
@@ -71,6 +78,7 @@ export default function PomodoroPage() {
   const progress = ((totalDuration - secondsLeft) / totalDuration) * 100;
 
   return (
+    <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit">
     <div className="p-6 max-w-md mx-auto">
       <h1 className="text-2xl font-bold text-text mb-6">Pomodoro Timer</h1>
 
@@ -137,5 +145,6 @@ export default function PomodoroPage() {
         25 min work → 5 min break. Browser notifications fire when each session ends.
       </p>
     </div>
+    </motion.div>
   );
 }

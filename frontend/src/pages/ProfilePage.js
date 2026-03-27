@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
 import Spinner from '../components/Spinner';
+
+const pageVariants = {
+  initial: { opacity: 0, y: 16 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.25, ease: 'easeOut' } },
+  exit:    { opacity: 0, y: -8, transition: { duration: 0.15 } },
+};
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
@@ -140,28 +147,32 @@ const ProfilePage = () => {
 
   if (loading) {
     return (
-      <div className="p-6">
-        <h1 className="text-2xl font-bold text-text mb-6">Profile</h1>
-        <Spinner size="lg" className="mt-16" />
-      </div>
+      <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit">
+        <div className="p-6">
+          <h1 className="text-2xl font-bold text-text mb-6">Profile</h1>
+          <Spinner size="lg" className="mt-16" />
+        </div>
+      </motion.div>
     );
   }
 
   if (!githubData) {
     return (
-      <div className="p-6 max-w-4xl mx-auto">
-        <h1 className="text-2xl font-bold text-text mb-6">Profile</h1>
-        <div className="bg-surface border border-border rounded-2xl p-12 text-center max-w-sm mx-auto mt-8">
-          <p className="text-text/60 mb-6">Connect your GitHub account to see your developer dashboard.</p>
-          {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-          <a
-            href={`${API_URL}/api/auth/github?token=${token}`}
-            className="inline-block bg-accent text-accent-fg px-6 py-2.5 rounded-lg font-semibold hover:opacity-80 transition-opacity no-underline"
-          >
-            Connect GitHub
-          </a>
+      <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit">
+        <div className="p-6 max-w-4xl mx-auto">
+          <h1 className="text-2xl font-bold text-text mb-6">Profile</h1>
+          <div className="bg-surface border border-border rounded-2xl p-12 text-center max-w-sm mx-auto mt-8">
+            <p className="text-text/60 mb-6">Connect your GitHub account to see your developer dashboard.</p>
+            {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+            <a
+              href={`${API_URL}/api/auth/github?token=${token}`}
+              className="inline-block bg-accent text-accent-fg px-6 py-2.5 rounded-lg font-semibold hover:opacity-80 transition-opacity no-underline"
+            >
+              Connect GitHub
+            </a>
+          </div>
         </div>
-      </div>
+      </motion.div>
     );
   }
 
@@ -171,6 +182,7 @@ const ProfilePage = () => {
   const weekTrendColor = c.this_week > c.last_week ? '#10b981' : c.this_week < c.last_week ? '#ef4444' : '#64748b';
 
   return (
+    <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit">
     <div className="p-6 max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold text-text mb-5">Profile</h1>
 
@@ -374,6 +386,7 @@ const ProfilePage = () => {
         ))}
       </div>
     </div>
+    </motion.div>
   );
 };
 

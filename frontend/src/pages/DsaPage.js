@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
 import Spinner from '../components/Spinner';
+
+const pageVariants = {
+  initial: { opacity: 0, y: 16 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.25, ease: 'easeOut' } },
+  exit:    { opacity: 0, y: -8, transition: { duration: 0.15 } },
+};
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 const TOTAL_PROBLEMS = 79;
@@ -69,6 +76,7 @@ export default function DsaPage() {
   const progressPercent = TOTAL_PROBLEMS > 0 ? (completed / TOTAL_PROBLEMS) * 100 : 0;
 
   return (
+    <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit">
     <div className="p-6 max-w-3xl mx-auto">
       <h1 className="text-2xl font-bold text-text mb-1">DSA Sheet Tracker</h1>
       <p className="text-sm text-text/60 mb-6">
@@ -170,5 +178,6 @@ export default function DsaPage() {
         );
       })}
     </div>
+    </motion.div>
   );
 }
