@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
+import Spinner from '../components/Spinner';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
@@ -113,205 +114,131 @@ export default function SnippetsPage() {
   }
 
   return (
-    <div style={{ padding: '24px', maxWidth: '860px', color: 'var(--text)' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-        <h1 style={{ margin: 0, color: 'var(--text)' }}>Code Snippets</h1>
+    <div className="p-6 max-w-4xl mx-auto">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold text-text">Code Snippets</h1>
         <button
           onClick={openCreate}
-          style={{
-            background: '#6366f1',
-            color: 'white',
-            border: 'none',
-            padding: '8px 18px',
-            borderRadius: '8px',
-            fontSize: '14px',
-            fontWeight: 600,
-            cursor: 'pointer'
-          }}
+          className="px-4 py-2 bg-accent text-accent-fg rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
         >
           + New Snippet
         </button>
       </div>
 
-      {loading && <p style={{ color: 'var(--text)', opacity: 0.6 }}>Loading...</p>}
-      {error && <p style={{ color: '#ef4444' }}>{error}</p>}
+      {loading && <Spinner size="lg" className="mt-12" />}
+      {error && (
+        <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm mb-4">
+          {error}
+        </div>
+      )}
 
-      {/* Create/Edit Form */}
+      {!loading && snippets.length === 0 && !showForm && (
+        <div className="text-center py-16 text-text/50">
+          <p className="text-lg mb-1">No snippets yet</p>
+          <p className="text-sm">Create your first one!</p>
+        </div>
+      )}
+
+      {/* Create/Edit Modal */}
       {showForm && (
-        <div style={{
-          background: 'var(--surface)',
-          border: '1px solid var(--border)',
-          borderRadius: '12px',
-          padding: '24px',
-          marginBottom: '24px'
-        }}>
-          <h2 style={{ margin: '0 0 16px', fontSize: '18px', color: 'var(--text)' }}>
-            {editingSnippet ? 'Edit Snippet' : 'New Snippet'}
-          </h2>
-          <form onSubmit={handleSave}>
-            <div style={{ marginBottom: '12px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontSize: '13px', fontWeight: 600, color: 'var(--text)' }}>Title *</label>
-              <input
-                value={form.title}
-                onChange={e => setForm({ ...form, title: e.target.value })}
-                required
-                placeholder="e.g. Debounce function"
-                style={{
-                  width: '100%',
-                  padding: '8px 10px',
-                  border: '1px solid var(--border)',
-                  borderRadius: '6px',
-                  background: 'var(--bg)',
-                  color: 'var(--text)',
-                  fontSize: '14px',
-                  boxSizing: 'border-box'
-                }}
-              />
-            </div>
-            <div style={{ marginBottom: '12px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontSize: '13px', fontWeight: 600, color: 'var(--text)' }}>Language</label>
-              <select
-                value={form.language}
-                onChange={e => setForm({ ...form, language: e.target.value })}
-                style={{
-                  padding: '8px 10px',
-                  border: '1px solid var(--border)',
-                  borderRadius: '6px',
-                  background: 'var(--bg)',
-                  color: 'var(--text)',
-                  fontSize: '14px'
-                }}
-              >
-                {LANGUAGES.map(l => <option key={l} value={l}>{l}</option>)}
-              </select>
-            </div>
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontSize: '13px', fontWeight: 600, color: 'var(--text)' }}>Code *</label>
-              <textarea
-                value={form.content}
-                onChange={e => setForm({ ...form, content: e.target.value })}
-                required
-                rows={20}
-                placeholder="Paste your code here..."
-                style={{
-                  width: '100%',
-                  padding: '10px',
-                  border: '1px solid var(--border)',
-                  borderRadius: '6px',
-                  background: 'var(--bg)',
-                  color: 'var(--text)',
-                  fontFamily: 'monospace',
-                  fontSize: '13px',
-                  resize: 'vertical',
-                  boxSizing: 'border-box'
-                }}
-              />
-            </div>
-            <div style={{ display: 'flex', gap: '10px' }}>
-              <button
-                type="submit"
-                style={{
-                  background: '#6366f1',
-                  color: 'white',
-                  border: 'none',
-                  padding: '8px 20px',
-                  borderRadius: '6px',
-                  fontWeight: 600,
-                  cursor: 'pointer'
-                }}
-              >
-                {editingSnippet ? 'Save Changes' : 'Create Snippet'}
-              </button>
-              <button
-                type="button"
-                onClick={resetForm}
-                style={{
-                  background: 'none',
-                  color: 'var(--text)',
-                  border: '1px solid var(--border)',
-                  padding: '8px 20px',
-                  borderRadius: '6px',
-                  cursor: 'pointer'
-                }}
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-surface rounded-2xl p-6 w-full max-w-2xl shadow-xl max-h-[90vh] overflow-y-auto">
+            <h2 className="text-xl font-bold text-text mb-5">
+              {editingSnippet ? 'Edit Snippet' : 'New Snippet'}
+            </h2>
+            <form onSubmit={handleSave}>
+              <div className="mb-3">
+                <label className="block text-sm font-medium text-text/80 mb-1">Title *</label>
+                <input
+                  value={form.title}
+                  onChange={e => setForm({ ...form, title: e.target.value })}
+                  required
+                  placeholder="e.g. Debounce function"
+                  className="w-full px-3 py-2 border border-border rounded-lg bg-bg text-text text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
+                />
+              </div>
+              <div className="mb-3">
+                <label className="block text-sm font-medium text-text/80 mb-1">Language</label>
+                <select
+                  value={form.language}
+                  onChange={e => setForm({ ...form, language: e.target.value })}
+                  className="px-3 py-2 border border-border rounded-lg bg-bg text-text text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
+                >
+                  {LANGUAGES.map(l => <option key={l} value={l}>{l}</option>)}
+                </select>
+              </div>
+              <div className="mb-5">
+                <label className="block text-sm font-medium text-text/80 mb-1">Code *</label>
+                <textarea
+                  value={form.content}
+                  onChange={e => setForm({ ...form, content: e.target.value })}
+                  required
+                  rows={20}
+                  placeholder="Paste your code here..."
+                  className="w-full px-3 py-2 border border-border rounded-lg bg-bg text-text text-sm font-mono focus:outline-none focus:ring-2 focus:ring-accent/50 resize-y min-h-[120px]"
+                />
+              </div>
+              <div className="flex gap-3">
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-accent text-accent-fg rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
+                >
+                  {editingSnippet ? 'Save Changes' : 'Create Snippet'}
+                </button>
+                <button
+                  type="button"
+                  onClick={resetForm}
+                  className="px-4 py-2 border border-border rounded-lg text-sm text-text/70 hover:text-text transition"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
 
       {/* Snippet List */}
-      {!loading && snippets.length === 0 && !showForm && (
-        <p style={{ color: 'var(--text)', opacity: 0.6 }}>No snippets yet. Create your first one!</p>
-      )}
-
       {snippets.map(snippet => (
-        <div
-          key={snippet.id}
-          style={{
-            background: 'var(--surface)',
-            border: '1px solid var(--border)',
-            borderRadius: '10px',
-            padding: '16px',
-            marginBottom: '12px'
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-            <strong style={{ flex: 1, fontSize: '15px', color: 'var(--text)' }}>{snippet.title}</strong>
-            {/* Language badge */}
+        <div key={snippet.id} className="bg-surface border border-border rounded-xl p-4 mb-4">
+          <div className="flex items-center gap-2 flex-wrap">
+            <strong className="flex-1 text-text font-semibold">{snippet.title}</strong>
+            {/* Language badge — data-driven colors */}
             <span style={{
               background: LANG_COLORS[snippet.language] ? `${LANG_COLORS[snippet.language]}22` : '#94a3b822',
               color: LANG_COLORS[snippet.language] || '#94a3b8',
               border: `1px solid ${LANG_COLORS[snippet.language] || '#94a3b8'}44`,
-              padding: '2px 10px',
-              borderRadius: '12px',
-              fontSize: '12px',
-              fontWeight: 600
-            }}>
+            }} className="text-xs px-2.5 py-0.5 rounded-full font-semibold">
               {snippet.language}
             </span>
-            {/* Action buttons */}
             <button
               onClick={() => toggleExpand(snippet.id)}
-              style={{ background: 'none', color: 'var(--text)', border: '1px solid var(--border)', padding: '4px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '12px' }}
+              className="text-xs px-2 py-1 rounded border border-border text-text/60 hover:text-text hover:bg-border/40 transition"
             >
               {expandedIds.has(snippet.id) ? 'Collapse' : 'Expand'}
             </button>
             <button
               onClick={() => handleCopy(snippet.content)}
-              style={{ background: 'none', color: '#6366f1', border: '1px solid #6366f1', padding: '4px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '12px', fontWeight: 600 }}
+              className="text-xs px-2 py-1 rounded border border-accent text-accent hover:bg-accent/10 transition font-semibold"
             >
               Copy
             </button>
             <button
               onClick={() => openEdit(snippet)}
-              style={{ background: 'none', color: 'var(--text)', border: '1px solid var(--border)', padding: '4px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '12px' }}
+              className="text-xs px-2 py-1 rounded border border-border text-text/60 hover:text-text hover:bg-border/40 transition"
             >
               Edit
             </button>
             <button
               onClick={() => handleDelete(snippet.id)}
-              style={{ background: 'none', color: '#ef4444', border: '1px solid #ef4444', padding: '4px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '12px' }}
+              className="text-xs px-2 py-1 rounded text-red-400 hover:text-red-600 transition"
             >
               Delete
             </button>
           </div>
 
-          {/* Expanded code block */}
           {expandedIds.has(snippet.id) && (
-            <pre style={{
-              marginTop: '12px',
-              whiteSpace: 'pre-wrap',
-              fontFamily: 'monospace',
-              background: 'var(--bg)',
-              color: 'var(--text)',
-              padding: '12px',
-              borderRadius: '6px',
-              overflowX: 'auto',
-              fontSize: '13px',
-              border: '1px solid var(--border)'
-            }}>
+            <pre className="bg-bg rounded-lg p-3 text-sm font-mono text-text/80 overflow-x-auto mt-2 border border-border whitespace-pre-wrap">
               {snippet.content}
             </pre>
           )}

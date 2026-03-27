@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { sendRequest, getHistory } from '../api/apiTester';
+import Spinner from '../components/Spinner';
 
 const HTTP_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
 
@@ -69,91 +70,86 @@ export default function ApiTesterPage() {
     loadHistory();
   };
 
-  const statusColor = (status) => {
-    if (!status) return '#6b7280';
-    if (status >= 200 && status < 300) return '#16a34a';
-    if (status >= 400 && status < 500) return '#d97706';
-    if (status >= 500) return '#dc2626';
-    return '#6b7280';
+  const statusBadgeClass = (status) => {
+    if (!status) return 'bg-slate-100 text-slate-600';
+    if (status >= 200 && status < 300) return 'bg-green-100 text-green-700';
+    if (status >= 400 && status < 500) return 'bg-yellow-100 text-yellow-700';
+    if (status >= 500) return 'bg-red-100 text-red-700';
+    return 'bg-slate-100 text-slate-600';
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '900px' }}>
-      <h1>API Tester</h1>
+    <div className="p-6 max-w-4xl mx-auto">
+      <h1 className="text-2xl font-bold text-text mb-6">API Tester</h1>
 
-      <form onSubmit={handleSend} style={{ marginBottom: '24px' }}>
-        {/* Method + URL row */}
-        <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
-          <select
-            value={method}
-            onChange={e => setMethod(e.target.value)}
-            style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc', fontWeight: 'bold' }}
-          >
-            {HTTP_METHODS.map(m => <option key={m} value={m}>{m}</option>)}
-          </select>
-          <input
-            type="text"
-            placeholder="https://api.example.com/endpoint"
-            value={url}
-            onChange={e => setUrl(e.target.value)}
-            style={{ flex: 1, padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
-          />
-          <button
-            type="submit"
-            disabled={loading}
-            style={{ padding: '8px 20px', backgroundColor: '#1e293b', color: 'white', border: 'none', borderRadius: '4px', cursor: loading ? 'not-allowed' : 'pointer' }}
-          >
-            {loading ? 'Sending...' : 'Send'}
-          </button>
-        </div>
+      <div className="bg-surface border border-border rounded-xl p-5 mb-5">
+        <form onSubmit={handleSend}>
+          {/* Method + URL row */}
+          <div className="flex gap-2 mb-3">
+            <select
+              value={method}
+              onChange={e => setMethod(e.target.value)}
+              className="px-3 py-2 border border-border rounded-lg bg-bg text-text text-sm font-mono font-bold focus:outline-none focus:ring-2 focus:ring-accent/50"
+            >
+              {HTTP_METHODS.map(m => <option key={m} value={m}>{m}</option>)}
+            </select>
+            <input
+              type="text"
+              placeholder="https://api.example.com/endpoint"
+              value={url}
+              onChange={e => setUrl(e.target.value)}
+              className="flex-1 px-3 py-2 border border-border rounded-lg bg-bg text-text text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
+            />
+            <button
+              type="submit"
+              disabled={loading}
+              className="px-4 py-2 bg-accent text-accent-fg rounded-lg text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            >
+              {loading && <Spinner size="sm" />}
+              {loading ? 'Sending...' : 'Send'}
+            </button>
+          </div>
 
-        {/* Headers */}
-        <div style={{ marginBottom: '12px' }}>
-          <label style={{ display: 'block', marginBottom: '4px', fontWeight: '500' }}>
-            Headers (JSON)
-          </label>
-          <textarea
-            placeholder='{"Authorization": "Bearer token", "Content-Type": "application/json"}'
-            value={headersText}
-            onChange={e => setHeadersText(e.target.value)}
-            rows={3}
-            style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc', fontFamily: 'monospace', fontSize: '13px', boxSizing: 'border-box' }}
-          />
-        </div>
-
-        {/* Body (only shown for POST/PUT/PATCH) */}
-        {['POST', 'PUT', 'PATCH'].includes(method) && (
-          <div style={{ marginBottom: '12px' }}>
-            <label style={{ display: 'block', marginBottom: '4px', fontWeight: '500' }}>
-              Body (JSON)
-            </label>
+          {/* Headers */}
+          <div className="mb-3">
+            <label className="block text-sm font-medium text-text/80 mb-1">Headers (JSON)</label>
             <textarea
-              placeholder='{"key": "value"}'
-              value={bodyText}
-              onChange={e => setBodyText(e.target.value)}
-              rows={5}
-              style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc', fontFamily: 'monospace', fontSize: '13px', boxSizing: 'border-box' }}
+              placeholder='{"Authorization": "Bearer token", "Content-Type": "application/json"}'
+              value={headersText}
+              onChange={e => setHeadersText(e.target.value)}
+              rows={3}
+              className="w-full px-3 py-2 border border-border rounded-lg bg-bg text-text text-sm font-mono focus:outline-none focus:ring-2 focus:ring-accent/50"
             />
           </div>
-        )}
 
-        {error && <p style={{ color: '#dc2626', margin: '4px 0' }}>{error}</p>}
-      </form>
+          {/* Body (only shown for POST/PUT/PATCH) */}
+          {['POST', 'PUT', 'PATCH'].includes(method) && (
+            <div className="mb-3">
+              <label className="block text-sm font-medium text-text/80 mb-1">Body (JSON)</label>
+              <textarea
+                placeholder='{"key": "value"}'
+                value={bodyText}
+                onChange={e => setBodyText(e.target.value)}
+                rows={5}
+                className="w-full px-3 py-2 border border-border rounded-lg bg-bg text-text text-sm font-mono focus:outline-none focus:ring-2 focus:ring-accent/50"
+              />
+            </div>
+          )}
+
+          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+        </form>
+      </div>
 
       {/* Response */}
       {response && (
-        <div style={{ marginBottom: '32px', border: '1px solid #e2e8f0', borderRadius: '8px', overflow: 'hidden' }}>
-          <div style={{ padding: '12px 16px', backgroundColor: '#f8fafc', borderBottom: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <strong>Response</strong>
-            <span style={{
-              fontWeight: 'bold',
-              color: statusColor(response.status),
-              fontSize: '16px'
-            }}>
+        <div className="bg-surface border border-border rounded-xl overflow-hidden mb-6">
+          <div className="px-4 py-3 border-b border-border flex items-center gap-3">
+            <strong className="text-text text-sm">Response</strong>
+            <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${statusBadgeClass(response.status)}`}>
               {response.status || 'Error'}
             </span>
           </div>
-          <pre style={{ margin: 0, padding: '16px', overflowX: 'auto', fontSize: '13px', fontFamily: 'monospace', backgroundColor: '#1e293b', color: '#e2e8f0', maxHeight: '300px', overflowY: 'auto' }}>
+          <pre className="bg-bg p-4 text-sm font-mono text-text/80 overflow-auto max-h-64">
             {JSON.stringify(response.body, null, 2)}
           </pre>
         </div>
@@ -161,21 +157,29 @@ export default function ApiTesterPage() {
 
       {/* History */}
       <div>
-        <h2 style={{ marginBottom: '12px' }}>Request History</h2>
-        {historyLoading && <p>Loading history...</p>}
-        {!historyLoading && history.length === 0 && <p style={{ color: '#6b7280' }}>No requests sent yet.</p>}
-        {history.map(entry => (
-          <div key={entry.id} style={{ border: '1px solid #e2e8f0', borderRadius: '4px', padding: '10px 14px', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <span style={{ fontWeight: 'bold', minWidth: '60px', color: '#1e293b' }}>{entry.method}</span>
-            <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: '#475569', fontSize: '14px' }}>{entry.url}</span>
-            <span style={{ fontWeight: 'bold', color: statusColor(entry.response_status), minWidth: '40px', textAlign: 'right' }}>
-              {entry.response_status || 'ERR'}
-            </span>
-            <span style={{ color: '#94a3b8', fontSize: '12px', minWidth: '80px', textAlign: 'right' }}>
-              {new Date(entry.created_at).toLocaleTimeString()}
-            </span>
-          </div>
-        ))}
+        <h2 className="text-lg font-semibold text-text mb-3">Request History</h2>
+        {historyLoading && <Spinner size="sm" className="py-4" />}
+        {!historyLoading && history.length === 0 && (
+          <p className="text-text/50 text-sm py-4 text-center">No requests yet.</p>
+        )}
+        <div className="bg-surface border border-border rounded-xl overflow-hidden">
+          {history.map((entry, i) => (
+            <div key={entry.id} className={`flex items-center gap-3 px-4 py-2.5 text-sm ${i < history.length - 1 ? 'border-b border-border' : ''}`}>
+              <span className="font-mono text-xs bg-border/60 px-1.5 py-0.5 rounded font-bold text-text shrink-0">
+                {entry.method}
+              </span>
+              <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-text/70">
+                {entry.url}
+              </span>
+              <span className={`text-xs px-2 py-0.5 rounded-full font-semibold shrink-0 ${statusBadgeClass(entry.response_status)}`}>
+                {entry.response_status || 'ERR'}
+              </span>
+              <span className="text-text/40 text-xs shrink-0">
+                {new Date(entry.created_at).toLocaleTimeString()}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
