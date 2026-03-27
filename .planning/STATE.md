@@ -51,6 +51,10 @@ Progress: [███████░░░] 60%
 - [Phase 04-developer-profiles 04-02]: 404 from GET /api/profile/github treated as not-connected state, not an error
 - [Phase 04-developer-profiles 04-02]: window.history.replaceState strips ?github=connected after OAuth redirect without page reload
 
+### Roadmap Evolution
+
+- Phase 4.1 inserted after Phase 4: Developer Tools (URGENT) — Pomodoro timer, dark mode, GitHub PR queue, code snippets, task pinning, DSA sheet tracker
+
 ### Blockers/Concerns
 
 - 24-hour deadline is tight — Phase 3 API Tester is lowest priority if time runs short
