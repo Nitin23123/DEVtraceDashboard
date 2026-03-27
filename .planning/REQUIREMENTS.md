@@ -30,10 +30,10 @@
 
 ### Goals
 
-- [ ] **GOAL-01**: User can create a goal with title, description, and target date
-- [ ] **GOAL-02**: User can view all their goals
-- [ ] **GOAL-03**: User can mark a goal as complete
-- [ ] **GOAL-04**: User can delete a goal
+- [x] **GOAL-01**: User can create a goal with title, description, and target date
+- [x] **GOAL-02**: User can view all their goals
+- [x] **GOAL-03**: User can mark a goal as complete
+- [x] **GOAL-04**: User can delete a goal
 
 ### API Tester
 
@@ -98,10 +98,10 @@
 | NOTE-02 | Phase 2 | Complete |
 | NOTE-03 | Phase 2 | Complete |
 | NOTE-04 | Phase 2 | Complete |
-| GOAL-01 | Phase 2 | Pending |
-| GOAL-02 | Phase 2 | Pending |
-| GOAL-03 | Phase 2 | Pending |
-| GOAL-04 | Phase 2 | Pending |
+| GOAL-01 | Phase 2 | Complete |
+| GOAL-02 | Phase 2 | Complete |
+| GOAL-03 | Phase 2 | Complete |
+| GOAL-04 | Phase 2 | Complete |
 | APIT-01 | Phase 3 | Pending |
 | APIT-02 | Phase 3 | Pending |
 | APIT-03 | Phase 3 | Pending |

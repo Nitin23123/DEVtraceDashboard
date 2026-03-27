@@ -23,11 +23,11 @@ See: .planning/PROJECT.md (updated 2026-03-27)
 ## Current Position
 
 Phase: 2 of 5 (Core CRUD)
-Plan: 1 of 7 in current phase (02-01 complete)
+Plan: 5 of 7 in current phase (02-05 complete)
 Status: In progress
-Last activity: 2026-03-27 — Completed 02-01 Tasks CRUD backend (5 endpoints, verifyToken on all routes)
+Last activity: 2026-03-27 — Completed 02-05 Goals CRUD backend (5 endpoints including PUT /:id/complete, verifyToken on all routes)
 
-Progress: [██░░░░░░░░] 28%
+Progress: [███░░░░░░░] 36%
 
 ## Performance Metrics
 
@@ -81,6 +81,9 @@ Recent decisions affecting current work:
 - [Phase 02-core-crud 02-01]: COALESCE pattern for updateTask partial updates — avoids overwriting unset fields
 - [Phase 02-core-crud 02-01]: null default for optional fields in createTask — DB defaults handle status/priority
 - [Phase 02-core-crud 02-01]: next(err) error propagation consistent with Phase 1 auth controller pattern
+- [Phase 02-core-crud 02-05]: PUT /:id/complete declared before PUT /:id in router — specific paths before parameterized in Express
+- [Phase 02-core-crud 02-05]: completeGoal as dedicated handler (not reusing updateGoal) — single responsibility, only flips is_completed
+- [Phase 02-core-crud 02-05]: COALESCE pattern in updateGoal allows partial updates without overwriting unset fields
 
 ### Pending Todos
 
@@ -93,5 +96,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-27
-Stopped at: Completed 02-01-PLAN.md — Tasks CRUD backend (5 endpoints, verifyToken, user-scoped SQL)
-Resume file: .planning/phases/02-core-crud/02-01-SUMMARY.md
+Stopped at: Completed 02-05-PLAN.md — Goals CRUD backend (5 endpoints including PUT /:id/complete, user-scoped SQL)
+Resume file: .planning/phases/02-core-crud/02-05-SUMMARY.md
