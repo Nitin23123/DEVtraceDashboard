@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { getTasks, createTask, updateTask, deleteTask } from '../api/tasks';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const nextStatus = { todo: 'in_progress', in_progress: 'done', done: 'todo' };
 
 export default function TasksPage() {
@@ -33,7 +35,7 @@ export default function TasksPage() {
   };
 
   const togglePin = async (taskId) => {
-    const res = await fetch(`/api/tasks/${taskId}/pin`, {
+    const res = await fetch(`${API_URL}/api/tasks/${taskId}/pin`, {
       method: 'PUT',
       headers: { Authorization: `Bearer ${token}` }
     });

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 const TOTAL_PROBLEMS = 79;
 
 const DIFFICULTY_COLORS = {
@@ -25,7 +26,7 @@ export default function DsaPage() {
   async function fetchProblems() {
     setLoading(true);
     try {
-      const res = await fetch('/api/dsa/problems', {
+      const res = await fetch(`${API_URL}/api/dsa/problems`, {
         headers: { Authorization: `Bearer ${authToken}` }
       });
       const data = await res.json();
@@ -40,7 +41,7 @@ export default function DsaPage() {
 
   async function toggleProblem(problemId) {
     try {
-      const res = await fetch(`/api/dsa/progress/${problemId}`, {
+      const res = await fetch(`${API_URL}/api/dsa/progress/${problemId}`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${authToken}` }
       });

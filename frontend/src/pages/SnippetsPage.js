@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const LANGUAGES = ['JavaScript', 'Python', 'Java', 'C++', 'SQL', 'Bash', 'Other'];
 
 const LANG_COLORS = {
@@ -32,7 +34,7 @@ export default function SnippetsPage() {
   async function fetchSnippets() {
     setLoading(true);
     try {
-      const res = await fetch('/api/snippets', { headers: authHeader });
+      const res = await fetch(`${API_URL}/api/snippets`, { headers: authHeader });
       const data = await res.json();
       if (Array.isArray(data)) setSnippets(data);
       else setError(data.error || 'Failed to load snippets');
@@ -65,7 +67,7 @@ export default function SnippetsPage() {
     e.preventDefault();
     try {
       if (editingSnippet) {
-        const res = await fetch(`/api/snippets/${editingSnippet.id}`, {
+        const res = await fetch(`${API_URL}/api/snippets/${editingSnippet.id}`, {
           method: 'PUT',
           headers: { ...authHeader, 'Content-Type': 'application/json' },
           body: JSON.stringify(form),
@@ -73,7 +75,7 @@ export default function SnippetsPage() {
         const updated = await res.json();
         setSnippets(prev => prev.map(s => s.id === editingSnippet.id ? updated : s));
       } else {
-        const res = await fetch('/api/snippets', {
+        const res = await fetch(`${API_URL}/api/snippets`, {
           method: 'POST',
           headers: { ...authHeader, 'Content-Type': 'application/json' },
           body: JSON.stringify(form),
@@ -90,7 +92,7 @@ export default function SnippetsPage() {
   async function handleDelete(id) {
     if (!window.confirm('Delete this snippet?')) return;
     try {
-      await fetch(`/api/snippets/${id}`, { method: 'DELETE', headers: authHeader });
+      await fetch(`${API_URL}/api/snippets/${id}`, { method: 'DELETE', headers: authHeader });
       setSnippets(prev => prev.filter(s => s.id !== id));
     } catch {
       setError('Failed to delete snippet');
