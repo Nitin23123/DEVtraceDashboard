@@ -1,7 +1,7 @@
 const express = require('express');
 const fetch = require('node-fetch');
 const jwt = require('jsonwebtoken');
-const pool = require('../db');
+const { pool, query } = require('../db');
 const { verifyToken } = require('../middleware/auth');
 
 // ── authRouter — mounted at /api/auth ────────────────────────────────────────
@@ -294,6 +294,47 @@ profileRouter.get('/github', verifyToken, async (req, res) => {
   } catch (err) {
     console.error('GitHub profile route error:', err);
     res.status(500).json({ error: 'Failed to fetch GitHub profile' });
+  }
+});
+
+// GET /api/profile/github/prs
+// Returns the authenticated user's open GitHub PRs via GitHub search API
+profileRouter.get('/github/prs', verifyToken, async (req, res) => {
+  try {
+    const { rows } = await query(
+      'SELECT github_access_token, github_username FROM users WHERE id = $1',
+      [req.user.id]
+    );
+    const user = rows[0];
+    if (!user || !user.github_access_token) {
+      return res.status(404).json({ error: 'GitHub not connected' });
+    }
+    const { github_access_token, github_username } = user;
+    const searchUrl = `https://api.github.com/search/issues?q=author:${github_username}+type:pr+is:open&per_page=20`;
+    const ghRes = await fetch(searchUrl, {
+      headers: {
+        Authorization: `token ${github_access_token}`,
+        Accept: 'application/vnd.github.v3+json',
+        'User-Agent': 'DevTrackr',
+      },
+    });
+    if (!ghRes.ok) {
+      return res.status(ghRes.status).json({ error: 'GitHub API error' });
+    }
+    const data = await ghRes.json();
+    const prs = (data.items || []).map(item => ({
+      title: item.title,
+      html_url: item.html_url,
+      created_at: item.created_at,
+      repo: item.repository_url
+        ? item.repository_url.replace('https://api.github.com/repos/', '')
+        : '',
+      labels: (item.labels || []).map(l => l.name),
+    }));
+    res.json(prs);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 

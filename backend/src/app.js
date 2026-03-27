@@ -38,6 +38,12 @@ const { authRouter: githubAuthRouter, profileRouter: githubProfileRouter } = req
 app.use('/api/auth', githubAuthRouter);
 app.use('/api/profile', githubProfileRouter);
 
+const snippetsRouter = require('./routes/snippets');
+app.use('/api/snippets', snippetsRouter);
+
+const dsaRouter = require('./routes/dsa');
+app.use('/api/dsa', dsaRouter);
+
 // 404 fallthrough
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
