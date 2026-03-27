@@ -30,15 +30,6 @@ function StatBadge({ label, value, sub, color }) {
   );
 }
 
-function Section({ title, children }) {
-  return (
-    <div className="mt-5">
-      <h3 className="text-xs font-bold text-text/50 uppercase tracking-wider mb-3">{title}</h3>
-      {children}
-    </div>
-  );
-}
-
 function ContribHeatmap({ calendarWeeks }) {
   if (!calendarWeeks || calendarWeeks.length === 0) return null;
   const DAY_LABELS = ['', 'Mon', '', 'Wed', '', 'Fri', ''];
