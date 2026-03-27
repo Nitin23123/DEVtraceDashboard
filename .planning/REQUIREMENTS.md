@@ -59,7 +59,7 @@
 ### DevOps
 
 - [ ] **DEVOPS-01**: Docker Compose runs frontend, backend, and PostgreSQL as 3 containers
-- [ ] **DEVOPS-02**: GitHub Actions CI pipeline runs on push (builds and checks)
+- [x] **DEVOPS-02**: GitHub Actions CI pipeline runs on push (builds and checks)
 - [ ] **DEVOPS-03**: Environment variables managed via .env files (not hardcoded)
 
 ## v2 Requirements
@@ -121,7 +121,7 @@
 | PROF-02 | Phase 4 | Complete |
 | PROF-03 | Phase 4 | Complete |
 | PROF-04 | Phase 4 | Complete |
-| DEVOPS-02 | Phase 6 | Pending |
+| DEVOPS-02 | Phase 6 | Complete |
 
 **Coverage:**
 - v1 requirements: 27 total
