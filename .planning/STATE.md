@@ -42,6 +42,8 @@ Progress: [██████░░░░] 55%
 - [Phase 02-core-crud]: COALESCE for partial updates across all controllers
 - [Phase 02-core-crud 02-05]: PUT /:id/complete declared before PUT /:id in router
 - [Phase 02-core-crud 02-07]: Nested route pattern (ProtectedRoute > Layout > Outlet)
+- [Phase 03-advanced-features 03-01]: node-fetch@2 chosen over v3 (v3 is ESM-only, breaks CommonJS require())
+- [Phase 03-advanced-features 03-01]: Network fetch errors captured as status=0 and logged, not propagated as 500s
 - [Phase 03-advanced-features]: COUNT(*)::int cast for pg bigint to JS-safe integer in dashboard queries
 - [Phase 03-advanced-features]: Streak logic: SELECT then branch on diffDays (0/1/2+) for same-day no-op, increment, and reset
 

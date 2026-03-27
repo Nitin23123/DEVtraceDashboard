@@ -37,10 +37,10 @@
 
 ### API Tester
 
-- [ ] **APIT-01**: User can send an HTTP request (method, URL, headers, body)
-- [ ] **APIT-02**: Response is displayed (status code, body)
-- [ ] **APIT-03**: Each request is logged to the database
-- [ ] **APIT-04**: User can view history of past API requests
+- [x] **APIT-01**: User can send an HTTP request (method, URL, headers, body)
+- [x] **APIT-02**: Response is displayed (status code, body)
+- [x] **APIT-03**: Each request is logged to the database
+- [x] **APIT-04**: User can view history of past API requests
 
 ### Dashboard
 
@@ -102,10 +102,10 @@
 | GOAL-02 | Phase 2 | Complete |
 | GOAL-03 | Phase 2 | Complete |
 | GOAL-04 | Phase 2 | Complete |
-| APIT-01 | Phase 3 | Pending |
-| APIT-02 | Phase 3 | Pending |
-| APIT-03 | Phase 3 | Pending |
-| APIT-04 | Phase 3 | Pending |
+| APIT-01 | Phase 3 | Complete |
+| APIT-02 | Phase 3 | Complete |
+| APIT-03 | Phase 3 | Complete |
+| APIT-04 | Phase 3 | Complete |
 | DASH-01 | Phase 3 | Complete |
 | DASH-02 | Phase 3 | Complete |
 | DASH-03 | Phase 3 | Complete |
