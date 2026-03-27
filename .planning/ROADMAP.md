@@ -15,8 +15,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation** - Docker environment, database schema, and JWT authentication (backend + frontend) (completed 2026-03-27)
 - [ ] **Phase 2: Core CRUD** - Tasks, Notes, and Goals — backend APIs and connected frontend pages
 - [x] **Phase 3: Advanced Features** - API Tester tool and Dashboard with streak counter (completed 2026-03-27)
-- [ ] **Phase 4: UI Polish** - Tailwind styling refinement and Framer Motion animations
-- [ ] **Phase 5: DevOps** - GitHub Actions CI pipeline and production Docker configuration
+- [ ] **Phase 4: Developer Profiles** - GitHub and LeetCode profile dashboards pulling live data from external APIs
+- [ ] **Phase 5: UI Polish** - Tailwind styling refinement and Framer Motion animations
+- [ ] **Phase 6: DevOps** - GitHub Actions CI pipeline and production Docker configuration
 
 ## Phase Details
 
@@ -77,10 +78,26 @@ Plans:
 - [ ] 03-03-PLAN.md — Dashboard backend (aggregate stats endpoint, streak upsert logic)
 - [ ] 03-04-PLAN.md — Dashboard frontend (stats cards, streak banner, Framer Motion animated modal)
 
-### Phase 4: UI Polish
-**Goal**: The app looks polished enough to screen-share in an interview — consistent Tailwind styling and smooth animations throughout
+### Phase 4: Developer Profiles
+**Goal**: Users can view their GitHub stats and LeetCode progress on a dedicated Profile page, with live data fetched through the backend
 **Depends on**: Phase 3
-**Requirements**: (No new requirements — this phase refines DASH-04 delivery and overall UX coherence)
+**Requirements**: PROF-01, PROF-02, PROF-03, PROF-04
+**Success Criteria** (what must be TRUE):
+  1. User can enter their GitHub username and see: avatar, name, public repos, stars, followers, and recent activity
+  2. User can enter their LeetCode username and see: problems solved (Easy/Medium/Hard breakdown), acceptance rate, and ranking
+  3. Usernames are persisted (localStorage) so they don't need to re-enter on every visit
+  4. Data is fetched through the backend (not directly from browser) to avoid CORS and keep GITHUB_TOKEN server-side
+  5. Profile page is accessible from the nav bar
+**Plans**: 2 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — Profile backend (GitHub REST API proxy + LeetCode GraphQL proxy routes)
+- [ ] 04-02-PLAN.md — Profile frontend (ProfilePage with GitHub widget + LeetCode widget, username inputs, nav wired)
+
+### Phase 5: UI Polish
+**Goal**: The app looks polished enough to screen-share in an interview — consistent Tailwind styling and smooth animations throughout
+**Depends on**: Phase 4
+**Requirements**: (No new requirements — this phase refines overall UX coherence)
 **Success Criteria** (what must be TRUE):
   1. All pages use a consistent color scheme, spacing, and typography via Tailwind
   2. Modals and key UI transitions animate smoothly with Framer Motion
@@ -89,13 +106,13 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 04-01: Global layout, navigation, and Tailwind design system
-- [ ] 04-02: Framer Motion animations (modals, page transitions, card entrances)
-- [ ] 04-03: Responsive layout pass and empty/loading state handling
+- [ ] 05-01: Global layout, navigation, and Tailwind design system
+- [ ] 05-02: Framer Motion animations (modals, page transitions, card entrances)
+- [ ] 05-03: Responsive layout pass and empty/loading state handling
 
-### Phase 5: DevOps
+### Phase 6: DevOps
 **Goal**: The repo has a passing CI pipeline on GitHub and a README that lets anyone clone and run the project in one command
-**Depends on**: Phase 4
+**Depends on**: Phase 5
 **Requirements**: DEVOPS-02
 **Success Criteria** (what must be TRUE):
   1. Pushing to the main branch triggers a GitHub Actions workflow that builds and checks the project
@@ -104,8 +121,8 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 05-01: GitHub Actions CI workflow (build check on push)
-- [ ] 05-02: README with quickstart, architecture diagram, and feature list
+- [ ] 06-01: GitHub Actions CI workflow (build check on push)
+- [ ] 06-02: README with quickstart, architecture diagram, and feature list
 
 ## Progress
 
@@ -116,6 +133,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 |-------|----------------|--------|-----------|
 | 1. Foundation | 4/4 | Complete   | 2026-03-27 |
 | 2. Core CRUD | 0/7 | Not started | - |
-| 3. Advanced Features | 2/4 | Complete    | 2026-03-27 |
-| 4. UI Polish | 0/3 | Not started | - |
-| 5. DevOps | 0/2 | Not started | - |
+| 3. Advanced Features | 4/4 | Complete    | 2026-03-27 |
+| 4. Developer Profiles | 0/2 | Not started | - |
+| 5. UI Polish | 0/3 | Not started | - |
+| 6. DevOps | 0/2 | Not started | - |
