@@ -23,10 +23,10 @@
 
 ### Notes
 
-- [ ] **NOTE-01**: User can create a note with title and content
-- [ ] **NOTE-02**: User can view all their notes
-- [ ] **NOTE-03**: User can edit a note
-- [ ] **NOTE-04**: User can delete a note
+- [x] **NOTE-01**: User can create a note with title and content
+- [x] **NOTE-02**: User can view all their notes
+- [x] **NOTE-03**: User can edit a note
+- [x] **NOTE-04**: User can delete a note
 
 ### Goals
 
@@ -94,10 +94,10 @@
 | TASK-03 | Phase 2 | Pending |
 | TASK-04 | Phase 2 | Pending |
 | TASK-05 | Phase 2 | Pending |
-| NOTE-01 | Phase 2 | Pending |
-| NOTE-02 | Phase 2 | Pending |
-| NOTE-03 | Phase 2 | Pending |
-| NOTE-04 | Phase 2 | Pending |
+| NOTE-01 | Phase 2 | Complete |
+| NOTE-02 | Phase 2 | Complete |
+| NOTE-03 | Phase 2 | Complete |
+| NOTE-04 | Phase 2 | Complete |
 | GOAL-01 | Phase 2 | Pending |
 | GOAL-02 | Phase 2 | Pending |
 | GOAL-03 | Phase 2 | Pending |

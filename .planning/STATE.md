@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-27T12:45:30.083Z"
+last_updated: "2026-03-27T14:12:55.553Z"
 progress:
-  total_phases: 1
-  completed_phases: 0
-  total_plans: 4
-  completed_plans: 4
+  total_phases: 2
+  completed_phases: 1
+  total_plans: 11
+  completed_plans: 6
 ---
 
 # Project State
@@ -18,33 +18,34 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-27)
 
 **Core value:** A polished, working full-stack app that demonstrates end-to-end engineering capability explainable in any interview.
-**Current focus:** Phase 1 — Foundation
+**Current focus:** Phase 2 — Core CRUD
 
 ## Current Position
 
-Phase: 1 of 5 (Foundation)
-Plan: 4 of 4 in current phase (COMPLETE — awaiting human verification checkpoint)
+Phase: 2 of 5 (Core CRUD)
+Plan: 1 of 7 in current phase (02-01 complete)
 Status: In progress
-Last activity: 2026-03-27 — Completed 01-04 React auth UI (AuthContext, ProtectedRoute, Login/Register pages)
+Last activity: 2026-03-27 — Completed 02-01 Tasks CRUD backend (5 endpoints, verifyToken on all routes)
 
-Progress: [████░░░░░░] 20%
+Progress: [██░░░░░░░░] 28%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
+- Total plans completed: 5
 - Average duration: 7 min
-- Total execution time: 0.45 hours
+- Total execution time: 0.53 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-foundation | 4 | 28 min | 7 min |
+| 02-core-crud | 1 | 5 min | 5 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (15 min), 01-02 (5 min), 01-03 (5 min), 01-04 (3 min)
-- Trend: improving
+- Last 5 plans: 01-01 (15 min), 01-02 (5 min), 01-03 (5 min), 01-04 (3 min), 02-01 (5 min)
+- Trend: stable
 
 *Updated after each plan completion*
 
@@ -74,6 +75,8 @@ Recent decisions affecting current work:
 - [Phase 01-foundation 01-04]: localStorage for token persistence — simple and sufficient for portfolio app
 - [Phase 01-foundation 01-04]: Token validated via GET /api/auth/me on mount so expired tokens are cleared immediately
 - [Phase 01-foundation 01-04]: ProtectedRoute uses isLoading guard to prevent flash-of-redirect on page refresh
+- [Phase 02-core-crud]: COALESCE in updateNote enables partial updates without overwriting fields with null
+- [Phase 02-core-crud]: Notes ownership enforced at SQL level (WHERE id=N AND user_id=M) — atomic and correct
 
 ### Pending Todos
 
@@ -86,5 +89,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-27
-Stopped at: Completed 01-04-PLAN.md — React auth UI awaiting human verification checkpoint
-Resume file: .planning/phases/01-foundation/01-04-SUMMARY.md
+Stopped at: Completed 02-01-PLAN.md — Tasks CRUD backend (5 endpoints, verifyToken, user-scoped SQL)
+Resume file: .planning/phases/02-core-crud/02-01-SUMMARY.md
