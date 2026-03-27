@@ -129,11 +129,11 @@ Plans:
   1. Pushing to the main branch triggers a GitHub Actions workflow that builds and checks the project
   2. The README has a one-command quickstart (`docker compose up`) with prerequisites listed
   3. No secrets or credentials are hardcoded — all config comes from .env files
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 06-01: GitHub Actions CI workflow (build check on push)
-- [ ] 06-02: README with quickstart, architecture diagram, and feature list
+- [ ] 06-01-PLAN.md — GitHub Actions CI workflow (build check on push to main, builds backend and frontend Docker images)
+- [ ] 06-02-PLAN.md — README with quickstart, prerequisites, tech stack table, architecture diagram, and feature list
 
 ## Progress
 
