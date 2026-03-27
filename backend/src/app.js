@@ -28,6 +28,12 @@ app.use('/api/notes', notesRouter);
 const goalsRouter = require('./routes/goals');
 app.use('/api/goals', goalsRouter);
 
+const apiTesterRouter = require('./routes/apiTester');
+app.use('/api/tester', apiTesterRouter);
+
+const dashboardRouter = require('./routes/dashboard');
+app.use('/api/dashboard', dashboardRouter);
+
 // 404 fallthrough
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
