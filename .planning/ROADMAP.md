@@ -30,13 +30,13 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. User can log in and the JWT token persists across browser refresh
   4. User can log out and is redirected to the login page
   5. Visiting a protected route while logged out redirects to login
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 01-01: Docker Compose setup (3 containers, .env wiring, health checks)
-- [ ] 01-02: Database schema and migrations (users, tasks, notes, goals, api_logs tables)
-- [ ] 01-03: Auth backend (register/login endpoints, JWT issuance, protected middleware)
-- [ ] 01-04: Auth frontend (register/login pages, token storage, protected route guard)
+- [x] 01-01-PLAN.md — Docker Compose setup (3 containers, .env wiring, health checks)
+- [ ] 01-02-PLAN.md — Database schema and migrations (users, tasks, notes, goals, api_logs, streaks tables)
+- [ ] 01-03-PLAN.md — Auth backend (register/login endpoints, JWT issuance, verifyToken middleware)
+- [ ] 01-04-PLAN.md — Auth frontend (login/register pages, AuthContext, ProtectedRoute HOC)
 
 ### Phase 2: Core CRUD
 **Goal**: Users can create, view, update, and delete their tasks, notes, and goals through a working UI
@@ -113,7 +113,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/4 | Not started | - |
+| 1. Foundation | 1/4 | In progress | - |
 | 2. Core CRUD | 0/6 | Not started | - |
 | 3. Advanced Features | 0/4 | Not started | - |
 | 4. UI Polish | 0/3 | Not started | - |
