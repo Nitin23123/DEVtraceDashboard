@@ -106,6 +106,9 @@ const ProfilePage = () => {
   const [githubData, setGithubData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [prs, setPrs] = useState([]);
+  const [prsLoading, setPrsLoading] = useState(false);
+  const [prsError, setPrsError] = useState(null);
 
   const loadGithubProfile = async () => {
     setLoading(true); setError('');
@@ -129,6 +132,19 @@ const ProfilePage = () => {
     if (params.has('github')) window.history.replaceState({}, '', '/profile');
     loadGithubProfile();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!githubData) return;
+    setPrsLoading(true);
+    fetch(`${API_URL}/api/profile/github/prs`, { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => r.json())
+      .then(data => {
+        if (Array.isArray(data)) setPrs(data);
+        else setPrsError(data.error || 'Failed to load PRs');
+      })
+      .catch(() => setPrsError('Network error'))
+      .finally(() => setPrsLoading(false));
+  }, [githubData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (loading) return <div style={{ padding: '24px' }}><h1>Profile</h1><p>Loading...</p></div>;
 
@@ -296,7 +312,7 @@ const ProfilePage = () => {
 
       {/* Recent Activity */}
       {githubData.recent_activity && githubData.recent_activity.length > 0 && (
-        <div style={{ backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '20px' }}>
+        <div style={{ backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '20px', marginBottom: '16px' }}>
           <h3 style={{ margin: '0 0 12px', fontSize: '13px', fontWeight: 600, color: '#374151', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Recent Activity</h3>
           <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '6px' }}>
             {githubData.recent_activity.map((event, i) => (
@@ -313,6 +329,30 @@ const ProfilePage = () => {
           </ul>
         </div>
       )}
+
+      {/* Open Pull Requests */}
+      <div style={{ marginTop: 0 }}>
+        <h3 style={{ color: '#1e293b', marginBottom: 12, fontSize: '13px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Open Pull Requests</h3>
+        {prsLoading && <p style={{ color: '#64748b' }}>Loading PRs...</p>}
+        {prsError && <p style={{ color: '#ef4444' }}>{prsError}</p>}
+        {!prsLoading && !prsError && prs.length === 0 && (
+          <p style={{ color: '#94a3b8', fontSize: '13px' }}>No open PRs found.</p>
+        )}
+        {prs.map(pr => (
+          <div key={pr.html_url} style={{ backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: 8, padding: '12px 16px', marginBottom: 10 }}>
+            <a href={pr.html_url} target="_blank" rel="noreferrer" style={{ color: '#6366f1', fontWeight: 600, textDecoration: 'none' }}>
+              {pr.title}
+            </a>
+            <div style={{ marginTop: 6, display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+              <span style={{ background: '#334155', color: '#94a3b8', padding: '2px 8px', borderRadius: 12, fontSize: 12 }}>{pr.repo}</span>
+              <span style={{ fontSize: 12, color: '#94a3b8' }}>{new Date(pr.created_at).toLocaleDateString()}</span>
+              {(pr.labels || []).map(l => (
+                <span key={l} style={{ background: '#1e3a5f', color: '#60a5fa', padding: '2px 8px', borderRadius: 12, fontSize: 11 }}>{l}</span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

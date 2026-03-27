@@ -20,9 +20,31 @@ export default function TasksPage() {
   const loadTasks = async () => {
     setLoading(true);
     const data = await getTasks(token);
-    if (data.tasks) setTasks(data.tasks);
-    else setError('Failed to load tasks');
+    if (data.tasks) {
+      const sorted = data.tasks.sort((a, b) =>
+        (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) ||
+        new Date(b.created_at) - new Date(a.created_at)
+      );
+      setTasks(sorted);
+    } else {
+      setError('Failed to load tasks');
+    }
     setLoading(false);
+  };
+
+  const togglePin = async (taskId) => {
+    const res = await fetch(`/api/tasks/${taskId}/pin`, {
+      method: 'PUT',
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    const updated = await res.json();
+    setTasks(prev => {
+      const next = prev.map(t => t.id === taskId ? updated : t);
+      return next.sort((a, b) =>
+        (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) ||
+        new Date(b.created_at) - new Date(a.created_at)
+      );
+    });
   };
 
   const closeModal = () => {
@@ -77,7 +99,14 @@ export default function TasksPage() {
         <div key={task.id} style={{ border: '1px solid #ccc', margin: '8px 0', padding: '12px', borderRadius: '4px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <strong>{task.title}</strong>
-            <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <button
+                onClick={() => togglePin(task.id)}
+                title={task.pinned ? 'Unpin' : 'Pin task'}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '18px', opacity: task.pinned ? 1 : 0.4 }}
+              >
+                📌
+              </button>
               <button onClick={() => cycleStatus(task)}>{task.status}</button>
               <button onClick={() => openEditModal(task)}>Edit</button>
               <button onClick={() => handleDelete(task.id)}>Delete</button>

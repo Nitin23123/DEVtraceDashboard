@@ -11,6 +11,9 @@ import GoalsPage from './pages/GoalsPage';
 import ApiTesterPage from './pages/ApiTesterPage';
 import DashboardPage from './pages/DashboardPage';
 import ProfilePage from './pages/ProfilePage';
+import PomodoroPage from './pages/PomodoroPage';
+import SnippetsPage from './pages/SnippetsPage';
+import DsaPage from './pages/DsaPage';
 
 function App() {
   return (
@@ -29,6 +32,9 @@ function App() {
             <Route path="/goals"     element={<GoalsPage />} />
             <Route path="/api-tester" element={<ApiTesterPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/pomodoro" element={<PomodoroPage />} />
+            <Route path="/snippets"  element={<SnippetsPage />} />
+            <Route path="/dsa"       element={<DsaPage />} />
           </Route>
 
           {/* Redirects */}
