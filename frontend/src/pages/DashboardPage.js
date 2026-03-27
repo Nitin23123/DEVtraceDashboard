@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
 import { getStats } from '../api/dashboard';
 
@@ -73,15 +72,12 @@ export default function DashboardPage() {
   };
 
   const closeModal = () => setActiveModal(null);
-
   const modalData = activeModal && stats ? MODAL_CONTENT[activeModal](stats[activeModal]) : null;
 
   return (
     <div style={{ padding: '24px', maxWidth: '900px' }}>
       <h1 style={{ marginBottom: '8px' }}>Dashboard</h1>
-      <p style={{ color: '#64748b', marginBottom: '32px', marginTop: 0 }}>
-        Your productivity at a glance
-      </p>
+      <p style={{ color: '#64748b', marginBottom: '32px', marginTop: 0 }}>Your productivity at a glance</p>
 
       {loading && <p>Loading stats...</p>}
       {error && <p style={{ color: '#dc2626' }}>{error}</p>}
@@ -89,14 +85,9 @@ export default function DashboardPage() {
       {stats && (
         <>
           <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '16px',
-            backgroundColor: '#1e293b',
-            color: 'white',
-            borderRadius: '12px',
-            padding: '20px 24px',
-            marginBottom: '32px',
+            display: 'flex', alignItems: 'center', gap: '16px',
+            backgroundColor: '#1e293b', color: 'white',
+            borderRadius: '12px', padding: '20px 24px', marginBottom: '32px',
           }}>
             <span style={{ fontSize: '36px' }}>🔥</span>
             <div>
@@ -110,102 +101,50 @@ export default function DashboardPage() {
           </div>
 
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginBottom: '16px' }}>
-            <StatCard
-              title="Tasks"
-              value={stats.tasks.total}
+            <StatCard title="Tasks" value={stats.tasks.total}
               subtitle={`${stats.tasks.done} done · ${stats.tasks.in_progress} in progress`}
-              color="#3b82f6"
-              onClick={() => setActiveModal('tasks')}
-            />
-            <StatCard
-              title="Notes"
-              value={stats.notes.total}
-              subtitle="Click to view"
-              color="#8b5cf6"
-              onClick={() => setActiveModal('notes')}
-            />
-            <StatCard
-              title="Goals"
-              value={stats.goals.total}
+              color="#3b82f6" onClick={() => setActiveModal('tasks')} />
+            <StatCard title="Notes" value={stats.notes.total}
+              subtitle="Click to view" color="#8b5cf6" onClick={() => setActiveModal('notes')} />
+            <StatCard title="Goals" value={stats.goals.total}
               subtitle={`${stats.goals.completed} completed`}
-              color="#10b981"
-              onClick={() => setActiveModal('goals')}
-            />
+              color="#10b981" onClick={() => setActiveModal('goals')} />
           </div>
           <p style={{ fontSize: '12px', color: '#94a3b8' }}>Click a card to see details</p>
         </>
       )}
 
-      <AnimatePresence>
-        {activeModal && modalData && (
-          <>
-            <motion.div
-              key="backdrop"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
-              onClick={closeModal}
-              style={{
-                position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-                backgroundColor: 'rgba(0,0,0,0.5)',
-                zIndex: 100,
-              }}
-            />
-            <motion.div
-              key="modal"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.2 }}
-              style={{
-                position: 'fixed',
-                top: '50%', left: '50%',
-                transform: 'translate(-50%, -50%)',
-                backgroundColor: 'white',
-                borderRadius: '12px',
-                padding: '32px',
-                width: '360px',
-                zIndex: 101,
-                boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
-              }}
-            >
-              <h2 style={{ marginTop: 0, marginBottom: '20px' }}>{modalData.title}</h2>
-              {modalData.items.map(item => (
-                <div
-                  key={item.label}
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    padding: '12px 0',
-                    borderBottom: '1px solid #f1f5f9',
-                  }}
-                >
-                  <span style={{ color: '#475569' }}>{item.label}</span>
-                  <span style={{ fontWeight: 'bold', fontSize: '20px', color: item.color }}>{item.value}</span>
-                </div>
-              ))}
-              <button
-                onClick={closeModal}
-                style={{
-                  marginTop: '20px',
-                  width: '100%',
-                  padding: '10px',
-                  backgroundColor: '#1e293b',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  fontSize: '14px',
-                }}
-              >
-                Close
-              </button>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+      {activeModal && modalData && (
+        <>
+          <div onClick={closeModal} style={{
+            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+            backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 100,
+          }} />
+          <div style={{
+            position: 'fixed', top: '50%', left: '50%',
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: 'white', borderRadius: '12px',
+            padding: '32px', width: '360px', zIndex: 101,
+            boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
+          }}>
+            <h2 style={{ marginTop: 0, marginBottom: '20px' }}>{modalData.title}</h2>
+            {modalData.items.map(item => (
+              <div key={item.label} style={{
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                padding: '12px 0', borderBottom: '1px solid #f1f5f9',
+              }}>
+                <span style={{ color: '#475569' }}>{item.label}</span>
+                <span style={{ fontWeight: 'bold', fontSize: '20px', color: item.color }}>{item.value}</span>
+              </div>
+            ))}
+            <button onClick={closeModal} style={{
+              marginTop: '20px', width: '100%', padding: '10px',
+              backgroundColor: '#1e293b', color: 'white', border: 'none',
+              borderRadius: '8px', cursor: 'pointer', fontSize: '14px',
+            }}>Close</button>
+          </div>
+        </>
+      )}
     </div>
   );
 }
