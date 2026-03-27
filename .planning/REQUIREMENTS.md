@@ -49,6 +49,13 @@
 - [x] **DASH-03**: Daily streak counter increments on login/activity
 - [ ] **DASH-04**: Framer Motion animations on modal open/close
 
+### Developer Profiles
+
+- [ ] **PROF-01**: User can connect their GitHub account via OAuth and view their GitHub profile stats (avatar, name, bio, public repos, total stars, followers, following, recent activity)
+- [ ] **PROF-02**: GitHub OAuth access token is stored server-side in the database — never exposed to the browser
+- [ ] **PROF-03**: Profile page is accessible from the nav bar and shows a "Connect GitHub" button when not yet connected
+- [ ] **PROF-04**: GitHub OAuth flow uses GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET from environment variables
+
 ### DevOps
 
 - [ ] **DEVOPS-01**: Docker Compose runs frontend, backend, and PostgreSQL as 3 containers
@@ -110,14 +117,18 @@
 | DASH-02 | Phase 3 | Complete |
 | DASH-03 | Phase 3 | Complete |
 | DASH-04 | Phase 3 | Pending |
-| DEVOPS-02 | Phase 5 | Pending |
+| PROF-01 | Phase 4 | Complete |
+| PROF-02 | Phase 4 | Complete |
+| PROF-03 | Phase 4 | Complete |
+| PROF-04 | Phase 4 | Complete |
+| DEVOPS-02 | Phase 6 | Pending |
 
 **Coverage:**
 - v1 requirements: 27 total
 - Mapped to phases: 27
 - Unmapped: 0 ✓
 
-**Phase 4 note:** Phase 4 (UI Polish) refines the visual delivery of DASH-04 and overall UX coherence across all prior phases. It carries no new requirements but is essential for the resume-quality goal.
+**Phase 4 note:** Phase 4 (Developer Profiles) delivers PROF-01 through PROF-04 — GitHub OAuth integration with live profile stats. Phase 5 (UI Polish) carries no new requirements but refines UX coherence across all prior phases.
 
 ---
 *Requirements defined: 2026-03-27*

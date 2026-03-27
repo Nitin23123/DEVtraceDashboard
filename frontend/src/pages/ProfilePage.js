@@ -61,7 +61,7 @@ const ProfilePage = () => {
           </p>
           {error && <p style={{ color: '#dc2626', marginBottom: '16px' }}>{error}</p>}
           <a
-            href={`http://localhost:5000/api/auth/github?token=${token}`}
+            href={`${API_URL}/api/auth/github?token=${token}`}
             style={{
               display: 'inline-block',
               backgroundColor: '#1e293b',
@@ -124,7 +124,7 @@ const ProfilePage = () => {
           </a>
           <span style={{ color: '#e2e8f0' }}>|</span>
           <a
-            href={`http://localhost:5000/api/auth/github?token=${token}`}
+            href={`${API_URL}/api/auth/github?token=${token}`}
             style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '14px' }}
           >
             Reconnect GitHub
