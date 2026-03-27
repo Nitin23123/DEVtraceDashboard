@@ -8,13 +8,8 @@ import RegisterPage from './pages/RegisterPage';
 import TasksPage from './pages/TasksPage';
 import NotesPage from './pages/NotesPage';
 import GoalsPage from './pages/GoalsPage';
-
-const DashboardPlaceholder = () => (
-  <div style={{ padding: '20px' }}>
-    <h1>Dashboard</h1>
-    <p>Dashboard coming in Phase 3.</p>
-  </div>
-);
+import ApiTesterPage from './pages/ApiTesterPage';
+import DashboardPage from './pages/DashboardPage';
 
 function App() {
   return (
@@ -27,10 +22,11 @@ function App() {
 
           {/* Protected routes with Layout nav */}
           <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-            <Route path="/dashboard" element={<DashboardPlaceholder />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/tasks"     element={<TasksPage />} />
             <Route path="/notes"     element={<NotesPage />} />
             <Route path="/goals"     element={<GoalsPage />} />
+            <Route path="/api-tester" element={<ApiTesterPage />} />
           </Route>
 
           {/* Redirects */}
