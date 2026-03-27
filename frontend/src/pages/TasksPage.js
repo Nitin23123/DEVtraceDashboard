@@ -98,7 +98,7 @@ export default function TasksPage() {
       {!loading && tasks.length === 0 && <p>No tasks yet. Create your first task!</p>}
 
       {tasks.map(task => (
-        <div key={task.id} style={{ border: '1px solid #ccc', margin: '8px 0', padding: '12px', borderRadius: '4px' }}>
+        <div key={task.id} style={{ border: '1px solid var(--border, #ccc)', background: 'var(--surface, #fff)', margin: '8px 0', padding: '12px', borderRadius: '4px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <strong>{task.title}</strong>
             <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -121,7 +121,7 @@ export default function TasksPage() {
 
       {(showCreateModal || editTask) && (
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ background: 'white', padding: '24px', borderRadius: '8px', width: '400px' }}>
+          <div style={{ background: 'var(--surface, #fff)', padding: '24px', borderRadius: '8px', width: '400px' }}>
             <h2>{editTask ? 'Edit Task' : 'New Task'}</h2>
             <form onSubmit={handleSubmit}>
               <div>
