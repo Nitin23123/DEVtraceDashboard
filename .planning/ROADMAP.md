@@ -69,13 +69,13 @@ Plans:
   3. Dashboard shows task counts broken down by status (todo / in_progress / done)
   4. Dashboard shows total notes count and total goals count
   5. Daily streak counter increments and is visible on the dashboard
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 03-01: API Tester backend (proxy endpoint, request logging to DB)
-- [ ] 03-02: API Tester frontend (request builder UI, response viewer, history list)
-- [ ] 03-03: Dashboard backend (aggregate stats endpoint, streak logic)
-- [ ] 03-04: Dashboard frontend (stats cards, streak display, Framer Motion modal animations)
+- [ ] 03-01-PLAN.md — API Tester backend (proxy endpoint via node-fetch, request logging to api_logs table)
+- [ ] 03-02-PLAN.md — API Tester frontend (request builder UI, response viewer, history list, nav wired)
+- [ ] 03-03-PLAN.md — Dashboard backend (aggregate stats endpoint, streak upsert logic)
+- [ ] 03-04-PLAN.md — Dashboard frontend (stats cards, streak banner, Framer Motion animated modal)
 
 ### Phase 4: UI Polish
 **Goal**: The app looks polished enough to screen-share in an interview — consistent Tailwind styling and smooth animations throughout
