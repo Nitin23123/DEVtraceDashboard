@@ -19,6 +19,12 @@ app.get('/health', (req, res) => {
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 
+const tasksRouter = require('./routes/tasks');
+app.use('/api/tasks', tasksRouter);
+
+const notesRouter = require('./routes/notes');
+app.use('/api/notes', notesRouter);
+
 // 404 fallthrough
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
