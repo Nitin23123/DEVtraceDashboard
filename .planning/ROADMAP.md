@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation** - Docker environment, database schema, and JWT authentication (backend + frontend) (completed 2026-03-27)
 - [ ] **Phase 2: Core CRUD** - Tasks, Notes, and Goals — backend APIs and connected frontend pages
 - [x] **Phase 3: Advanced Features** - API Tester tool and Dashboard with streak counter (completed 2026-03-27)
-- [ ] **Phase 4: Developer Profiles** - GitHub and LeetCode profile dashboards pulling live data from external APIs
+- [ ] **Phase 4: Developer Profiles** - GitHub OAuth connect flow with live profile stats on a dedicated Profile page
 - [ ] **Phase 5: UI Polish** - Tailwind styling refinement and Framer Motion animations
 - [ ] **Phase 6: DevOps** - GitHub Actions CI pipeline and production Docker configuration
 
@@ -79,20 +79,20 @@ Plans:
 - [ ] 03-04-PLAN.md — Dashboard frontend (stats cards, streak banner, Framer Motion animated modal)
 
 ### Phase 4: Developer Profiles
-**Goal**: Users can view their GitHub stats and LeetCode progress on a dedicated Profile page, with live data fetched through the backend
+**Goal**: Users can connect their GitHub account via OAuth and view their GitHub profile stats on a dedicated Profile page
 **Depends on**: Phase 3
 **Requirements**: PROF-01, PROF-02, PROF-03, PROF-04
 **Success Criteria** (what must be TRUE):
-  1. User can enter their GitHub username and see: avatar, name, public repos, stars, followers, and recent activity
-  2. User can enter their LeetCode username and see: problems solved (Easy/Medium/Hard breakdown), acceptance rate, and ranking
-  3. Usernames are persisted (localStorage) so they don't need to re-enter on every visit
-  4. Data is fetched through the backend (not directly from browser) to avoid CORS and keep GITHUB_TOKEN server-side
-  5. Profile page is accessible from the nav bar
+  1. User can click "Connect GitHub" and complete the OAuth flow — no manual token entry required
+  2. After connecting, the Profile page shows: avatar, name, bio, public repos, total stars, followers, following, link to GitHub profile, and last 5 recent activity events
+  3. GitHub access token and username are stored server-side in the users table — never exposed to the browser
+  4. Profile page is accessible from the nav bar
+  5. If GitHub is not yet connected, the page shows a "Connect GitHub" button; if connected, a "Reconnect GitHub" option is available
 **Plans**: 2 plans
 
 Plans:
-- [ ] 04-01-PLAN.md — Profile backend (GitHub REST API proxy + LeetCode GraphQL proxy routes)
-- [ ] 04-02-PLAN.md — Profile frontend (ProfilePage with GitHub widget + LeetCode widget, username inputs, nav wired)
+- [ ] 04-01-PLAN.md — GitHub OAuth backend (DB migration, authRouter with /github + /github/callback, profileRouter with /github data endpoint, app.js wiring)
+- [ ] 04-02-PLAN.md — GitHub Profile frontend (ProfilePage with connected/disconnected states, recent activity list, nav link, App.js route)
 
 ### Phase 5: UI Polish
 **Goal**: The app looks polished enough to screen-share in an interview — consistent Tailwind styling and smooth animations throughout
