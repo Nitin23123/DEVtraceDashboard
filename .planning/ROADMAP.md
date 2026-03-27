@@ -12,7 +12,7 @@ DevTrackr is built in 5 phases that go from zero to a deployable, interview-read
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation** - Docker environment, database schema, and JWT authentication (backend + frontend)
+- [x] **Phase 1: Foundation** - Docker environment, database schema, and JWT authentication (backend + frontend) (completed 2026-03-27)
 - [ ] **Phase 2: Core CRUD** - Tasks, Notes, and Goals — backend APIs and connected frontend pages
 - [ ] **Phase 3: Advanced Features** - API Tester tool and Dashboard with streak counter
 - [ ] **Phase 4: UI Polish** - Tailwind styling refinement and Framer Motion animations
@@ -113,7 +113,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 3/4 | In Progress|  |
+| 1. Foundation | 4/4 | Complete   | 2026-03-27 |
 | 2. Core CRUD | 0/6 | Not started | - |
 | 3. Advanced Features | 0/4 | Not started | - |
 | 4. UI Polish | 0/3 | Not started | - |

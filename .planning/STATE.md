@@ -8,7 +8,7 @@ progress:
   total_phases: 1
   completed_phases: 0
   total_plans: 4
-  completed_plans: 3
+  completed_plans: 4
 ---
 
 # Project State
@@ -23,28 +23,28 @@ See: .planning/PROJECT.md (updated 2026-03-27)
 ## Current Position
 
 Phase: 1 of 5 (Foundation)
-Plan: 3 of 4 in current phase
+Plan: 4 of 4 in current phase (COMPLETE — awaiting human verification checkpoint)
 Status: In progress
-Last activity: 2026-03-27 — Completed 01-03 Auth backend (register/login/getMe + verifyToken middleware)
+Last activity: 2026-03-27 — Completed 01-04 React auth UI (AuthContext, ProtectedRoute, Login/Register pages)
 
-Progress: [███░░░░░░░] 15%
+Progress: [████░░░░░░] 20%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
-- Average duration: 8 min
-- Total execution time: 0.42 hours
+- Total plans completed: 4
+- Average duration: 7 min
+- Total execution time: 0.45 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-foundation | 3 | 25 min | 8 min |
+| 01-foundation | 4 | 28 min | 7 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (15 min), 01-02 (5 min), 01-03 (5 min)
-- Trend: -
+- Last 5 plans: 01-01 (15 min), 01-02 (5 min), 01-03 (5 min), 01-04 (3 min)
+- Trend: improving
 
 *Updated after each plan completion*
 
@@ -70,6 +70,10 @@ Recent decisions affecting current work:
 - [Phase 01-foundation]: verifyToken attaches req.user = { id, email } — minimal payload sufficient for all Phase 2+ route authorization
 - [Phase 01-foundation]: Email normalized to lowercase at every write/read — prevents case-sensitive duplicate accounts
 - [Phase 01-foundation]: bcrypt salt rounds = 12 for password hashing in auth backend
+- [Phase 01-foundation 01-04]: AuthProvider placed inside BrowserRouter so useNavigate works in auth-triggered redirects
+- [Phase 01-foundation 01-04]: localStorage for token persistence — simple and sufficient for portfolio app
+- [Phase 01-foundation 01-04]: Token validated via GET /api/auth/me on mount so expired tokens are cleared immediately
+- [Phase 01-foundation 01-04]: ProtectedRoute uses isLoading guard to prevent flash-of-redirect on page refresh
 
 ### Pending Todos
 
@@ -82,5 +86,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-27
-Stopped at: Completed 01-03-PLAN.md — Auth backend (register/login/getMe + verifyToken middleware)
-Resume file: .planning/phases/01-foundation/01-03-SUMMARY.md
+Stopped at: Completed 01-04-PLAN.md — React auth UI awaiting human verification checkpoint
+Resume file: .planning/phases/01-foundation/01-04-SUMMARY.md
