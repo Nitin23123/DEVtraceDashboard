@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-27T17:08:37.005Z"
+last_updated: "2026-03-27T17:53:05Z"
 progress:
-  total_phases: 4
+  total_phases: 5
   completed_phases: 3
   total_plans: 17
-  completed_plans: 14
+  completed_plans: 15
 ---
 
 # Project State
@@ -22,11 +22,11 @@ See: .planning/PROJECT.md (updated 2026-03-27)
 
 ## Current Position
 
-Phase: 4 of 5 (Developer Profiles)
-Status: Phase 4 in progress — Plan 2 complete (ProfilePage UI with GitHub OAuth connect/connected states)
-Last activity: 2026-03-27 — Completed Phase 4 Plan 2 (ProfilePage, Layout nav link, App route).
+Phase: 4.1 of 5 (Developer Tools)
+Status: Phase 4.1 in progress — Plan 1 complete (backend infrastructure: migration, snippets, DSA, pin toggle, PR queue)
+Last activity: 2026-03-27 — Completed Phase 4.1 Plan 1 (003 migration, snippets/dsa routes, tasks.js pin, github.js PR queue, app.js wiring).
 
-Progress: [███████░░░] 60%
+Progress: [████████░░] 65%
 
 ## Accumulated Context
 
@@ -50,6 +50,9 @@ Progress: [███████░░░] 60%
 - [Phase 04-developer-profiles]: Dual-router single-file pattern: authRouter and profileRouter exported from github.js to avoid mount path collision
 - [Phase 04-developer-profiles 04-02]: 404 from GET /api/profile/github treated as not-connected state, not an error
 - [Phase 04-developer-profiles 04-02]: window.history.replaceState strips ?github=connected after OAuth redirect without page reload
+- [Phase 04.1-developer-tools 04.1-01]: PG15 does not support ADD CONSTRAINT IF NOT EXISTS — use DO block with pg_constraint existence check
+- [Phase 04.1-developer-tools 04.1-01]: Pin toggle uses NOT pinned in SQL to avoid read-modify-write race conditions
+- [Phase 04.1-developer-tools 04.1-01]: DSA progress upsert: INSERT completed=TRUE, conflict updates to NOT current — first toggle always sets true
 
 ### Roadmap Evolution
 
@@ -62,5 +65,5 @@ Progress: [███████░░░] 60%
 ## Session Continuity
 
 Last session: 2026-03-27
-Stopped at: Completed 04-developer-profiles 04-02-PLAN.md
-Resume file: .planning/phases/04-developer-profiles/04-02-SUMMARY.md
+Stopped at: Completed 04.1-developer-tools 04.1-01-PLAN.md
+Resume file: .planning/phases/04.1-developer-tools/04.1-01-SUMMARY.md
