@@ -48,15 +48,16 @@ Plans:
   3. User can create, edit, and delete a note
   4. User can create a goal, mark it complete, and delete it
   5. All data is user-scoped — one user cannot see another user's records
-**Plans**: TBD
+**Plans**: 7 plans
 
 Plans:
-- [ ] 02-01: Tasks backend (CRUD endpoints, user scoping, status enum)
-- [ ] 02-02: Tasks frontend (task list page, create/edit/delete UI, status toggle)
-- [ ] 02-03: Notes backend (CRUD endpoints)
-- [ ] 02-04: Notes frontend (notes list page, create/edit/delete UI)
-- [ ] 02-05: Goals backend (CRUD endpoints, complete flag)
-- [ ] 02-06: Goals frontend (goals list page, create/complete/delete UI)
+- [ ] 02-01-PLAN.md — Tasks backend (CRUD endpoints, user scoping, status enum)
+- [ ] 02-02-PLAN.md — Tasks frontend (task list page, create/edit/delete UI, status toggle)
+- [ ] 02-03-PLAN.md — Notes backend (CRUD endpoints, user scoping)
+- [ ] 02-04-PLAN.md — Notes frontend (notes list page, create/edit/delete UI)
+- [ ] 02-05-PLAN.md — Goals backend (CRUD endpoints, complete flag, user scoping)
+- [ ] 02-06-PLAN.md — Goals frontend (goals list page, create/complete/delete UI)
+- [ ] 02-07-PLAN.md — App wiring (Layout nav, App.js routes for /tasks /notes /goals)
 
 ### Phase 3: Advanced Features
 **Goal**: Users can send HTTP requests through the built-in API Tester and see their productivity summary on a Dashboard
@@ -114,7 +115,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 4/4 | Complete   | 2026-03-27 |
-| 2. Core CRUD | 0/6 | Not started | - |
+| 2. Core CRUD | 0/7 | Not started | - |
 | 3. Advanced Features | 0/4 | Not started | - |
 | 4. UI Polish | 0/3 | Not started | - |
 | 5. DevOps | 0/2 | Not started | - |
