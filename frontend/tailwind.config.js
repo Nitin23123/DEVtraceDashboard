@@ -5,11 +5,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        bg:      'var(--bg)',
-        surface: 'var(--surface)',
-        text:    'var(--text)',
-        accent:  'var(--accent)',
-        border:  'var(--border)',
+        bg:         'var(--bg)',
+        surface:    'var(--surface)',
+        text:       'var(--text)',
+        accent:     'var(--accent)',
+        'accent-fg':'var(--accent-fg)',
+        border:     'var(--border)',
+        muted:      'var(--muted)',
       },
     },
   },

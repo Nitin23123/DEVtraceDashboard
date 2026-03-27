@@ -2,24 +2,26 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 
 const ThemeContext = createContext();
 
-const LIGHT_VARS = {
-  '--bg': '#ffffff',
-  '--surface': '#f5f5f5',
-  '--text': '#000000',
-  '--accent': '#000000',
-  '--accent-fg': '#ffffff',
-  '--border': '#e0e0e0',
-  '--muted': '#6b6b6b',
-};
-
+// Midnight Indigo — dark-first theme
 const DARK_VARS = {
-  '--bg': '#000000',
-  '--surface': '#111111',
+  '--bg': '#0f0f23',
+  '--surface': '#1a1a3e',
   '--text': '#ffffff',
   '--accent': '#ffffff',
-  '--accent-fg': '#000000',
-  '--border': '#222222',
-  '--muted': '#888888',
+  '--accent-fg': '#0f0f23',
+  '--border': '#2d2d5a',
+  '--muted': '#8b8baf',
+};
+
+// Light variant — soft indigo tint
+const LIGHT_VARS = {
+  '--bg': '#f5f5ff',
+  '--surface': '#ffffff',
+  '--text': '#0f0f23',
+  '--accent': '#4c1d95',
+  '--accent-fg': '#ffffff',
+  '--border': '#c4b5fd',
+  '--muted': '#6b7280',
 };
 
 function applyTheme(theme) {
@@ -34,7 +36,7 @@ export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
     const stored = localStorage.getItem('theme');
     if (stored) return stored;
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    return 'dark'; // Midnight Indigo is dark-first
   });
 
   useEffect(() => {
