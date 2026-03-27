@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation** - Docker environment, database schema, and JWT authentication (backend + frontend) (completed 2026-03-27)
 - [ ] **Phase 2: Core CRUD** - Tasks, Notes, and Goals — backend APIs and connected frontend pages
 - [x] **Phase 3: Advanced Features** - API Tester tool and Dashboard with streak counter (completed 2026-03-27)
-- [ ] **Phase 4: Developer Profiles** - GitHub OAuth connect flow with live profile stats on a dedicated Profile page
+- [x] **Phase 4: Developer Profiles** - GitHub OAuth connect flow with live profile stats on a dedicated Profile page (completed 2026-03-27)
 - [ ] **Phase 5: UI Polish** - Tailwind styling refinement and Framer Motion animations
 - [ ] **Phase 6: DevOps** - GitHub Actions CI pipeline and production Docker configuration
 
@@ -134,6 +134,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 1. Foundation | 4/4 | Complete   | 2026-03-27 |
 | 2. Core CRUD | 0/7 | Not started | - |
 | 3. Advanced Features | 4/4 | Complete    | 2026-03-27 |
-| 4. Developer Profiles | 1/2 | In Progress|  |
+| 4. Developer Profiles | 2/2 | Complete   | 2026-03-27 |
 | 5. UI Polish | 0/3 | Not started | - |
 | 6. DevOps | 0/2 | Not started | - |

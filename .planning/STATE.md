@@ -23,10 +23,10 @@ See: .planning/PROJECT.md (updated 2026-03-27)
 ## Current Position
 
 Phase: 4 of 5 (Developer Profiles)
-Status: Phase 4 in progress — Plan 1 complete (GitHub OAuth backend)
-Last activity: 2026-03-27 — Completed Phase 4 Plan 1 (GitHub OAuth migration, routes, and app wiring).
+Status: Phase 4 in progress — Plan 2 complete (ProfilePage UI with GitHub OAuth connect/connected states)
+Last activity: 2026-03-27 — Completed Phase 4 Plan 2 (ProfilePage, Layout nav link, App route).
 
-Progress: [██████░░░░] 55%
+Progress: [███████░░░] 60%
 
 ## Accumulated Context
 
@@ -48,6 +48,8 @@ Progress: [██████░░░░] 55%
 - [Phase 03-advanced-features]: Streak logic: SELECT then branch on diffDays (0/1/2+) for same-day no-op, increment, and reset
 - [Phase 04-developer-profiles]: JWT carried through OAuth flow as base64-encoded state param — no cookies or sessions
 - [Phase 04-developer-profiles]: Dual-router single-file pattern: authRouter and profileRouter exported from github.js to avoid mount path collision
+- [Phase 04-developer-profiles 04-02]: 404 from GET /api/profile/github treated as not-connected state, not an error
+- [Phase 04-developer-profiles 04-02]: window.history.replaceState strips ?github=connected after OAuth redirect without page reload
 
 ### Blockers/Concerns
 
@@ -56,5 +58,5 @@ Progress: [██████░░░░] 55%
 ## Session Continuity
 
 Last session: 2026-03-27
-Stopped at: Completed 04-developer-profiles 04-01-PLAN.md
-Resume file: .planning/phases/04-developer-profiles/04-01-SUMMARY.md
+Stopped at: Completed 04-developer-profiles 04-02-PLAN.md
+Resume file: .planning/phases/04-developer-profiles/04-02-SUMMARY.md
