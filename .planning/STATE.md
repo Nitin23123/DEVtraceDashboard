@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-27T14:12:55.553Z"
+last_updated: "2026-03-27T14:13:32.286Z"
 progress:
   total_phases: 2
   completed_phases: 1
   total_plans: 11
-  completed_plans: 6
+  completed_plans: 7
 ---
 
 # Project State
@@ -48,6 +48,7 @@ Progress: [██░░░░░░░░] 28%
 - Trend: stable
 
 *Updated after each plan completion*
+| Phase 02-core-crud P05 | 2 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -77,6 +78,9 @@ Recent decisions affecting current work:
 - [Phase 01-foundation 01-04]: ProtectedRoute uses isLoading guard to prevent flash-of-redirect on page refresh
 - [Phase 02-core-crud]: COALESCE in updateNote enables partial updates without overwriting fields with null
 - [Phase 02-core-crud]: Notes ownership enforced at SQL level (WHERE id=N AND user_id=M) — atomic and correct
+- [Phase 02-core-crud 02-01]: COALESCE pattern for updateTask partial updates — avoids overwriting unset fields
+- [Phase 02-core-crud 02-01]: null default for optional fields in createTask — DB defaults handle status/priority
+- [Phase 02-core-crud 02-01]: next(err) error propagation consistent with Phase 1 auth controller pattern
 
 ### Pending Todos
 

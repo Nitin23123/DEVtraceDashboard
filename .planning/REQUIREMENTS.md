@@ -15,11 +15,11 @@
 
 ### Tasks
 
-- [ ] **TASK-01**: User can create a task with title, description, priority, and due date
-- [ ] **TASK-02**: User can view all their tasks
-- [ ] **TASK-03**: User can update a task (title, description, status, priority, due date)
-- [ ] **TASK-04**: User can delete a task
-- [ ] **TASK-05**: Task status can be toggled between todo / in_progress / done
+- [x] **TASK-01**: User can create a task with title, description, priority, and due date
+- [x] **TASK-02**: User can view all their tasks
+- [x] **TASK-03**: User can update a task (title, description, status, priority, due date)
+- [x] **TASK-04**: User can delete a task
+- [x] **TASK-05**: Task status can be toggled between todo / in_progress / done
 
 ### Notes
 
@@ -89,11 +89,11 @@
 | AUTH-05 | Phase 1 | Complete |
 | DEVOPS-01 | Phase 1 | Pending |
 | DEVOPS-03 | Phase 1 | Pending |
-| TASK-01 | Phase 2 | Pending |
-| TASK-02 | Phase 2 | Pending |
-| TASK-03 | Phase 2 | Pending |
-| TASK-04 | Phase 2 | Pending |
-| TASK-05 | Phase 2 | Pending |
+| TASK-01 | Phase 2 | Complete |
+| TASK-02 | Phase 2 | Complete |
+| TASK-03 | Phase 2 | Complete |
+| TASK-04 | Phase 2 | Complete |
+| TASK-05 | Phase 2 | Complete |
 | NOTE-01 | Phase 2 | Complete |
 | NOTE-02 | Phase 2 | Complete |
 | NOTE-03 | Phase 2 | Complete |
