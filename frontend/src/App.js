@@ -10,6 +10,7 @@ import NotesPage from './pages/NotesPage';
 import GoalsPage from './pages/GoalsPage';
 import ApiTesterPage from './pages/ApiTesterPage';
 import DashboardPage from './pages/DashboardPage';
+import ProfilePage from './pages/ProfilePage';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/notes"     element={<NotesPage />} />
             <Route path="/goals"     element={<GoalsPage />} />
             <Route path="/api-tester" element={<ApiTesterPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Route>
 
           {/* Redirects */}
