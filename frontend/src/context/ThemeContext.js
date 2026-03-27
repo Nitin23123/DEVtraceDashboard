@@ -3,19 +3,23 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 const ThemeContext = createContext();
 
 const LIGHT_VARS = {
-  '--bg': '#f8fafc',
-  '--surface': '#ffffff',
-  '--text': '#0f172a',
-  '--accent': '#6366f1',
-  '--border': '#e2e8f0',
+  '--bg': '#ffffff',
+  '--surface': '#f5f5f5',
+  '--text': '#000000',
+  '--accent': '#000000',
+  '--accent-fg': '#ffffff',
+  '--border': '#e0e0e0',
+  '--muted': '#6b6b6b',
 };
 
 const DARK_VARS = {
-  '--bg': '#0f172a',
-  '--surface': '#1e293b',
-  '--text': '#f1f5f9',
-  '--accent': '#6366f1',
-  '--border': '#334155',
+  '--bg': '#000000',
+  '--surface': '#111111',
+  '--text': '#ffffff',
+  '--accent': '#ffffff',
+  '--accent-fg': '#000000',
+  '--border': '#222222',
+  '--muted': '#888888',
 };
 
 function applyTheme(theme) {
