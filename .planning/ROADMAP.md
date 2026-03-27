@@ -94,6 +94,17 @@ Plans:
 - [ ] 04-01-PLAN.md — GitHub OAuth backend (DB migration, authRouter with /github + /github/callback, profileRouter with /github data endpoint, app.js wiring)
 - [ ] 04-02-PLAN.md — GitHub Profile frontend (ProfilePage with connected/disconnected states, recent activity list, nav link, App.js route)
 
+### Phase 04.1: Developer Tools (INSERTED)
+
+**Goal:** Add 6 developer-productivity features: Pomodoro Timer, Dark Mode, GitHub PR Queue, Code Snippets manager, Task Pinning, and DSA Sheet Tracker — all wired into the existing DevTrackr app
+**Requirements**: TOOL-01, TOOL-02, TOOL-03, TOOL-04, TOOL-05, TOOL-06
+**Depends on:** Phase 4
+**Plans:** 2 plans
+
+Plans:
+- [ ] 04.1-01-PLAN.md — Backend: DB migration (snippets, dsa_problems, user_dsa_progress tables, tasks.pinned column, 79 DSA seeds), routes for snippets CRUD, DSA problems/progress, task pin toggle, GitHub PR queue endpoint
+- [ ] 04.1-02-PLAN.md — Frontend: ThemeContext dark mode, PomodoroPage, SnippetsPage, DsaPage, task pinning UI on TasksPage, PR Queue section on ProfilePage, App.js routes and Layout nav links
+
 ### Phase 5: UI Polish
 **Goal**: The app looks polished enough to screen-share in an interview — consistent Tailwind styling and smooth animations throughout
 **Depends on**: Phase 4
@@ -127,7 +138,7 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
+Phases execute in numeric order: 1 → 2 → 3 → 4 → 4.1 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -135,5 +146,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 2. Core CRUD | 0/7 | Not started | - |
 | 3. Advanced Features | 4/4 | Complete    | 2026-03-27 |
 | 4. Developer Profiles | 2/2 | Complete    | 2026-03-27 |
+| 4.1 Developer Tools | 0/2 | Not started | - |
 | 5. UI Polish | 0/3 | Not started | - |
 | 6. DevOps | 0/2 | Not started | - |
