@@ -34,6 +34,10 @@ app.use('/api/tester', apiTesterRouter);
 const dashboardRouter = require('./routes/dashboard');
 app.use('/api/dashboard', dashboardRouter);
 
+const { authRouter: githubAuthRouter, profileRouter: githubProfileRouter } = require('./routes/github');
+app.use('/api/auth', githubAuthRouter);
+app.use('/api/profile', githubProfileRouter);
+
 // 404 fallthrough
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
