@@ -21,7 +21,7 @@ export default function GoalsPage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [formData, setFormData] = useState({ title: '', description: '', target_date: '' });
 
-  useEffect(() => { loadGoals(); }, []);
+  useEffect(() => { loadGoals(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadGoals = async () => {
     setLoading(true);

@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
       }
     };
     initAuth();
-  }, []); // Run once on mount only
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const login = (tokenValue, userValue) => {
     localStorage.setItem('token', tokenValue);

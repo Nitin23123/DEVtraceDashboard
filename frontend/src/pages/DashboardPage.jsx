@@ -59,7 +59,7 @@ export default function DashboardPage() {
   const [error, setError] = useState('');
   const [activeModal, setActiveModal] = useState(null);
 
-  useEffect(() => { loadStats(); }, []);
+  useEffect(() => { loadStats(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadStats = async () => {
     setLoading(true);

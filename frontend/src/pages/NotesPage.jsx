@@ -22,7 +22,7 @@ const NotesPage = () => {
   const [editNote, setEditNote] = useState(null);
   const [formData, setFormData] = useState({ title: '', content: '' });
 
-  useEffect(() => { loadNotes(); }, []);
+  useEffect(() => { loadNotes(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadNotes = async () => {
     setLoading(true);

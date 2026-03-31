@@ -35,7 +35,7 @@ export default function ApiTesterPage() {
   const [history, setHistory]       = useState([]);
   const [historyLoading, setHistoryLoading] = useState(true);
 
-  useEffect(() => { loadHistory(); }, []);
+  useEffect(() => { loadHistory(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadHistory = async () => {
     setHistoryLoading(true);
