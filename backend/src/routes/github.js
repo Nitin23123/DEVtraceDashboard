@@ -31,8 +31,10 @@ authRouter.get('/github', (req, res) => {
 authRouter.get('/github/callback', async (req, res) => {
   const { code, state } = req.query;
 
+  const FRONTEND = process.env.FRONTEND_URL || 'http://localhost:3000';
+
   if (!code || !state) {
-    return res.redirect('http://localhost:3000/profile?github=error&reason=missing_params');
+    return res.redirect(`${FRONTEND}/profile?github=error&reason=missing_params`);
   }
 
   // Decode state to recover the JWT and identify the user
@@ -42,7 +44,7 @@ authRouter.get('/github/callback', async (req, res) => {
     const decoded = jwt.verify(rawJwt, process.env.JWT_SECRET);
     userId = decoded.id;
   } catch (err) {
-    return res.redirect('http://localhost:3000/profile?github=error&reason=invalid_state');
+    return res.redirect(`${FRONTEND}/profile?github=error&reason=invalid_state`);
   }
 
   // Exchange the code for an access token
@@ -63,12 +65,12 @@ authRouter.get('/github/callback', async (req, res) => {
     const tokenData = await tokenRes.json();
     if (tokenData.error || !tokenData.access_token) {
       console.error('GitHub token exchange error:', tokenData);
-      return res.redirect('http://localhost:3000/profile?github=error&reason=token_exchange_failed');
+      return res.redirect(`${FRONTEND}/profile?github=error&reason=token_exchange_failed`);
     }
     accessToken = tokenData.access_token;
   } catch (err) {
     console.error('GitHub token exchange fetch error:', err);
-    return res.redirect('http://localhost:3000/profile?github=error&reason=fetch_failed');
+    return res.redirect(`${FRONTEND}/profile?github=error&reason=fetch_failed`);
   }
 
   // Fetch GitHub username using the new access token
@@ -83,7 +85,7 @@ authRouter.get('/github/callback', async (req, res) => {
     });
     const userData = await userRes.json();
     if (!userData.login) {
-      return res.redirect('http://localhost:3000/profile?github=error&reason=no_login_field');
+      return res.redirect(`${FRONTEND}/profile?github=error&reason=no_login_field`);
     }
     githubUsername = userData.login;
   } catch (err) {
@@ -99,10 +101,10 @@ authRouter.get('/github/callback', async (req, res) => {
     );
   } catch (err) {
     console.error('DB update error:', err);
-    return res.redirect('http://localhost:3000/profile?github=error&reason=db_error');
+    return res.redirect(`${FRONTEND}/profile?github=error&reason=db_error`);
   }
 
-  res.redirect('http://localhost:3000/profile?github=connected');
+  res.redirect(`${FRONTEND}/profile?github=connected`);
 });
 
 // ── profileRouter — mounted at /api/profile ───────────────────────────────────
