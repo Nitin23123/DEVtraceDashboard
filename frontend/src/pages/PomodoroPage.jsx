@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 const pageVariants = {
@@ -7,10 +7,10 @@ const pageVariants = {
   exit:    { opacity: 0, y: -8, transition: { duration: 0.15 } },
 };
 
-const WORK_DURATION = 25 * 60;
+const WORK_DURATION  = 25 * 60;
 const BREAK_DURATION = 5 * 60;
-const RADIUS = 80;
-const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
+const RADIUS         = 88;
+const CIRCUMFERENCE  = 2 * Math.PI * RADIUS;
 
 function formatTime(seconds) {
   const m = Math.floor(seconds / 60).toString().padStart(2, '0');
@@ -19,34 +19,28 @@ function formatTime(seconds) {
 }
 
 export default function PomodoroPage() {
-  const [mode, setMode] = useState('work'); // 'work' | 'break'
+  const [mode, setMode]           = useState('work');
   const [secondsLeft, setSecondsLeft] = useState(WORK_DURATION);
-  const [running, setRunning] = useState(false);
-  const [sessions, setSessions] = useState(0);
+  const [running, setRunning]     = useState(false);
+  const [sessions, setSessions]   = useState(0);
   const intervalRef = useRef(null);
 
-  // Request notification permission on mount
   useEffect(() => {
-    if ('Notification' in window) {
-      Notification.requestPermission();
-    }
+    if ('Notification' in window) Notification.requestPermission();
   }, []);
 
-  // Timer countdown effect
   useEffect(() => {
     if (running) {
       intervalRef.current = setInterval(() => {
         setSecondsLeft(prev => {
           if (prev <= 1) {
             clearInterval(intervalRef.current);
-            // Fire notification
             const msg = mode === 'work' ? 'Time for a break!' : 'Back to work!';
             if ('Notification' in window && Notification.permission === 'granted') {
               new Notification('Pomodoro complete!', { body: msg });
             } else {
               alert('Pomodoro complete! ' + msg);
             }
-            // Switch mode
             if (mode === 'work') {
               setSessions(s => s + 1);
               setMode('break');
@@ -67,113 +61,82 @@ export default function PomodoroPage() {
     return () => clearInterval(intervalRef.current);
   }, [running, mode]);
 
-  const handleStart = () => setRunning(true);
-  const handlePause = () => setRunning(false);
   const handleReset = () => {
     setRunning(false);
     setSecondsLeft(mode === 'work' ? WORK_DURATION : BREAK_DURATION);
   };
 
-  const isWork = mode === 'work';
-  const accentColor = isWork ? '#6366f1' : '#10b981';
+  const isWork        = mode === 'work';
   const totalDuration = isWork ? WORK_DURATION : BREAK_DURATION;
-  const progress = ((totalDuration - secondsLeft) / totalDuration) * 100;
-  const strokeDashoffset = CIRCUMFERENCE * (1 - progress / 100);
+  const progress      = (totalDuration - secondsLeft) / totalDuration;
+  const strokeDashoffset = CIRCUMFERENCE * (1 - progress);
 
   return (
     <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit">
-    <div className="p-6 max-w-md mx-auto">
-      <h1 className="text-2xl font-bold text-text mb-6">Pomodoro Timer</h1>
+      <div className="max-w-sm mx-auto px-6 py-16 flex flex-col items-center">
 
-      <div
-        className="bg-surface rounded-2xl p-8 text-center shadow-sm mt-6"
-        style={{ border: `2px solid ${accentColor}` }}
-      >
-        {/* SVG ring with countdown overlaid in center */}
-        <div className="relative flex items-center justify-center mb-6" style={{ height: 200 }}>
-          <svg
-            width="200"
-            height="200"
-            viewBox="0 0 200 200"
-            className="-rotate-90"
-            style={{ position: 'absolute', top: 0, left: 0 }}
-          >
-            {/* Track circle */}
+        <h1 className="text-2xl font-semibold tracking-tight text-white mb-2">Pomodoro</h1>
+        <p className="text-sm mb-12" style={{ color: 'var(--muted)' }}>
+          {sessions} session{sessions !== 1 ? 's' : ''} completed
+        </p>
+
+        {/* Ring */}
+        <div className="relative flex items-center justify-center mb-10" style={{ height: 220, width: 220 }}>
+          <svg width="220" height="220" viewBox="0 0 220 220" className="-rotate-90 absolute inset-0">
+            <circle cx="110" cy="110" r={RADIUS} fill="none" stroke="var(--border)" strokeWidth="8" />
             <circle
-              cx="100"
-              cy="100"
-              r={RADIUS}
+              cx="110" cy="110" r={RADIUS}
               fill="none"
-              stroke="var(--border)"
-              strokeWidth="10"
-            />
-            {/* Progress circle */}
-            <circle
-              cx="100"
-              cy="100"
-              r={RADIUS}
-              fill="none"
-              stroke={accentColor}
-              strokeWidth="10"
+              stroke="white"
+              strokeWidth="8"
               strokeLinecap="round"
               strokeDasharray={CIRCUMFERENCE}
               strokeDashoffset={strokeDashoffset}
-              style={{ transition: 'stroke-dashoffset 0.8s ease, stroke 0.3s ease' }}
+              style={{ transition: 'stroke-dashoffset 0.9s ease' }}
             />
           </svg>
-
-          {/* Countdown + mode overlaid in center */}
-          <div className="absolute inset-0 flex items-center justify-center flex-col">
-            <div className="text-5xl font-bold font-mono text-text">
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <span className="text-5xl font-bold font-mono tracking-tight text-white">
               {formatTime(secondsLeft)}
-            </div>
-            <div
-              className="text-xs font-bold uppercase tracking-widest mt-1"
-              style={{ color: accentColor }}
-            >
-              {isWork ? 'Work' : 'Break'}
-            </div>
+            </span>
+            <span className="text-xs font-semibold uppercase tracking-widest mt-2" style={{ color: 'var(--muted)' }}>
+              {isWork ? 'Focus' : 'Break'}
+            </span>
           </div>
         </div>
 
         {/* Controls */}
-        <div className="flex gap-3 justify-center mb-7">
+        <div className="flex gap-3 w-full">
           {!running ? (
             <button
-              onClick={handleStart}
-              className="px-8 py-2.5 text-white font-semibold rounded-lg text-base transition"
-              style={{ background: accentColor }}
+              onClick={() => setRunning(true)}
+              className="flex-1 py-3 rounded-lg text-sm font-semibold transition hover:opacity-90"
+              style={{ backgroundColor: 'var(--accent)', color: 'var(--accent-fg)' }}
             >
-              Start
+              {secondsLeft < totalDuration ? 'Resume' : 'Start'}
             </button>
           ) : (
             <button
-              onClick={handlePause}
-              className="px-8 py-2.5 bg-slate-500 text-white font-semibold rounded-lg text-base transition"
+              onClick={() => setRunning(false)}
+              className="flex-1 py-3 rounded-lg text-sm font-semibold border transition"
+              style={{ borderColor: 'var(--border)', color: 'white', backgroundColor: 'var(--surface)' }}
             >
               Pause
             </button>
           )}
           <button
             onClick={handleReset}
-            className="px-8 py-2.5 border border-border rounded-lg text-base text-text/70 hover:text-text transition"
+            className="px-6 py-3 rounded-lg text-sm border transition"
+            style={{ borderColor: 'var(--border)', color: 'var(--muted)' }}
           >
             Reset
           </button>
         </div>
 
-        {/* Session count badge */}
-        <div className="inline-flex items-center gap-2 bg-bg border border-border rounded-full px-4 py-1.5 text-sm text-text">
-          <span className="text-lg">🍅</span>
-          Sessions completed: <strong>{sessions}</strong>
-        </div>
+        <p className="text-xs mt-8 text-center" style={{ color: 'var(--muted)' }}>
+          25 min focus · 5 min break
+        </p>
       </div>
-
-      {/* Info */}
-      <p className="mt-6 text-xs text-text/50 text-center">
-        25 min work → 5 min break. Browser notifications fire when each session ends.
-      </p>
-    </div>
     </motion.div>
   );
 }

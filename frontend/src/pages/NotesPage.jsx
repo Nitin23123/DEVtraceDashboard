@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
 import { getNotes, createNote, updateNote, deleteNote } from '../api/notes';
@@ -9,6 +9,9 @@ const pageVariants = {
   animate: { opacity: 1, y: 0, transition: { duration: 0.25, ease: 'easeOut' } },
   exit:    { opacity: 0, y: -8, transition: { duration: 0.15 } },
 };
+
+const inputClass = 'w-full px-4 py-2.5 rounded-lg text-sm text-white transition focus:outline-none';
+const inputStyle = { backgroundColor: 'var(--surface-2)', border: '1px solid var(--border)' };
 
 const NotesPage = () => {
   const { token } = useAuth();
@@ -42,11 +45,8 @@ const NotesPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (editNote) {
-      await updateNote(token, editNote.id, formData);
-    } else {
-      await createNote(token, formData);
-    }
+    if (editNote) await updateNote(token, editNote.id, formData);
+    else await createNote(token, formData);
     await loadNotes();
     closeModal();
   };
@@ -60,92 +60,119 @@ const NotesPage = () => {
 
   return (
     <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit">
-      <div className="p-6 max-w-3xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-text">Notes</h1>
+      <div className="max-w-3xl mx-auto px-6 py-10">
+
+        {/* Header */}
+        <div className="flex items-center justify-between mb-10">
+          <div>
+            <h1 className="text-2xl font-semibold tracking-tight text-white">Notes</h1>
+            <p className="mt-1 text-sm" style={{ color: 'var(--muted)' }}>{notes.length} total</p>
+          </div>
           <button
             onClick={() => setShowCreateModal(true)}
-            className="px-4 py-2 bg-accent text-accent-fg rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
+            className="px-4 py-2 rounded-lg text-sm font-semibold transition hover:opacity-90"
+            style={{ backgroundColor: 'var(--accent)', color: 'var(--accent-fg)' }}
           >
             + New Note
           </button>
         </div>
 
-        {loading && <Spinner size="lg" className="mt-12" />}
-        {error && (
-          <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm mb-4">
-            {error}
-          </div>
-        )}
+        {loading && <Spinner size="lg" className="mt-20" />}
+        {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
+
         {!loading && notes.length === 0 && (
-          <div className="text-center py-16 text-text/50">
-            <p>No notes yet. Start writing.</p>
+          <div className="text-center py-20" style={{ color: 'var(--muted)' }}>
+            <p className="text-base mb-1">No notes yet</p>
+            <p className="text-sm">Start writing something.</p>
           </div>
         )}
 
-        {notes.map(note => (
-          <div key={note.id} className="bg-surface border border-border rounded-xl p-4 mb-3">
-            <div className="flex justify-between items-start gap-2">
-              <h3 className="font-semibold text-text mb-1 flex-1">{note.title}</h3>
-              <div className="flex gap-1 shrink-0">
+        {/* Notes list */}
+        <div className="rounded-xl border overflow-hidden" style={{ borderColor: 'var(--border)' }}>
+          {notes.map((note, i) => (
+            <div
+              key={note.id}
+              className="group flex items-start gap-4 px-5 py-4 transition-colors hover:bg-white/[0.02]"
+              style={{
+                borderBottom: i < notes.length - 1 ? '1px solid var(--border)' : 'none',
+                backgroundColor: 'var(--surface)',
+              }}
+            >
+              <div className="flex-1 min-w-0">
+                <p className="font-medium text-sm text-white">{note.title}</p>
+                {note.content && (
+                  <p className="text-xs mt-1 line-clamp-2" style={{ color: 'var(--muted)' }}>
+                    {note.content}
+                  </p>
+                )}
+                <span className="text-xs mt-2 block" style={{ color: 'var(--muted)' }}>
+                  {new Date(note.created_at).toLocaleDateString()}
+                </span>
+              </div>
+
+              {/* Actions — hover only */}
+              <div className="flex items-center gap-1 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
                 <button
                   onClick={() => openEditModal(note)}
-                  className="text-xs px-2 py-1 rounded text-text/60 hover:text-text hover:bg-border/40 transition"
+                  className="px-2.5 py-1 text-xs rounded-md transition-colors"
+                  style={{ color: 'var(--muted)' }}
+                  onMouseEnter={e => e.currentTarget.style.color = 'white'}
+                  onMouseLeave={e => e.currentTarget.style.color = 'var(--muted)'}
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => handleDelete(note.id)}
-                  className="text-xs px-2 py-1 rounded text-red-400 hover:text-red-600 transition"
+                  className="px-2.5 py-1 text-xs rounded-md text-red-500 hover:text-red-400 transition-colors"
                 >
                   Delete
                 </button>
               </div>
             </div>
-            {note.content && (
-              <p className="text-text/70 text-sm whitespace-pre-wrap">{note.content}</p>
-            )}
-            <span className="text-xs text-text/40 mt-2 block">
-              {new Date(note.created_at).toLocaleDateString()}
-            </span>
-          </div>
-        ))}
+          ))}
+        </div>
 
+        {/* Modal */}
         {(showCreateModal || editNote) && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-surface rounded-2xl p-6 w-full max-w-md shadow-xl">
-              <h2 className="text-xl font-bold text-text mb-5">{editNote ? 'Edit Note' : 'New Note'}</h2>
-              <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <label className="block text-sm font-medium text-text/80 mb-1">Title *</label>
+          <div
+            className="fixed inset-0 flex items-center justify-center z-50 p-4"
+            style={{ backgroundColor: 'rgba(0,0,0,0.75)' }}
+            onClick={closeModal}
+          >
+            <div
+              className="w-full max-w-md rounded-xl border p-6"
+              style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--border)' }}
+              onClick={e => e.stopPropagation()}
+            >
+              <h2 className="text-lg font-semibold text-white mb-5">{editNote ? 'Edit Note' : 'New Note'}</h2>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-white">Title</label>
                   <input
                     value={formData.title}
                     onChange={e => setFormData({ ...formData, title: e.target.value })}
                     required
-                    className="w-full px-3 py-2 border border-border rounded-lg bg-bg text-text text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
+                    placeholder="Note title"
+                    className={inputClass}
+                    style={inputStyle}
                   />
                 </div>
-                <div className="mb-5">
-                  <label className="block text-sm font-medium text-text/80 mb-1">Content</label>
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-white">Content</label>
                   <textarea
                     rows={6}
                     value={formData.content}
                     onChange={e => setFormData({ ...formData, content: e.target.value })}
-                    className="w-full px-3 py-2 border border-border rounded-lg bg-bg text-text text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
+                    placeholder="Write your note…"
+                    className={inputClass}
+                    style={{ ...inputStyle, resize: 'none' }}
                   />
                 </div>
-                <div className="flex gap-3">
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-accent text-accent-fg rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
-                  >
+                <div className="flex gap-3 pt-1">
+                  <button type="submit" className="px-4 py-2 rounded-lg text-sm font-semibold transition hover:opacity-90" style={{ backgroundColor: 'var(--accent)', color: 'var(--accent-fg)' }}>
                     {editNote ? 'Save Changes' : 'Create Note'}
                   </button>
-                  <button
-                    type="button"
-                    onClick={closeModal}
-                    className="px-4 py-2 border border-border rounded-lg text-sm text-text/70 hover:text-text transition"
-                  >
+                  <button type="button" onClick={closeModal} className="px-4 py-2 rounded-lg text-sm border transition" style={{ borderColor: 'var(--border)', color: 'var(--muted)' }}>
                     Cancel
                   </button>
                 </div>

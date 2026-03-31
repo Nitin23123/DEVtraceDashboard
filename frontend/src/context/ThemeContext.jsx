@@ -1,27 +1,29 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 const ThemeContext = createContext();
 
-// Midnight Indigo — dark-first theme
+// Black & White — dark-first theme
 const DARK_VARS = {
-  '--bg': '#0f0f23',
-  '--surface': '#1a1a3e',
+  '--bg': '#0a0a0a',
+  '--surface': '#111111',
+  '--surface-2': '#1a1a1a',
   '--text': '#ffffff',
   '--accent': '#ffffff',
-  '--accent-fg': '#0f0f23',
-  '--border': '#2d2d5a',
-  '--muted': '#8b8baf',
+  '--accent-fg': '#0a0a0a',
+  '--border': '#2a2a2a',
+  '--muted': '#888888',
 };
 
-// Light variant — soft indigo tint
+// Light variant
 const LIGHT_VARS = {
-  '--bg': '#f5f5ff',
+  '--bg': '#fafafa',
   '--surface': '#ffffff',
-  '--text': '#0f0f23',
-  '--accent': '#4c1d95',
+  '--surface-2': '#f0f0f0',
+  '--text': '#0a0a0a',
+  '--accent': '#0a0a0a',
   '--accent-fg': '#ffffff',
-  '--border': '#c4b5fd',
-  '--muted': '#6b7280',
+  '--border': '#e0e0e0',
+  '--muted': '#666666',
 };
 
 function applyTheme(theme) {

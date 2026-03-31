@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
 import { getStats } from '../api/dashboard';
@@ -10,46 +10,46 @@ const pageVariants = {
   exit:    { opacity: 0, y: -8, transition: { duration: 0.15 } },
 };
 
-const listVariants = { animate: { transition: { staggerChildren: 0.06 } } };
+const listVariants = { animate: { transition: { staggerChildren: 0.07 } } };
 const itemVariants = {
   initial: { opacity: 0, y: 12 },
   animate: { opacity: 1, y: 0, transition: { duration: 0.22 } },
 };
 
 const modalVariants = {
-  initial: { opacity: 0, scale: 0.95 },
-  animate: { opacity: 1, scale: 1, transition: { duration: 0.2, ease: 'easeOut' } },
-  exit:    { opacity: 0, scale: 0.95, transition: { duration: 0.15 } },
+  initial: { opacity: 0, scale: 0.96 },
+  animate: { opacity: 1, scale: 1, transition: { duration: 0.18, ease: 'easeOut' } },
+  exit:    { opacity: 0, scale: 0.96, transition: { duration: 0.14 } },
 };
 
 const MODAL_CONTENT = {
   tasks: (data) => ({
     title: 'Tasks Breakdown',
     items: [
-      { label: 'To Do', value: data.todo, color: '#f59e0b' },
-      { label: 'In Progress', value: data.in_progress, color: '#3b82f6' },
-      { label: 'Done', value: data.done, color: '#10b981' },
-      { label: 'Total', value: data.total, color: '#1e293b' },
+      { label: 'To Do',       value: data.todo },
+      { label: 'In Progress', value: data.in_progress },
+      { label: 'Done',        value: data.done },
+      { label: 'Total',       value: data.total },
     ],
   }),
   notes: (data) => ({
     title: 'Notes',
-    items: [{ label: 'Total Notes', value: data.total, color: '#8b5cf6' }],
+    items: [{ label: 'Total Notes', value: data.total }],
   }),
   goals: (data) => ({
     title: 'Goals Progress',
     items: [
-      { label: 'Total Goals', value: data.total, color: '#1e293b' },
-      { label: 'Completed', value: data.completed, color: '#10b981' },
-      { label: 'Remaining', value: data.total - data.completed, color: '#f59e0b' },
+      { label: 'Total Goals', value: data.total },
+      { label: 'Completed',   value: data.completed },
+      { label: 'Remaining',   value: data.total - data.completed },
     ],
   }),
 };
 
 const STAT_CARDS = [
-  { key: 'tasks',  title: 'Tasks',  color: '#3b82f6', subtitle: (s) => `${s.tasks.done} done · ${s.tasks.in_progress} in progress`, value: (s) => s.tasks.total },
-  { key: 'notes',  title: 'Notes',  color: '#8b5cf6', subtitle: () => 'Click to view',                                                 value: (s) => s.notes.total },
-  { key: 'goals',  title: 'Goals',  color: '#10b981', subtitle: (s) => `${s.goals.completed} completed`,                               value: (s) => s.goals.total },
+  { key: 'tasks', title: 'Tasks',  subtitle: (s) => `${s.tasks.done} done · ${s.tasks.in_progress} active`, value: (s) => s.tasks.total },
+  { key: 'notes', title: 'Notes',  subtitle: () => 'Click to view',                                         value: (s) => s.notes.total },
+  { key: 'goals', title: 'Goals',  subtitle: (s) => `${s.goals.completed} completed`,                       value: (s) => s.goals.total },
 ];
 
 export default function DashboardPage() {
@@ -59,18 +59,13 @@ export default function DashboardPage() {
   const [error, setError] = useState('');
   const [activeModal, setActiveModal] = useState(null);
 
-  useEffect(() => {
-    loadStats();
-  }, []);
+  useEffect(() => { loadStats(); }, []);
 
   const loadStats = async () => {
     setLoading(true);
     const data = await getStats(token);
-    if (data.tasks !== undefined) {
-      setStats(data);
-    } else {
-      setError('Failed to load dashboard stats');
-    }
+    if (data.tasks !== undefined) setStats(data);
+    else setError('Failed to load dashboard stats');
     setLoading(false);
   };
 
@@ -79,29 +74,42 @@ export default function DashboardPage() {
 
   return (
     <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit">
-      <div className="p-6 max-w-4xl mx-auto">
-        <h1 className="text-2xl font-bold tracking-tight text-text mb-1">Dashboard</h1>
-        <p className="text-sm text-text/60 mb-8">Your productivity at a glance</p>
+      <div className="max-w-3xl mx-auto px-6 py-10">
 
-        {loading && <Spinner size="lg" className="mt-16" />}
-        {error && <p className="text-red-500 text-sm">{error}</p>}
+        <div className="mb-10">
+          <h1 className="text-2xl font-semibold tracking-tight text-white">Dashboard</h1>
+          <p className="mt-1 text-sm" style={{ color: 'var(--muted)' }}>Your productivity at a glance</p>
+        </div>
+
+        {loading && <Spinner size="lg" className="mt-20" />}
+        {error && <p className="text-red-400 text-sm">{error}</p>}
 
         {stats && (
           <>
-            <div className="bg-slate-900 text-white rounded-xl p-5 flex items-center gap-4 mb-6">
-              <span className="text-4xl">🔥</span>
+            {/* Streak */}
+            <div
+              className="rounded-xl border p-6 mb-8 flex items-center gap-5"
+              style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--border)' }}
+            >
+              <div
+                className="h-12 w-12 rounded-lg flex items-center justify-center text-xl shrink-0"
+                style={{ backgroundColor: 'var(--surface-2)' }}
+              >
+                🔥
+              </div>
               <div>
-                <div className="text-3xl font-bold leading-none">
-                  {stats.streak.current} day streak
+                <div className="text-3xl font-bold text-white leading-none">
+                  {stats.streak.current} <span className="text-lg font-medium" style={{ color: 'var(--muted)' }}>day streak</span>
                 </div>
-                <div className="text-sm text-slate-400 mt-1">
-                  Longest streak: {stats.streak.longest} days
+                <div className="text-sm mt-1" style={{ color: 'var(--muted)' }}>
+                  Longest: {stats.streak.longest} days
                 </div>
               </div>
             </div>
 
+            {/* Stat cards */}
             <motion.div
-              className="flex gap-4 flex-wrap mb-4"
+              className="grid grid-cols-1 sm:grid-cols-3 gap-4"
               variants={listVariants}
               initial="initial"
               animate="animate"
@@ -111,49 +119,63 @@ export default function DashboardPage() {
                   key={card.key}
                   variants={itemVariants}
                   onClick={() => setActiveModal(card.key)}
-                  className="bg-surface border border-border rounded-xl p-6 text-center cursor-pointer hover:shadow-md transition-shadow flex-1 min-w-[160px]"
+                  className="rounded-xl border p-6 cursor-pointer transition-colors hover:border-white/20 group"
+                  style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--border)' }}
                 >
-                  <div className="text-sm text-text/60 mb-2 font-medium">{card.title}</div>
-                  <div className="text-4xl font-bold leading-none" style={{ color: card.color }}>
+                  <div className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: 'var(--muted)' }}>
+                    {card.title}
+                  </div>
+                  <div className="text-4xl font-bold text-white leading-none">
                     {card.value(stats)}
                   </div>
-                  <div className="text-xs text-text/40 mt-2">{card.subtitle(stats)}</div>
+                  <div className="text-xs mt-3" style={{ color: 'var(--muted)' }}>
+                    {card.subtitle(stats)}
+                  </div>
                 </motion.div>
               ))}
             </motion.div>
-            <p className="text-xs text-text/40">Click a card to see details</p>
+
+            <p className="text-xs mt-4" style={{ color: 'var(--muted)' }}>Click a card to see details</p>
           </>
         )}
 
+        {/* Modal */}
         <AnimatePresence>
           {activeModal && modalData && (
             <motion.div
-              key="modal-overlay"
+              key="overlay"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+              className="fixed inset-0 flex items-center justify-center z-50 p-4"
+              style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}
               onClick={closeModal}
             >
               <motion.div
-                key="modal-card"
+                key="modal"
                 variants={modalVariants}
                 initial="initial"
                 animate="animate"
                 exit="exit"
-                className="bg-surface rounded-2xl p-6 w-full max-w-sm shadow-xl"
+                className="w-full max-w-sm rounded-xl border p-6"
+                style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--border)' }}
                 onClick={e => e.stopPropagation()}
               >
-                <h2 className="text-xl font-bold text-text mb-5">{modalData.title}</h2>
+                <h2 className="text-lg font-semibold text-white mb-5">{modalData.title}</h2>
                 {modalData.items.map(item => (
-                  <div key={item.label} className="flex justify-between items-center py-3 border-b border-border last:border-0">
-                    <span className="text-text/60">{item.label}</span>
-                    <span className="font-bold text-xl" style={{ color: item.color }}>{item.value}</span>
+                  <div
+                    key={item.label}
+                    className="flex justify-between items-center py-3"
+                    style={{ borderBottom: '1px solid var(--border)' }}
+                  >
+                    <span className="text-sm" style={{ color: 'var(--muted)' }}>{item.label}</span>
+                    <span className="text-xl font-bold text-white">{item.value}</span>
                   </div>
                 ))}
                 <button
                   onClick={closeModal}
-                  className="mt-5 w-full py-2.5 bg-accent text-accent-fg rounded-lg font-medium hover:opacity-80 transition-opacity"
+                  className="mt-5 w-full py-2.5 rounded-lg text-sm font-semibold transition hover:opacity-90"
+                  style={{ backgroundColor: 'var(--accent)', color: 'var(--accent-fg)' }}
                 >
                   Close
                 </button>

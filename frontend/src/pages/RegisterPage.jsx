@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { register } from '../api/auth';
 import { useAuth } from '../hooks/useAuth';
+
+const inputClass = 'w-full px-4 py-2.5 rounded-lg text-sm text-white placeholder-[--muted] transition focus:outline-none focus:border-white/40';
 
 const RegisterPage = () => {
   const [email, setEmail] = useState('');
@@ -32,66 +34,81 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
-      <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
-        <h1 className="text-3xl font-bold text-slate-900 mb-1">DevTrackr</h1>
-        <p className="text-sm text-slate-500 mb-6">Create your account</p>
+    <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: 'var(--bg)' }}>
+      <div className="w-full max-w-sm">
 
-        {error && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-            {error}
-          </div>
-        )}
+        {/* Brand */}
+        <div className="mb-10 text-center">
+          <h1 className="text-2xl font-semibold tracking-tight text-white">DevTrackr</h1>
+          <p className="mt-1.5 text-sm" style={{ color: 'var(--muted)' }}>Create your account</p>
+        </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              placeholder="you@example.com"
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 bg-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
-              Password <span className="text-slate-400 font-normal">(min 6 characters)</span>
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={6}
-              placeholder="••••••••"
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 bg-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Confirm Password</label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-              placeholder="••••••••"
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 bg-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isSubmitting ? 'Creating...' : 'Create Account'}
-          </button>
-        </form>
+        {/* Card */}
+        <div className="rounded-xl border p-8 space-y-5" style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--border)' }}>
+          {error && (
+            <div className="px-4 py-3 rounded-lg text-sm text-red-400 border border-red-900/50 bg-red-950/30">
+              {error}
+            </div>
+          )}
 
-        <p className="mt-6 text-sm text-slate-500 text-center">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-1.5">
+              <label className="block text-sm font-medium text-white">Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                required
+                placeholder="you@example.com"
+                className={inputClass}
+                style={{ backgroundColor: 'var(--surface-2)', border: '1px solid var(--border)' }}
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="block text-sm font-medium text-white">
+                Password{' '}
+                <span className="font-normal" style={{ color: 'var(--muted)' }}>(min 6 chars)</span>
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                required
+                minLength={6}
+                placeholder="••••••••"
+                className={inputClass}
+                style={{ backgroundColor: 'var(--surface-2)', border: '1px solid var(--border)' }}
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="block text-sm font-medium text-white">Confirm Password</label>
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={e => setConfirmPassword(e.target.value)}
+                required
+                placeholder="••••••••"
+                className={inputClass}
+                style={{ backgroundColor: 'var(--surface-2)', border: '1px solid var(--border)' }}
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full py-2.5 rounded-lg text-sm font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+              style={{ backgroundColor: 'var(--accent)', color: 'var(--accent-fg)' }}
+            >
+              {isSubmitting ? 'Creating…' : 'Create Account'}
+            </button>
+          </form>
+        </div>
+
+        <p className="mt-6 text-sm text-center" style={{ color: 'var(--muted)' }}>
           Already have an account?{' '}
-          <Link to="/login" className="text-indigo-600 hover:underline font-medium">
+          <Link to="/login" className="text-white hover:underline font-medium">
             Sign in
           </Link>
         </p>

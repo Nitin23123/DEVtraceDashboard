@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { useTheme } from '../context/ThemeContext';
 
 const navLinks = [
   { to: '/dashboard', label: 'Dashboard' },
   { to: '/tasks',     label: 'Tasks' },
   { to: '/notes',     label: 'Notes' },
   { to: '/goals',     label: 'Goals' },
-  { to: '/api-tester', label: 'API Tester' },
+  { to: '/api-tester', label: 'API' },
   { to: '/profile',   label: 'Profile' },
   { to: '/pomodoro',  label: 'Pomodoro' },
   { to: '/snippets',  label: 'Snippets' },
@@ -17,66 +16,72 @@ const navLinks = [
 
 const Layout = () => {
   const { user, logout } = useAuth();
-  const { theme, toggleTheme } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const linkClass = ({ isActive }) =>
-    `px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+    `px-3 py-1.5 text-sm font-medium transition-colors rounded-md ${
       isActive
-        ? 'bg-white/20 text-white font-semibold'
-        : 'text-slate-300 hover:text-white hover:bg-white/10'
+        ? 'text-white bg-white/10'
+        : 'text-[--muted] hover:text-white hover:bg-white/5'
     }`;
 
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: 'var(--bg)', color: 'var(--text)' }}>
-      {/* Top nav bar */}
-      <nav className="bg-slate-900 text-white px-4 py-3 flex items-center gap-3 sticky top-0 z-40 shadow-lg">
+
+      {/* Top nav */}
+      <nav
+        className="sticky top-0 z-40 h-14 flex items-center px-6 gap-6"
+        style={{ backgroundColor: 'var(--bg)', borderBottom: '1px solid var(--border)' }}
+      >
         {/* Brand */}
-        <span className="font-bold text-lg text-white mr-2 shrink-0">DevTrackr</span>
+        <span className="font-semibold text-sm tracking-widest uppercase text-white shrink-0">
+          DevTrackr
+        </span>
 
         {/* Desktop links */}
-        <div className="hidden lg:flex items-center gap-1 flex-1 flex-wrap">
+        <div className="hidden lg:flex items-center gap-1 flex-1">
           {navLinks.map(({ to, label }) => (
             <NavLink key={to} to={to} className={linkClass}>{label}</NavLink>
           ))}
         </div>
 
-        {/* Spacer on desktop */}
-        <div className="hidden lg:block flex-1" />
+        {/* Right side */}
+        <div className="hidden lg:flex items-center gap-4 ml-auto">
+          <span className="text-xs max-w-[160px] truncate" style={{ color: 'var(--muted)' }}>
+            {user?.email}
+          </span>
+          <button
+            onClick={logout}
+            className="px-3 py-1.5 text-sm rounded-md border transition-colors"
+            style={{ borderColor: 'var(--border)', color: 'var(--muted)' }}
+            onMouseEnter={e => { e.currentTarget.style.color = 'var(--text)'; e.currentTarget.style.borderColor = '#555'; }}
+            onMouseLeave={e => { e.currentTarget.style.color = 'var(--muted)'; e.currentTarget.style.borderColor = 'var(--border)'; }}
+          >
+            Logout
+          </button>
+        </div>
 
-        {/* User email */}
-        <span className="hidden lg:block text-xs text-slate-400 shrink-0 max-w-[160px] truncate">{user?.email}</span>
-
-        {/* Theme toggle */}
-        <button
-          onClick={toggleTheme}
-          title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-          className="p-1.5 rounded border border-slate-600 text-base hover:border-slate-400 transition-colors shrink-0"
-        >
-          {theme === 'dark' ? '☀' : '🌙'}
-        </button>
-
-        {/* Logout */}
-        <button
-          onClick={logout}
-          className="hidden lg:block px-3 py-1.5 rounded border border-slate-600 text-sm text-slate-300 hover:text-white hover:border-slate-400 transition-colors shrink-0"
-        >
-          Logout
-        </button>
-
-        {/* Hamburger (mobile/tablet) */}
+        {/* Hamburger */}
         <button
           onClick={() => setMenuOpen(o => !o)}
-          className="lg:hidden p-1.5 rounded border border-slate-600 text-lg hover:border-slate-400 transition-colors ml-auto"
+          className="lg:hidden ml-auto p-1.5 rounded-md transition-colors"
+          style={{ color: 'var(--muted)' }}
           aria-label="Toggle menu"
         >
-          {menuOpen ? '✕' : '☰'}
+          {menuOpen ? (
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          ) : (
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          )}
         </button>
       </nav>
 
-      {/* Mobile dropdown menu */}
+      {/* Mobile menu */}
       {menuOpen && (
-        <div className="lg:hidden bg-slate-800 px-4 py-3 flex flex-col gap-1 z-30 shadow-md">
+        <div
+          className="lg:hidden flex flex-col px-6 py-4 gap-1 z-30"
+          style={{ backgroundColor: 'var(--surface)', borderBottom: '1px solid var(--border)' }}
+        >
           {navLinks.map(({ to, label }) => (
             <NavLink
               key={to}
@@ -87,9 +92,9 @@ const Layout = () => {
               {label}
             </NavLink>
           ))}
-          <div className="border-t border-slate-700 pt-2 mt-2 flex items-center justify-between">
-            <span className="text-xs text-slate-400">{user?.email}</span>
-            <button onClick={logout} className="text-sm text-slate-300 hover:text-white">Logout</button>
+          <div className="pt-3 mt-2 flex items-center justify-between" style={{ borderTop: '1px solid var(--border)' }}>
+            <span className="text-xs" style={{ color: 'var(--muted)' }}>{user?.email}</span>
+            <button onClick={logout} className="text-sm" style={{ color: 'var(--muted)' }}>Logout</button>
           </div>
         </div>
       )}
