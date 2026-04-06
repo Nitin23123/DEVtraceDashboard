@@ -6,9 +6,7 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import Layout from './components/Layout';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import TasksPage from './pages/TasksPage';
-import NotesPage from './pages/NotesPage';
-import GoalsPage from './pages/GoalsPage';
+import WorkspacePage from './pages/WorkspacePage';
 import ApiTesterPage from './pages/ApiTesterPage';
 import DashboardPage from './pages/DashboardPage';
 import ProfilePage from './pages/ProfilePage';
@@ -28,9 +26,7 @@ function AnimatedRoutes() {
         {/* Protected routes with Layout nav */}
         <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
           <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/tasks"     element={<TasksPage />} />
-          <Route path="/notes"     element={<NotesPage />} />
-          <Route path="/goals"     element={<GoalsPage />} />
+          <Route path="/workspace"  element={<WorkspacePage />} />
           <Route path="/api-tester" element={<ApiTesterPage />} />
           <Route path="/profile"   element={<ProfilePage />} />
           <Route path="/pomodoro"  element={<PomodoroPage />} />
