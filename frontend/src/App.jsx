@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { AuthProvider } from './context/AuthContext';
+import { DisplayNameProvider } from './context/DisplayNameContext';
 import { trackPageView } from './analytics';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import Layout from './components/Layout';
@@ -54,7 +55,9 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <AnimatedRoutes />
+        <DisplayNameProvider>
+          <AnimatedRoutes />
+        </DisplayNameProvider>
       </AuthProvider>
     </BrowserRouter>
   );

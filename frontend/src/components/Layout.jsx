@@ -3,6 +3,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { Logo } from './Logo';
 import Footer from './Footer';
+import { useDisplayName } from '../context/DisplayNameContext';
 
 const I = (paths) => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -66,7 +67,7 @@ function NavList({ collapsed = false, onItemClick }) {
   );
 }
 
-function SidebarFooter({ collapsed = false, user, logout }) {
+function SidebarFooter({ collapsed = false, name, email, logout }) {
   return (
     <div className="px-3 py-3 shrink-0" style={{ borderTop: '1px solid var(--border)' }}>
       <div className="flex items-center gap-3 h-10 px-[10px]">
@@ -74,10 +75,10 @@ function SidebarFooter({ collapsed = false, user, logout }) {
           className="shrink-0 h-6 w-6 rounded-full flex items-center justify-center text-xs font-semibold"
           style={{ backgroundColor: 'color-mix(in srgb, var(--accent) 18%, transparent)', color: 'var(--accent)' }}
         >
-          {(user?.email || '?')[0].toUpperCase()}
+          {(name || email || '?')[0].toUpperCase()}
         </span>
-        <span className={`mono text-xs truncate flex-1 ${collapsed ? 'opacity-0 group-hover:opacity-100 transition-opacity' : ''}`} style={{ color: 'var(--muted)' }}>
-          {user?.email}
+        <span title={email} className={`text-xs truncate flex-1 ${collapsed ? 'opacity-0 group-hover:opacity-100 transition-opacity' : ''}`} style={{ color: 'var(--muted)' }}>
+          {name || email}
         </span>
         <button
           onClick={logout}
@@ -96,7 +97,9 @@ function SidebarFooter({ collapsed = false, user, logout }) {
 
 const Layout = () => {
   const { user, logout } = useAuth();
+  const { displayName } = useDisplayName();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const name = displayName || (user?.email || '').split('@')[0];
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -113,7 +116,7 @@ const Layout = () => {
           className="h-7 w-7 rounded-full flex items-center justify-center text-xs font-semibold"
           style={{ backgroundColor: 'color-mix(in srgb, var(--accent) 18%, transparent)', color: 'var(--accent)' }}
         >
-          {(user?.email || '?')[0].toUpperCase()}
+          {(name || '?')[0].toUpperCase()}
         </span>
       </header>
 
@@ -127,7 +130,7 @@ const Layout = () => {
           <span className="opacity-0 group-hover:opacity-100 transition-opacity"><Wordmark /></span>
         </div>
         <NavList collapsed />
-        <SidebarFooter collapsed user={user} logout={logout} />
+        <SidebarFooter collapsed name={name} email={user?.email} logout={logout} />
       </aside>
 
       {/* Mobile drawer */}
@@ -142,7 +145,7 @@ const Layout = () => {
               </button>
             </div>
             <NavList onItemClick={() => setDrawerOpen(false)} />
-            <SidebarFooter user={user} logout={logout} />
+            <SidebarFooter name={name} email={user?.email} logout={logout} />
           </aside>
         </div>
       )}

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
+import { useDisplayName } from '../context/DisplayNameContext';
 import { getStats } from '../api/dashboard';
 import Spinner from '../components/Spinner';
 
@@ -69,6 +70,10 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [usingSample, setUsingSample] = useState(false);
   const [activeModal, setActiveModal] = useState(null);
+  const { displayName, setDisplayName } = useDisplayName();
+  const [editingName, setEditingName] = useState(false);
+  const [draftName, setDraftName] = useState('');
+  const saveName = () => { setDisplayName(draftName); setEditingName(false); };
 
   useEffect(() => { loadStats(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -84,7 +89,8 @@ export default function DashboardPage() {
   const now = new Date();
   const greeting = greetingFor(now);
   const dateStr = now.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
-  const name = (user?.email || '').split('@')[0];
+  const emailPrefix = (user?.email || '').split('@')[0];
+  const name = displayName || emailPrefix;
   const closeModal = () => setActiveModal(null);
   const modalData = activeModal && stats ? MODAL_CONTENT[activeModal](stats[activeModal]) : null;
 
@@ -97,9 +103,38 @@ export default function DashboardPage() {
           <p className="text-xs font-medium uppercase tracking-[0.2em] mb-3" style={{ color: 'var(--accent)' }}>
             {dateStr}
           </p>
-          <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight" style={{ color: 'var(--text)' }}>
-            {greeting}{name ? <span style={{ color: 'var(--muted)' }}>, {name}</span> : null}.
-          </h1>
+          {editingName ? (
+            <div className="flex items-center gap-2 flex-wrap">
+              <input
+                autoFocus
+                value={draftName}
+                onChange={(e) => setDraftName(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') saveName(); if (e.key === 'Escape') setEditingName(false); }}
+                placeholder="Your name"
+                maxLength={40}
+                className="px-3 py-2 rounded-lg text-2xl sm:text-3xl font-semibold tracking-tight focus:outline-none"
+                style={{ backgroundColor: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text)' }}
+              />
+              <button onClick={saveName} className="px-3 py-2 rounded-lg text-sm font-semibold transition hover:opacity-90" style={{ backgroundColor: 'var(--accent)', color: 'var(--accent-fg)' }}>Save</button>
+              <button onClick={() => setEditingName(false)} className="px-3 py-2 rounded-lg text-sm" style={{ color: 'var(--muted)' }}>Cancel</button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-3 flex-wrap">
+              <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight" style={{ color: 'var(--text)' }}>
+                {greeting}{name ? <span style={{ color: 'var(--muted)' }}>, {name}</span> : null}.
+              </h1>
+              <button
+                onClick={() => { setDraftName(displayName); setEditingName(true); }}
+                title="Edit display name"
+                className="p-1.5 rounded-md transition-colors"
+                style={{ color: 'var(--muted)' }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--accent)')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--muted)')}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" /></svg>
+              </button>
+            </div>
+          )}
           <p className="mt-3 text-base" style={{ color: 'var(--text-soft)' }}>
             Here's where things stand. Keep the streak alive.
           </p>
