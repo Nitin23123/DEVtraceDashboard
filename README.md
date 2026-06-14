@@ -1,6 +1,8 @@
 # DevTrace Dashboard
 
-A full-stack developer productivity dashboard built with React, Node.js, and PostgreSQL. Track tasks, notes, goals, code snippets, DSA progress, run a Pomodoro timer, test APIs, and connect your GitHub profile — all in one place.
+A full-stack developer productivity dashboard built with React, Node.js, and PostgreSQL. Track tasks, notes, goals, code snippets, DSA progress, run a Pomodoro timer, test APIs, connect your GitHub profile, and browse real GGSIPU placement interview experiences — all in one place.
+
+The UI is a dark "Neon Grid" theme (cyan/violet, glassy panels) with a collapsible icon sidebar, split-pane browsing, and a fully mobile-responsive layout.
 
 **Live Demo → [devtracedash.netlify.app](https://devtracedash.netlify.app)**
 
@@ -12,14 +14,13 @@ A full-stack developer productivity dashboard built with React, Node.js, and Pos
 |---|---|
 | **Authentication** | JWT-based register/login with bcrypt password hashing |
 | **Dashboard** | Stats overview — tasks, notes, goals, daily streak counter |
-| **Tasks** | Create, edit, delete tasks with status cycling, priority levels, due dates, pin |
-| **Notes** | Notes with full CRUD |
-| **Goals** | Goal tracking with target dates and completion toggle |
+| **Workspace** | Unified Tasks, Notes & Goals — status cycling, priorities, due dates, pinning, completion |
 | **Pomodoro Timer** | 25/5 min work-break cycles with browser notifications |
 | **Code Snippets** | Save and organize code snippets by language with copy to clipboard |
 | **API Tester** | HTTP client — send GET/POST/PUT/PATCH/DELETE requests, view responses, request history |
 | **DSA Tracker** | 79-problem DSA curriculum across 23 days with per-user progress tracking |
 | **GitHub Profile** | OAuth integration — contribution heatmap, streak, repos, languages, open PRs |
+| **Placements** | GGSIPU interview-prep hub — company directory (split-pane browse), interview experiences, question bank, company-wise topics, prep roadmaps, HR prep, placement calendar & insights |
 
 ---
 
@@ -33,6 +34,7 @@ A full-stack developer productivity dashboard built with React, Node.js, and Pos
 | Tailwind CSS | 3.4 | Utility-first styling |
 | Framer Motion | 12 | Page transitions & animations |
 | Lenis | 1.3 | Smooth scrolling |
+| Sora + JetBrains Mono | — | Typefaces (via Google Fonts) |
 
 ### Backend
 | Technology | Version | Purpose |
@@ -71,14 +73,24 @@ devtrace/
 │       │   ├── tasks.jsx
 │       │   ├── notes.jsx
 │       │   ├── goals.jsx
-│       │   └── apiTester.jsx
+│       │   ├── apiTester.jsx
+│       │   └── placements.jsx
 │       ├── components/
-│       │   ├── Layout.jsx       # Nav + page wrapper
+│       │   ├── Layout.jsx       # Collapsible sidebar shell (responsive: drawer on mobile)
+│       │   ├── Logo.jsx         # Neon "signal-trace" logo mark
 │       │   ├── Card.jsx         # Reusable card primitive
 │       │   ├── Spinner.jsx      # Loading spinner
-│       │   └── ProtectedRoute.jsx
+│       │   ├── ProtectedRoute.jsx
+│       │   └── placements/      # Placements feature components
+│       │       ├── CompaniesSplit.jsx   # Split-pane company browser
+│       │       ├── ExperiencesTab.jsx
+│       │       ├── QuestionsTab.jsx
+│       │       ├── PrepTab.jsx
+│       │       ├── CalendarTab.jsx
+│       │       ├── InsightsTab.jsx
+│       │       └── shared.jsx
 │       ├── context/
-│       │   ├── AuthContext.jsx  # Auth state (user, token, login, logout)
+│       │   ├── AuthContext.jsx  # Auth state (+ dev-only bypass, env-gated)
 │       │   └── ThemeContext.jsx # Dark/light theme with CSS variables
 │       ├── hooks/
 │       │   └── useAuth.jsx
@@ -86,19 +98,20 @@ devtrace/
 │           ├── LoginPage.jsx
 │           ├── RegisterPage.jsx
 │           ├── DashboardPage.jsx
-│           ├── TasksPage.jsx
-│           ├── NotesPage.jsx
-│           ├── GoalsPage.jsx
+│           ├── WorkspacePage.jsx    # Unified tasks + notes + goals
 │           ├── PomodoroPage.jsx
 │           ├── SnippetsPage.jsx
 │           ├── ApiTesterPage.jsx
 │           ├── ProfilePage.jsx
-│           └── DsaPage.jsx
+│           ├── DsaPage.jsx
+│           └── PlacementsPage.jsx   # GGSIPU interview-prep hub
 │
 ├── backend/                     # Express API
 │   └── src/
 │       ├── server.js            # Entry point
 │       ├── app.js               # Express app, CORS, middleware, routes
+│       ├── data/
+│       │   └── placements.js    # Static placement seed data (companies, experiences, questions)
 │       ├── db/
 │       │   ├── index.js         # pg Pool connection
 │       │   └── migrations/
@@ -106,7 +119,7 @@ devtrace/
 │       │       ├── 002_add_github_oauth.sql
 │       │       └── 003_developer_tools.sql
 │       ├── middleware/
-│       │   └── auth.js          # JWT verifyToken middleware
+│       │   └── auth.js          # JWT verifyToken middleware (+ dev-only bypass, env-gated)
 │       ├── routes/
 │       │   ├── auth.js
 │       │   ├── tasks.js
@@ -116,7 +129,8 @@ devtrace/
 │       │   ├── snippets.js
 │       │   ├── apiTester.js
 │       │   ├── dsa.js
-│       │   └── github.js
+│       │   ├── github.js
+│       │   └── placements.js
 │       └── controllers/
 │           ├── authController.js
 │           ├── tasksController.js
@@ -229,6 +243,8 @@ devtrace/
 | problem_id | INTEGER FK | References dsa_problems |
 | completed | BOOLEAN | Completion status |
 | completed_at | TIMESTAMPTZ | When completed |
+
+> **Placements** currently runs on static seed data ([`backend/src/data/placements.js`](backend/src/data/placements.js)) and has no database table yet. Community-submitted experiences are held in memory and reset on server restart — persisting them is a planned migration.
 
 ---
 
@@ -465,6 +481,44 @@ Authorization: Bearer <jwt_token>
 
 ---
 
+### Placements — `/api/placements`
+
+GGSIPU interview-prep data. Served from static seed data (no DB table yet). All routes require auth. Community-submitted experiences are stored **in memory** and reset on server restart.
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/placements/companies` | Company directory with aggregated stats (experience count, avg rounds, avg selection rate, top topics) |
+| GET | `/api/placements/companies/:slug` | Full company profile + experiences + question bank + topic focus |
+| GET | `/api/placements/experiences` | Experience feed. Filters: `?company=`, `?status=`, `?q=` |
+| POST | `/api/placements/experiences` | Submit an experience (in-memory) |
+| GET | `/api/placements/questions` | Question bank + facets. Filters: `?company=`, `?topic=`, `?round=`, `?difficulty=`, `?q=` |
+| GET | `/api/placements/topics` | Company-wise topic frequency + global topic leaderboard |
+| GET | `/api/placements/prep/:slug` | Auto-generated prep roadmap (round structure, weighted topic checklist, tips) |
+| GET | `/api/placements/hr-questions` | Common HR / behavioral questions |
+| GET | `/api/placements/calendar` | Companies grouped by the months they visit campus |
+| GET | `/api/placements/insights` | Aggregate analytics (top topics, selection-rate leaderboard, bonds, type breakdown) |
+
+**POST /api/placements/experiences**
+```json
+// Request
+{
+  "companySlug": "indus-valley-partners",
+  "role": "Associate Software Engineer",
+  "status": "selected",
+  "eligibility": "6.5 CGPA, no backlogs",
+  "bond": "None",
+  "rounds": [
+    { "title": "Round 1 — OA", "detail": "OOPs, SQL, C#, JS", "topics": ["OOPs", "DBMS/SQL"] }
+  ],
+  "tips": ["Practice SQL joins", "Know your project deeply"]
+}
+
+// Response 201
+{ "id": 1000, "company": "Indus Valley Partners", "source": "community", ... }
+```
+
+---
+
 ## Environment Variables
 
 ### Backend (Render)
@@ -480,10 +534,13 @@ Authorization: Bearer <jwt_token>
 | `FRONTEND_URL` | Deployed frontend URL (CORS + redirects) | `https://devtracedash.netlify.app` |
 | `PORT` | Server port | `5000` |
 
+> **Local-only (never set in production):** `DEV_AUTH_BYPASS=true` (backend) and `REACT_APP_AUTH_BYPASS=true` (frontend) skip authentication for local development. Both are double-gated on `NODE_ENV !== 'production'`, so they cannot activate on Render/Netlify.
+
 ### Frontend (Netlify)
 | Variable | Description | Example |
 |---|---|---|
 | `REACT_APP_API_URL` | Backend API base URL (no trailing slash) | `https://devtracedashboard.onrender.com` |
+| `REACT_APP_GA_MEASUREMENT_ID` | Google Analytics 4 measurement ID (optional) | `G-XXXXXXXXXX` |
 
 ---
 
@@ -491,7 +548,7 @@ Authorization: Bearer <jwt_token>
 
 ### Prerequisites
 - Node.js 20+
-- Docker Desktop
+- Docker Desktop (optional — only for the full DB-backed stack)
 
 ### Setup
 
@@ -519,6 +576,8 @@ cd backend && npm install && npm run dev
 # Terminal 2 — Frontend
 cd frontend && npm install && npm start
 ```
+
+To skip login locally (no DB required for the Placements feature), add `DEV_AUTH_BYPASS=true` to `backend/.env` and `REACT_APP_AUTH_BYPASS=true` to `frontend/.env`.
 
 ---
 
