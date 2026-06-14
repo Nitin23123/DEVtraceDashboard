@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { Logo } from './Logo';
+import Footer from './Footer';
 
 const I = (paths) => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -98,7 +99,7 @@ const Layout = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
       {/* Mobile top bar */}
       <header
         className="lg:hidden sticky top-0 z-40 h-14 flex items-center justify-between px-4"
@@ -147,10 +148,11 @@ const Layout = () => {
       )}
 
       {/* Content (rail width reserved on desktop only) */}
-      <div className="lg:pl-[64px]">
-        <main>
+      <div className="flex-1 lg:pl-[64px] flex flex-col">
+        <main className="flex-1">
           <Outlet />
         </main>
+        <Footer />
       </div>
     </div>
   );
