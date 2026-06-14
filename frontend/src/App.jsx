@@ -14,6 +14,7 @@ import ProfilePage from './pages/ProfilePage';
 import PomodoroPage from './pages/PomodoroPage';
 import SnippetsPage from './pages/SnippetsPage';
 import DsaPage from './pages/DsaPage';
+import PlacementsPage from './pages/PlacementsPage';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -38,6 +39,7 @@ function AnimatedRoutes() {
           <Route path="/pomodoro"  element={<PomodoroPage />} />
           <Route path="/snippets"  element={<SnippetsPage />} />
           <Route path="/dsa"       element={<DsaPage />} />
+          <Route path="/placements" element={<PlacementsPage />} />
         </Route>
 
         {/* Redirects */}

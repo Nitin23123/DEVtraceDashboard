@@ -49,6 +49,7 @@ app.use('/api/tester',    require('./routes/apiTester'));
 app.use('/api/dashboard', require('./routes/dashboard'));
 app.use('/api/snippets',  require('./routes/snippets'));
 app.use('/api/dsa',       require('./routes/dsa'));
+app.use('/api/placements', require('./routes/placements'));
 
 const { authRouter: githubAuthRouter, profileRouter: githubProfileRouter } = require('./routes/github');
 app.use('/api/auth',    githubAuthRouter);

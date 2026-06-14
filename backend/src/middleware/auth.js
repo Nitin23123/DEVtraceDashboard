@@ -6,6 +6,14 @@ const jwt = require('jsonwebtoken');
  * Returns 401 if token is missing, malformed, or expired.
  */
 const verifyToken = (req, res, next) => {
+  // DEV-ONLY auth bypass for local use. Active only when NOT in production AND the
+  // explicit DEV_AUTH_BYPASS flag is set. Render sets NODE_ENV=production, so this
+  // can never fire in the deployed backend even if the flag were present.
+  if (process.env.NODE_ENV !== 'production' && process.env.DEV_AUTH_BYPASS === 'true') {
+    req.user = { id: 1, email: 'dev@local' };
+    return next();
+  }
+
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1]; // "Bearer <token>"
 

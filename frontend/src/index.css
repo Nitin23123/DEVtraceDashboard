@@ -1,50 +1,76 @@
+/* Neon Grid — Sora (geometric display/body) + JetBrains Mono (techy accents). */
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* CSS variable fallback defaults — ThemeContext overrides on mount */
 :root {
-  --bg: #0a0a0a;
-  --surface: #111111;
-  --surface-2: #1a1a1a;
-  --text: #ffffff;
-  --accent: #ffffff;
-  --accent-fg: #0a0a0a;
-  --border: #2a2a2a;
-  --muted: #888888;
+  --bg: #070A12;
+  --surface: #0D1320;
+  --surface-2: #141C2E;
+  --text: #E7F0FF;
+  --text-soft: #9FB2CE;
+  --accent: #22D3EE;
+  --accent-2: #A78BFA;
+  --accent-fg: #04070D;
+  --border: #1E2A40;
+  --muted: #647389;
+  --glass: rgba(14, 21, 36, 0.6);
 }
 
-/* Global resets */
-*, *::before, *::after {
-  box-sizing: border-box;
-}
+*, *::before, *::after { box-sizing: border-box; }
 
 body {
   margin: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background-color: var(--bg);
   color: var(--text);
   transition: background-color 0.2s, color 0.2s;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 5px; }
+/* Neon glow halos behind everything */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(60% 50% at 8% -5%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 60%),
+    radial-gradient(55% 50% at 105% 110%, color-mix(in srgb, var(--accent-2) 16%, transparent), transparent 60%);
+  pointer-events: none;
+}
+
+/* Faint tech grid, fading toward the bottom */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--accent) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--accent) 6%, transparent) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(125% 90% at 50% 0%, #000, transparent 72%);
+  mask-image: radial-gradient(125% 90% at 50% 0%, #000, transparent 72%);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+::selection { background: color-mix(in srgb, var(--accent) 35%, transparent); color: var(--text); }
+
+.mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+.tnum { font-variant-numeric: tabular-nums; }
+
+::-webkit-scrollbar { width: 7px; height: 7px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-/* Input / textarea / select / button base */
-input, textarea, select, button {
-  font-family: inherit;
-}
+input, textarea, select, button { font-family: inherit; }
 
-/* Focus ring */
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-/* Inter font */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }

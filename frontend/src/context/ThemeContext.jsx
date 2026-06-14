@@ -2,28 +2,34 @@ import { createContext, useContext, useEffect, useState } from 'react';
 
 const ThemeContext = createContext();
 
-// Black & White — dark-first theme
+// "Neon Grid" — deep blue-black with cyan + violet neon accents and glassy panels. Dark-first.
 const DARK_VARS = {
-  '--bg': '#0a0a0a',
-  '--surface': '#111111',
-  '--surface-2': '#1a1a1a',
-  '--text': '#ffffff',
-  '--accent': '#ffffff',
-  '--accent-fg': '#0a0a0a',
-  '--border': '#2a2a2a',
-  '--muted': '#888888',
+  '--bg': '#070A12',
+  '--surface': '#0D1320',
+  '--surface-2': '#141C2E',
+  '--text': '#E7F0FF',
+  '--text-soft': '#9FB2CE',
+  '--accent': '#22D3EE',     // neon cyan
+  '--accent-2': '#A78BFA',   // neon violet
+  '--accent-fg': '#04070D',
+  '--border': '#1E2A40',
+  '--muted': '#647389',
+  '--glass': 'rgba(14, 21, 36, 0.6)',
 };
 
-// Light variant
+// Cool light variant.
 const LIGHT_VARS = {
-  '--bg': '#fafafa',
-  '--surface': '#ffffff',
-  '--surface-2': '#f0f0f0',
-  '--text': '#0a0a0a',
-  '--accent': '#0a0a0a',
-  '--accent-fg': '#ffffff',
-  '--border': '#e0e0e0',
-  '--muted': '#666666',
+  '--bg': '#F1F5FB',
+  '--surface': '#FFFFFF',
+  '--surface-2': '#E9F0F8',
+  '--text': '#0B1220',
+  '--text-soft': '#3A4658',
+  '--accent': '#0891B2',
+  '--accent-2': '#7C3AED',
+  '--accent-fg': '#FFFFFF',
+  '--border': '#D7E0EE',
+  '--muted': '#697686',
+  '--glass': 'rgba(255, 255, 255, 0.6)',
 };
 
 function applyTheme(theme) {
