@@ -518,69 +518,6 @@ GGSIPU interview-prep data. Served from static seed data (no DB table yet). All 
 ```
 
 ---
-
-## Environment Variables
-
-### Backend (Render)
-| Variable | Description | Example |
-|---|---|---|
-| `DATABASE_URL` | PostgreSQL connection string | `postgresql://user:pass@host/db?sslmode=require` |
-| `NODE_ENV` | Environment | `production` |
-| `JWT_SECRET` | Secret for signing JWTs | `any-long-random-string` |
-| `JWT_EXPIRES_IN` | JWT expiry | `24h` |
-| `GITHUB_TOKEN` | Personal access token for GitHub API | `ghp_...` |
-| `GITHUB_CLIENT_ID` | GitHub OAuth app client ID | `Ov23li...` |
-| `GITHUB_CLIENT_SECRET` | GitHub OAuth app secret | `abc123...` |
-| `FRONTEND_URL` | Deployed frontend URL (CORS + redirects) | `https://devtracedash.netlify.app` |
-| `PORT` | Server port | `5000` |
-
-> **Local-only (never set in production):** `DEV_AUTH_BYPASS=true` (backend) and `REACT_APP_AUTH_BYPASS=true` (frontend) skip authentication for local development. Both are double-gated on `NODE_ENV !== 'production'`, so they cannot activate on Render/Netlify.
-
-### Frontend (Netlify)
-| Variable | Description | Example |
-|---|---|---|
-| `REACT_APP_API_URL` | Backend API base URL (no trailing slash) | `https://devtracedashboard.onrender.com` |
-| `REACT_APP_GA_MEASUREMENT_ID` | Google Analytics 4 measurement ID (optional) | `G-XXXXXXXXXX` |
-
----
-
-## Local Development
-
-### Prerequisites
-- Node.js 20+
-- Docker Desktop (optional — only for the full DB-backed stack)
-
-### Setup
-
-```bash
-# Clone the repo
-git clone https://github.com/Nitin23123/DEVtraceDashboard.git
-cd DEVtraceDashboard
-
-# Start all services (postgres + backend + frontend)
-docker-compose up -d
-```
-
-| Service | URL |
-|---|---|
-| Frontend | http://localhost:3000 |
-| Backend | http://localhost:5000 |
-| Health check | http://localhost:5000/health |
-
-### Without Docker
-
-```bash
-# Terminal 1 — Backend
-cd backend && npm install && npm run dev
-
-# Terminal 2 — Frontend
-cd frontend && npm install && npm start
-```
-
-To skip login locally (no DB required for the Placements feature), add `DEV_AUTH_BYPASS=true` to `backend/.env` and `REACT_APP_AUTH_BYPASS=true` to `frontend/.env`.
-
----
-
 ## Deployment
 
 | Service | Platform |
@@ -589,20 +526,7 @@ To skip login locally (no DB required for the Placements feature), add `DEV_AUTH
 | Backend | [Render](https://render.com) — root dir `backend`, build `npm install`, start `npm start` |
 | Frontend | [Netlify](https://netlify.com) — root dir `frontend`, build `npm run build`, publish `frontend/build` |
 
-**Required after deploy:**
-- Set `FRONTEND_URL` on Render to your Netlify URL
-- Update GitHub OAuth app callback to `https://<render-url>/api/auth/github/callback`
 
----
-
-## GitHub OAuth Setup
-
-1. Go to GitHub → Settings → Developer Settings → OAuth Apps → New OAuth App
-2. **Homepage URL**: `https://devtracedash.netlify.app`
-3. **Authorization callback URL**: `https://devtracedashboard.onrender.com/api/auth/github/callback`
-4. Copy Client ID and Secret into Render environment variables
-
----
 
 ## License
 
