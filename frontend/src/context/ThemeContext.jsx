@@ -2,60 +2,93 @@ import { createContext, useContext, useEffect, useState } from 'react';
 
 const ThemeContext = createContext();
 
-// "Neon Grid" — deep blue-black with cyan + violet neon accents and glassy panels. Dark-first.
-const DARK_VARS = {
-  '--bg': '#070A12',
-  '--surface': '#0D1320',
-  '--surface-2': '#141C2E',
-  '--text': '#E7F0FF',
-  '--text-soft': '#9FB2CE',
-  '--accent': '#22D3EE',     // neon cyan
-  '--accent-2': '#A78BFA',   // neon violet
-  '--accent-fg': '#04070D',
-  '--border': '#1E2A40',
-  '--muted': '#647389',
-  '--glass': 'rgba(14, 21, 36, 0.6)',
+/**
+ * Each theme is just a map of the SAME CSS custom properties. Every component
+ * reads colors via var(--bg), var(--accent), etc. — so swapping this map on
+ * <html> instantly restyles the entire app with zero per-component changes.
+ */
+const THEMES = {
+  neon: {
+    label: 'Neon',
+    vars: {
+      '--bg': '#070A12',
+      '--surface': '#0D1320',
+      '--surface-2': '#141C2E',
+      '--text': '#E7F0FF',
+      '--text-soft': '#9FB2CE',
+      '--accent': '#22D3EE',
+      '--accent-2': '#A78BFA',
+      '--accent-fg': '#04070D',
+      '--border': '#1E2A40',
+      '--muted': '#647389',
+      '--glass': 'rgba(14, 21, 36, 0.6)',
+    },
+  },
+  // Pure black & white — monochrome (grayscale only, no hue).
+  black: {
+    label: 'Black',
+    vars: {
+      '--bg': '#0A0A0A',
+      '--surface': '#141414',
+      '--surface-2': '#1F1F1F',
+      '--text': '#FFFFFF',
+      '--text-soft': '#B8B8B8',
+      '--accent': '#FFFFFF',
+      '--accent-2': '#9A9A9A',
+      '--accent-fg': '#0A0A0A',
+      '--border': '#2A2A2A',
+      '--muted': '#787878',
+      '--glass': 'rgba(20, 20, 20, 0.62)',
+    },
+  },
+  white: {
+    label: 'White',
+    vars: {
+      '--bg': '#F6F6F6',
+      '--surface': '#FFFFFF',
+      '--surface-2': '#ECECEC',
+      '--text': '#0A0A0A',
+      '--text-soft': '#3F3F3F',
+      '--accent': '#0A0A0A',
+      '--accent-2': '#5A5A5A',
+      '--accent-fg': '#FFFFFF',
+      '--border': '#E3E3E3',
+      '--muted': '#767676',
+      '--glass': 'rgba(255, 255, 255, 0.72)',
+    },
+  },
 };
 
-// Cool light variant.
-const LIGHT_VARS = {
-  '--bg': '#F1F5FB',
-  '--surface': '#FFFFFF',
-  '--surface-2': '#E9F0F8',
-  '--text': '#0B1220',
-  '--text-soft': '#3A4658',
-  '--accent': '#0891B2',
-  '--accent-2': '#7C3AED',
-  '--accent-fg': '#FFFFFF',
-  '--border': '#D7E0EE',
-  '--muted': '#697686',
-  '--glass': 'rgba(255, 255, 255, 0.6)',
-};
+const ORDER = ['neon', 'black', 'white'];
 
-function applyTheme(theme) {
-  const vars = theme === 'dark' ? DARK_VARS : LIGHT_VARS;
-  Object.entries(vars).forEach(([k, v]) => {
-    document.documentElement.style.setProperty(k, v);
+// Write every variable of the chosen theme onto the document root.
+function applyTheme(key) {
+  const theme = THEMES[key] || THEMES.neon;
+  Object.entries(theme.vars).forEach(([name, value]) => {
+    document.documentElement.style.setProperty(name, value);
   });
-  document.documentElement.setAttribute('data-theme', theme);
+  document.documentElement.setAttribute('data-theme', key);
 }
 
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState(() => {
+  const [theme, setThemeState] = useState(() => {
     const stored = localStorage.getItem('theme');
-    if (stored) return stored;
-    return 'dark'; // Midnight Indigo is dark-first
+    return THEMES[stored] ? stored : 'neon';
   });
 
+  // Apply + persist whenever the active theme changes.
   useEffect(() => {
     applyTheme(theme);
     localStorage.setItem('theme', theme);
   }, [theme]);
 
-  const toggleTheme = () => setTheme(t => t === 'dark' ? 'light' : 'dark');
+  const setTheme = (key) => { if (THEMES[key]) setThemeState(key); };
+  const cycleTheme = () => setThemeState((t) => ORDER[(ORDER.indexOf(t) + 1) % ORDER.length]);
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider
+      value={{ theme, label: THEMES[theme].label, themes: THEMES, order: ORDER, setTheme, cycleTheme, toggleTheme: cycleTheme }}
+    >
       {children}
     </ThemeContext.Provider>
   );

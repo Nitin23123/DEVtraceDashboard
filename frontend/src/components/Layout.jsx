@@ -4,6 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import { Logo } from './Logo';
 import Footer from './Footer';
 import { useDisplayName } from '../context/DisplayNameContext';
+import ThemeToggle from './ThemeToggle';
 
 const I = (paths) => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -112,12 +113,15 @@ const Layout = () => {
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
         </button>
         <span className="flex items-center gap-2"><Logo size={24} /><Wordmark /></span>
-        <span
-          className="h-7 w-7 rounded-full flex items-center justify-center text-xs font-semibold"
-          style={{ backgroundColor: 'color-mix(in srgb, var(--accent) 18%, transparent)', color: 'var(--accent)' }}
-        >
-          {(name || '?')[0].toUpperCase()}
-        </span>
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
+          <span
+            className="h-7 w-7 rounded-full flex items-center justify-center text-xs font-semibold"
+            style={{ backgroundColor: 'color-mix(in srgb, var(--accent) 18%, transparent)', color: 'var(--accent)' }}
+          >
+            {(name || '?')[0].toUpperCase()}
+          </span>
+        </div>
       </header>
 
       {/* Desktop collapsible icon rail */}
@@ -128,6 +132,9 @@ const Layout = () => {
         <div className="h-14 flex items-center gap-3 px-[17px] shrink-0">
           <Logo size={30} />
           <span className="opacity-0 group-hover:opacity-100 transition-opacity"><Wordmark /></span>
+        </div>
+        <div className="px-3 pb-2 mb-1" style={{ borderBottom: '1px solid var(--border)' }}>
+          <ThemeToggle variant="item" collapsed />
         </div>
         <NavList collapsed />
         <SidebarFooter collapsed name={name} email={user?.email} logout={logout} />
