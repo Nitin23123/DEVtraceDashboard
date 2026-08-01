@@ -10,7 +10,9 @@ node_modules/
 frontend/build/
 backend/dist/
 
-# IDE & AI Assistant metadata
+# Skills & AI metadata
+skills/
+skills-lock.json
 .*
 !.gitignore
 !.github
