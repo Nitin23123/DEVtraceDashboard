@@ -9,3 +9,8 @@ node_modules/
 # Build outputs
 frontend/build/
 backend/dist/
+
+# IDE & AI Assistant metadata
+.*
+!.gitignore
+!.github
