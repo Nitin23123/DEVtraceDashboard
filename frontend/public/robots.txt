@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Allow: /placements
+Allow: /dsa
+
+# Private authenticated pages — exclude from indexing
+Disallow: /dashboard
+Disallow: /workspace
+Disallow: /api-tester
+Disallow: /profile
+Disallow: /pomodoro
+Disallow: /snippets
+
+Sitemap: https://devtracedash.netlify.app/sitemap.xml

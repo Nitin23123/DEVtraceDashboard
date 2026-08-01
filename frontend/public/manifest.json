@@ -1,0 +1,49 @@
+{
+  "short_name": "DEVtrace",
+  "name": "DEVtrace — Developer Productivity & GGSIPU Placement Dashboard",
+  "description": "All-in-one developer productivity dashboard with DSA tracker, Pomodoro timer, API tester, GitHub analytics, and GGSIPU campus placement hub for USICT, MAIT, MSIT, BVCOE and BPIT students.",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0B0F1A",
+  "theme_color": "#0B0F1A",
+  "categories": ["productivity", "education", "developer tools"],
+  "lang": "en-IN",
+  "dir": "ltr",
+  "scope": "/",
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "Go to your personal developer dashboard",
+      "url": "/dashboard"
+    },
+    {
+      "name": "IPU Placements",
+      "short_name": "Placements",
+      "description": "Browse GGSIPU campus placement company directory and interview experiences",
+      "url": "/placements"
+    },
+    {
+      "name": "DSA Tracker",
+      "short_name": "DSA",
+      "description": "Track your 79-problem DSA curriculum progress",
+      "url": "/dsa"
+    },
+    {
+      "name": "Workspace",
+      "short_name": "Tasks",
+      "description": "Manage your tasks, notes and goals",
+      "url": "/workspace"
+    }
+  ]
+}

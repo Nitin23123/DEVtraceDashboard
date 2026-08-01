@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Landing Page -->
+  <url>
+    <loc>https://devtracedash.netlify.app/</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://devtracedash.netlify.app/" />
+  </url>
+
+  <!-- GGSIPU Placements Hub — highest public value page -->
+  <url>
+    <loc>https://devtracedash.netlify.app/placements</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+  </url>
+
+  <!-- DSA Curriculum Tracker -->
+  <url>
+    <loc>https://devtracedash.netlify.app/dsa</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Login / Register — public auth pages -->
+  <url>
+    <loc>https://devtracedash.netlify.app/login</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://devtracedash.netlify.app/register</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+</urlset>
