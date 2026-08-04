@@ -1,4 +1,4 @@
-# DevTrace
+# DevTrace™
 
 **The workspace for GGSIPU engineering students chasing a placement.**
 
@@ -63,4 +63,10 @@ Free forever for individuals. No credit card, no trial.
 
 ---
 
-Built with React, Node.js and PostgreSQL. Licensed under MIT.
+Built with React, Node.js and PostgreSQL.
+
+## License & trademark
+
+Source code is released under the [MIT License](LICENSE) — © 2026 Nitin Tanwar.
+
+"DevTrace"™ and the DevTrace logo are unregistered trademarks of Nitin Tanwar. The MIT licence covers the code, not the name or branding: you're free to fork and redistribute, but please give your version a distinct name. See the [trademark notice](LICENSE) for details.

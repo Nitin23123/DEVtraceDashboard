@@ -1,0 +1,45 @@
+MIT License
+
+Copyright (c) 2026 Nitin Tanwar
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+TRADEMARK NOTICE
+
+The MIT licence above covers the source code of this project. It does not
+grant any right to use the name "DevTrace", the DevTrace logo, or any
+confusingly similar name or mark.
+
+"DevTrace"™ and the DevTrace logo are unregistered trademarks of Nitin Tanwar.
+All rights in those marks are reserved.
+
+You may:
+  - fork, modify and redistribute the code under the MIT terms above
+  - state factually that your work is derived from or based on DevTrace
+
+You may not, without prior written permission:
+  - use "DevTrace" or a confusingly similar name for your fork, product or
+    service
+  - use the DevTrace logo or wordmark as the branding of your distribution
+  - suggest that your work is endorsed by, affiliated with, or an official
+    version of DevTrace
+
+If you distribute a modified version, please give it a distinct name.

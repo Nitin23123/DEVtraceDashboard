@@ -91,7 +91,7 @@ export default function Footer() {
           className="mt-9 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs"
           style={{ borderTop: '1px solid var(--border)', color: 'var(--muted)' }}
         >
-          <span>© {year} DevTrace · Built by {DEV.name}</span>
+          <span>© {year} {DEV.name} · DevTrace™ · MIT licensed</span>
           <a
             href={DEV.repo}
             target="_blank"

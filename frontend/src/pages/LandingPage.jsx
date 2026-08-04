@@ -958,7 +958,7 @@ export default function LandingPage() {
           className="max-w-6xl mx-auto mt-14 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 mono text-[11px]"
           style={{ borderTop: `1px solid ${C.border}`, color: C.muted }}
         >
-          <span>© {new Date().getFullYear()} DevTrace. Built for developers.</span>
+          <span>© {new Date().getFullYear()} Nitin Tanwar · DevTrace™ · MIT licensed</span>
           <span>React · Node.js · PostgreSQL</span>
         </div>
       </footer>

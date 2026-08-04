@@ -2,6 +2,8 @@
   "name": "devtrackr-backend",
   "version": "1.0.0",
   "description": "DevTrackr Express API",
+  "author": "Nitin Tanwar",
+  "license": "MIT",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
