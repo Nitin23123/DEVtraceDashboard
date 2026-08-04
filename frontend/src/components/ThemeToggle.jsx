@@ -2,6 +2,12 @@ import { useTheme } from '../context/ThemeContext';
 
 // One icon per theme — shows what's active; clicking cycles to the next.
 const ICON = {
+  trace: (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 14l4-4 3 3 5-6 4 4" />
+      <path d="M3 20h18" />
+    </svg>
+  ),
   neon: (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       <path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z" />
@@ -42,7 +48,7 @@ export default function ThemeToggle({ className = '', variant = 'icon', collapse
         onMouseEnter={onEnter}
         onMouseLeave={onLeave}
       >
-        <span className="shrink-0 w-5 flex justify-center">{ICON[theme] || ICON.neon}</span>
+        <span className="shrink-0 w-5 flex justify-center">{ICON[theme] || ICON.trace}</span>
         <span className={`text-sm font-medium whitespace-nowrap ${collapsed ? 'opacity-0 group-hover:opacity-100 transition-opacity' : ''}`}>
           {label}
         </span>
@@ -60,7 +66,7 @@ export default function ThemeToggle({ className = '', variant = 'icon', collapse
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
     >
-      {ICON[theme] || ICON.neon}
+      {ICON[theme] || ICON.trace}
     </button>
   );
 }

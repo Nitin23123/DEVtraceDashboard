@@ -2,7 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getExperiences, createExperience, getCompanies } from '../../api/placements';
 import Spinner from '../Spinner';
-import { Badge, TopicChip, modalVariants, inputClass, inputStyle, SectionEmpty } from './shared';
+import { Badge, TopicChip, inputClass, inputStyle, SectionEmpty } from './shared';
+import { Modal } from '../ui';
 
 const TOPIC_OPTIONS = [
   'DSA', 'DBMS/SQL', 'OOPs', 'JavaScript', 'React', 'System Design',
@@ -56,19 +57,9 @@ function SubmitModal({ token, companies, onClose, onCreated }) {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      className="fixed inset-0 flex items-center justify-center z-50 p-4"
-      style={{ backgroundColor: 'rgba(0,0,0,0.75)' }}
-      onClick={onClose}
-    >
-      <motion.div
-        variants={modalVariants} initial="initial" animate="animate" exit="exit"
-        className="w-full max-w-lg rounded-xl border p-6 max-h-[90vh] overflow-y-auto"
-        style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--border)' }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h2 className="text-lg font-semibold text-white mb-1">Share an interview experience</h2>
+    <Modal open onClose={onClose}>
+      <div className="p-6 max-h-[85vh] overflow-y-auto" data-lenis-prevent>
+        <h2 className="text-lg font-semibold mb-1" style={{ color: 'var(--text)' }}>Share an interview experience</h2>
         <p className="text-xs mb-5" style={{ color: 'var(--muted)' }}>
           Help juniors at GGSIPU. Note: stored in-memory for now — it resets on server restart until persistence is added.
         </p>
@@ -171,16 +162,16 @@ function SubmitModal({ token, companies, onClose, onCreated }) {
             <textarea value={form.tips} onChange={(e) => setForm({ ...form, tips: e.target.value })} rows={3} placeholder="Practice SQL joins&#10;Know your project deeply" className={inputClass} style={{ ...inputStyle, resize: 'none' }} />
           </div>
 
-          {error && <p className="text-red-400 text-sm">{error}</p>}
+          {error && <p className="text-sm" style={{ color: '#F87171' }}>{error}</p>}
           <div className="flex gap-3 pt-1">
-            <button type="submit" disabled={saving} className="px-4 py-2 rounded-lg text-sm font-semibold transition hover:opacity-90 disabled:opacity-50" style={{ backgroundColor: 'var(--accent)', color: 'var(--accent-fg)' }}>
+            <button type="submit" disabled={saving} className="px-4 py-2 rounded-lg text-sm font-semibold transition hover:opacity-90 disabled:opacity-50" style={{ backgroundImage: 'var(--grad)', color: 'var(--accent-fg)' }}>
               {saving ? 'Posting…' : 'Post experience'}
             </button>
             <button type="button" onClick={onClose} className="px-4 py-2 rounded-lg text-sm border transition" style={{ borderColor: 'var(--border)', color: 'var(--muted)' }}>Cancel</button>
           </div>
         </form>
-      </motion.div>
-    </motion.div>
+      </div>
+    </Modal>
   );
 }
 

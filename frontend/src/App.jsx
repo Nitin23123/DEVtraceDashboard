@@ -4,6 +4,7 @@ import { AnimatePresence } from 'framer-motion';
 import { AuthProvider } from './context/AuthContext';
 import { DisplayNameProvider } from './context/DisplayNameContext';
 import { trackPageView } from './analytics';
+import { resetScroll } from './lenis';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import Layout from './components/Layout';
 import LandingPage from './pages/LandingPage';
@@ -17,6 +18,7 @@ import PomodoroPage from './pages/PomodoroPage';
 import SnippetsPage from './pages/SnippetsPage';
 import DsaPage from './pages/DsaPage';
 import PlacementsPage from './pages/PlacementsPage';
+import DevCardPage from './pages/DevCardPage';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -24,6 +26,11 @@ function AnimatedRoutes() {
   useEffect(() => {
     trackPageView(location.pathname + location.search);
   }, [location.pathname, location.search]);
+
+  // Land at the top of every new route — Lenis keeps scroll position otherwise.
+  useEffect(() => {
+    resetScroll();
+  }, [location.pathname]);
 
   return (
     <AnimatePresence mode="wait" initial={false}>
@@ -43,6 +50,7 @@ function AnimatedRoutes() {
           <Route path="/snippets"  element={<SnippetsPage />} />
           <Route path="/dsa"       element={<DsaPage />} />
           <Route path="/placements" element={<PlacementsPage />} />
+          <Route path="/dev-card" element={<DevCardPage />} />
         </Route>
 
         {/* Redirects */}

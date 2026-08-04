@@ -12,8 +12,8 @@ export const modalVariants = {
   exit: { opacity: 0, scale: 0.96, transition: { duration: 0.14 } },
 };
 
-export const inputClass = 'w-full px-4 py-2.5 rounded-lg text-sm text-white transition focus:outline-none';
-export const inputStyle = { backgroundColor: 'var(--surface-2)', border: '1px solid var(--border)' };
+export const inputClass = 'w-full px-3.5 py-2.5 rounded-lg text-sm transition focus:outline-none';
+export const inputStyle = { backgroundColor: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text)' };
 
 export const DIFFICULTY_COLOR = { Easy: '#22c55e', Medium: '#f59e0b', Hard: '#ef4444' };
 

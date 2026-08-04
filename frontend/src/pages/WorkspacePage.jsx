@@ -5,6 +5,7 @@ import { getTasks, createTask, updateTask, deleteTask } from '../api/tasks';
 import { getNotes, createNote, updateNote, deleteNote } from '../api/notes';
 import { getGoals, createGoal, completeGoal, deleteGoal } from '../api/goals';
 import Spinner from '../components/Spinner';
+import { Modal } from '../components/ui';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
@@ -28,20 +29,14 @@ const pageVariants = {
   exit:    { opacity: 0, y: -8, transition: { duration: 0.15 } },
 };
 
-const modalVariants = {
-  initial: { opacity: 0, scale: 0.96 },
-  animate: { opacity: 1, scale: 1, transition: { duration: 0.18, ease: 'easeOut' } },
-  exit:    { opacity: 0, scale: 0.96, transition: { duration: 0.14 } },
-};
-
 const tabContentVariants = {
   initial: { opacity: 0, x: 8 },
   animate: { opacity: 1, x: 0, transition: { duration: 0.2, ease: 'easeOut' } },
   exit:    { opacity: 0, x: -8, transition: { duration: 0.12 } },
 };
 
-const inputClass = 'w-full px-4 py-2.5 rounded-lg text-sm text-white transition focus:outline-none';
-const inputStyle = { backgroundColor: 'var(--surface-2)', border: '1px solid var(--border)' };
+const inputClass = 'w-full px-4 py-2.5 rounded-lg text-sm transition focus:outline-none';
+const inputStyle = { backgroundColor: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text)' };
 
 const tabs = [
   { id: 'tasks', label: 'Tasks', icon: (
@@ -492,21 +487,9 @@ export default function WorkspacePage() {
         {/* Task Modal */}
         <AnimatePresence>
           {(showTaskModal || editTask) && (
-            <motion.div
-              key="task-overlay"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="fixed inset-0 flex items-center justify-center z-50 p-4"
-              style={{ backgroundColor: 'rgba(0,0,0,0.75)' }}
-              onClick={closeTaskModal}
-            >
-              <motion.div
-                key="task-modal"
-                variants={modalVariants} initial="initial" animate="animate" exit="exit"
-                className="w-full max-w-md rounded-xl border p-6"
-                style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--border)' }}
-                onClick={e => e.stopPropagation()}
-              >
-                <h2 className="text-lg font-semibold text-white mb-5">{editTask ? 'Edit Task' : 'New Task'}</h2>
+            <Modal open onClose={closeTaskModal} maxWidth="max-w-md">
+              <div className="p-6">
+                <h2 className="text-lg font-semibold mb-5" style={{ color: 'var(--text)' }}>{editTask ? 'Edit Task' : 'New Task'}</h2>
                 <form onSubmit={handleTaskSubmit} className="space-y-4">
                   <div className="space-y-1.5">
                     <label className="text-sm font-medium text-white">Title</label>
@@ -539,29 +522,17 @@ export default function WorkspacePage() {
                     </button>
                   </div>
                 </form>
-              </motion.div>
-            </motion.div>
+              </div>
+            </Modal>
           )}
         </AnimatePresence>
 
         {/* Note Modal */}
         <AnimatePresence>
           {(showNoteModal || editNote) && (
-            <motion.div
-              key="note-overlay"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="fixed inset-0 flex items-center justify-center z-50 p-4"
-              style={{ backgroundColor: 'rgba(0,0,0,0.75)' }}
-              onClick={closeNoteModal}
-            >
-              <motion.div
-                key="note-modal"
-                variants={modalVariants} initial="initial" animate="animate" exit="exit"
-                className="w-full max-w-md rounded-xl border p-6"
-                style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--border)' }}
-                onClick={e => e.stopPropagation()}
-              >
-                <h2 className="text-lg font-semibold text-white mb-5">{editNote ? 'Edit Note' : 'New Note'}</h2>
+            <Modal open onClose={closeNoteModal} maxWidth="max-w-md">
+              <div className="p-6">
+                <h2 className="text-lg font-semibold mb-5" style={{ color: 'var(--text)' }}>{editNote ? 'Edit Note' : 'New Note'}</h2>
                 <form onSubmit={handleNoteSubmit} className="space-y-4">
                   <div className="space-y-1.5">
                     <label className="text-sm font-medium text-white">Title</label>
@@ -580,29 +551,17 @@ export default function WorkspacePage() {
                     </button>
                   </div>
                 </form>
-              </motion.div>
-            </motion.div>
+              </div>
+            </Modal>
           )}
         </AnimatePresence>
 
         {/* Goal Modal */}
         <AnimatePresence>
           {showGoalModal && (
-            <motion.div
-              key="goal-overlay"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="fixed inset-0 flex items-center justify-center z-50 p-4"
-              style={{ backgroundColor: 'rgba(0,0,0,0.75)' }}
-              onClick={closeGoalModal}
-            >
-              <motion.div
-                key="goal-modal"
-                variants={modalVariants} initial="initial" animate="animate" exit="exit"
-                className="w-full max-w-md rounded-xl border p-6"
-                style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--border)' }}
-                onClick={e => e.stopPropagation()}
-              >
-                <h2 className="text-lg font-semibold text-white mb-5">New Goal</h2>
+            <Modal open onClose={closeGoalModal} maxWidth="max-w-md">
+              <div className="p-6">
+                <h2 className="text-lg font-semibold mb-5" style={{ color: 'var(--text)' }}>New Goal</h2>
                 <form onSubmit={handleGoalSubmit} className="space-y-4">
                   <div className="space-y-1.5">
                     <label className="text-sm font-medium text-white">Title</label>
@@ -625,8 +584,8 @@ export default function WorkspacePage() {
                     </button>
                   </div>
                 </form>
-              </motion.div>
-            </motion.div>
+              </div>
+            </Modal>
           )}
         </AnimatePresence>
 

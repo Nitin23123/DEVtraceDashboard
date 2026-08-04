@@ -7,17 +7,18 @@
 
 /* CSS variable fallback defaults — ThemeContext overrides on mount */
 :root {
-  --bg: #070A12;
-  --surface: #0D1320;
-  --surface-2: #141C2E;
-  --text: #E7F0FF;
-  --text-soft: #9FB2CE;
-  --accent: #22D3EE;
-  --accent-2: #A78BFA;
-  --accent-fg: #04070D;
-  --border: #1E2A40;
-  --muted: #647389;
-  --glass: rgba(14, 21, 36, 0.6);
+  --bg: #0A0A0F;
+  --surface: #101017;
+  --surface-2: #16161F;
+  --text: #F2F2F7;
+  --text-soft: #B4B4C4;
+  --accent: #A5B4FC;
+  --accent-2: #F0A08C;
+  --accent-fg: #0B0713;
+  --border: #1E1E28;
+  --muted: #8A8A9E;
+  --glass: rgba(16, 16, 23, 0.68);
+  --grad: linear-gradient(100deg, #8B5CF6 0%, #A5B4FC 45%, #F0A08C 100%);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -40,8 +41,8 @@ body::before {
   inset: 0;
   z-index: -2;
   background:
-    radial-gradient(60% 50% at 8% -5%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 60%),
-    radial-gradient(55% 50% at 105% 110%, color-mix(in srgb, var(--accent-2) 16%, transparent), transparent 60%);
+    radial-gradient(60% 50% at 8% -5%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 60%),
+    radial-gradient(55% 50% at 105% 110%, color-mix(in srgb, var(--accent-2) 9%, transparent), transparent 60%);
   pointer-events: none;
 }
 
@@ -57,9 +58,18 @@ body::after {
   background-size: 46px 46px;
   -webkit-mask-image: radial-gradient(125% 90% at 50% 0%, #000, transparent 72%);
   mask-image: radial-gradient(125% 90% at 50% 0%, #000, transparent 72%);
-  opacity: 0.55;
+  opacity: 0.22;
   pointer-events: none;
 }
+
+/* Themeable gradient helpers used across dashboard surfaces. */
+.grad-text {
+  background-image: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.grad-fill { background-image: var(--grad); }
 
 ::selection { background: color-mix(in srgb, var(--accent) 35%, transparent); color: var(--text); }
 

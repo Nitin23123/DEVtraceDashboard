@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
 import Spinner from '../components/Spinner';
+import { Modal } from '../components/ui';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
@@ -23,14 +24,8 @@ const pageVariants = {
   exit:    { opacity: 0, y: -8, transition: { duration: 0.15 } },
 };
 
-const modalVariants = {
-  initial: { opacity: 0, scale: 0.96 },
-  animate: { opacity: 1, scale: 1, transition: { duration: 0.18, ease: 'easeOut' } },
-  exit:    { opacity: 0, scale: 0.96, transition: { duration: 0.14 } },
-};
-
-const inputClass = 'w-full px-4 py-2.5 rounded-lg text-sm text-white transition focus:outline-none';
-const inputStyle = { backgroundColor: 'var(--surface-2)', border: '1px solid var(--border)' };
+const inputClass = 'w-full px-4 py-2.5 rounded-lg text-sm transition focus:outline-none';
+const inputStyle = { backgroundColor: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text)' };
 
 export default function SnippetsPage() {
   const { token } = useAuth();
@@ -223,21 +218,9 @@ export default function SnippetsPage() {
         {/* Modal */}
         <AnimatePresence>
           {showForm && (
-            <motion.div
-              key="overlay"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="fixed inset-0 flex items-center justify-center z-50 p-4"
-              style={{ backgroundColor: 'rgba(0,0,0,0.75)' }}
-              onClick={resetForm}
-            >
-              <motion.div
-                key="modal"
-                variants={modalVariants} initial="initial" animate="animate" exit="exit"
-                className="w-full max-w-2xl rounded-xl border p-6 max-h-[90vh] overflow-y-auto"
-                style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--border)' }}
-                onClick={e => e.stopPropagation()}
-              >
-                <h2 className="text-lg font-semibold text-white mb-5">
+            <Modal open onClose={resetForm} maxWidth="max-w-2xl">
+              <div className="p-6 max-h-[85vh] overflow-y-auto" data-lenis-prevent>
+                <h2 className="text-lg font-semibold mb-5" style={{ color: 'var(--text)' }}>
                   {editingSnippet ? 'Edit Snippet' : 'New Snippet'}
                 </h2>
                 <form onSubmit={handleSave} className="space-y-4">
@@ -264,8 +247,8 @@ export default function SnippetsPage() {
                     </button>
                   </div>
                 </form>
-              </motion.div>
-            </motion.div>
+              </div>
+            </Modal>
           )}
         </AnimatePresence>
       </div>

@@ -4,12 +4,16 @@ import { getCompanies, getCompany } from '../../api/placements';
 import Spinner from '../Spinner';
 import { Badge, TopicChip, DIFFICULTY_COLOR, COMPANY_DIFFICULTY_COLOR, TYPE_COLOR } from './shared';
 
+// Solid surface, matching the dashboard card language (the translucent variant
+// muddied text where the page glow sits behind the split panes).
 const glass = {
-  backgroundColor: 'var(--glass)',
-  backdropFilter: 'blur(12px)',
-  WebkitBackdropFilter: 'blur(12px)',
+  backgroundColor: 'var(--surface)',
   borderColor: 'var(--border)',
 };
+
+// Both panes share one height so the split stays balanced regardless of how
+// much content sits above it on the page.
+const PANE_H = 'max-h-[60vh] md:max-h-[560px]';
 
 function Funnel({ funnel }) {
   if (!funnel || (!funnel.registered && !funnel.selected)) return null;
@@ -51,7 +55,8 @@ function Detail({ data }) {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25, ease: 'easeOut' }}
-      className="overflow-y-auto p-5 sm:p-6 max-h-[70vh] md:max-h-[calc(100vh-210px)]"
+      className={`overflow-y-auto p-5 sm:p-6 ${PANE_H}`}
+      data-lenis-prevent
     >
       <div className="flex items-start justify-between gap-3 mb-3 flex-wrap">
         <div>
@@ -152,7 +157,8 @@ function Detail({ data }) {
   );
 }
 
-export default function CompaniesSplit({ token }) {
+/** `initialSlug` lets the Prep Hub deep-link straight into one company. */
+export default function CompaniesSplit({ token, initialSlug }) {
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -166,11 +172,17 @@ export default function CompaniesSplit({ token }) {
       const data = await getCompanies(token);
       if (Array.isArray(data)) {
         setCompanies(data);
-        if (data[0]) open(data[0].slug, false);
+        const wanted = initialSlug && data.some((c) => c.slug === initialSlug) ? initialSlug : data[0]?.slug;
+        if (wanted) open(wanted, false);
       }
       setLoading(false);
     })();
   }, [token]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Deep-link changes after mount (clicking a different company in the hub).
+  useEffect(() => {
+    if (initialSlug && initialSlug !== selected) open(initialSlug, false);
+  }, [initialSlug]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const open = async (slug, switchView = true) => {
     setSelected(slug);
@@ -190,7 +202,7 @@ export default function CompaniesSplit({ token }) {
   return (
     <div className="flex flex-col md:flex-row gap-4">
       {/* Left: list (full width on mobile; hidden when viewing detail on mobile) */}
-      <div className={`w-full md:w-[300px] shrink-0 rounded-2xl border overflow-hidden ${mobileView === 'detail' ? 'hidden md:block' : 'block'}`} style={glass}>
+      <div className={`w-full md:w-[300px] shrink-0 rounded-xl border overflow-hidden ${mobileView === 'detail' ? 'hidden md:block' : 'block'}`} style={glass}>
         <div className="p-3" style={{ borderBottom: '1px solid var(--border)' }}>
           <input
             value={search}
@@ -200,7 +212,7 @@ export default function CompaniesSplit({ token }) {
             style={{ backgroundColor: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text)' }}
           />
         </div>
-        <div className="overflow-y-auto max-h-[55vh] md:max-h-[calc(100vh-268px)]">
+        <div className={`overflow-y-auto ${PANE_H}`} data-lenis-prevent>
           {filtered.map((c) => {
             const active = c.slug === selected;
             return (
@@ -231,7 +243,7 @@ export default function CompaniesSplit({ token }) {
       </div>
 
       {/* Right: detail (hidden on mobile until a company is tapped) */}
-      <div className={`flex-1 rounded-2xl border overflow-hidden min-h-[300px] ${mobileView === 'list' ? 'hidden md:block' : 'block'}`} style={glass}>
+      <div className={`flex-1 rounded-xl border overflow-hidden min-h-[300px] ${mobileView === 'list' ? 'hidden md:block' : 'block'}`} style={glass}>
         {/* Mobile back button */}
         <button
           onClick={() => setMobileView('list')}
