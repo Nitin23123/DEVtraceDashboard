@@ -19,6 +19,8 @@ import SnippetsPage from './pages/SnippetsPage';
 import DsaPage from './pages/DsaPage';
 import PlacementsPage from './pages/PlacementsPage';
 import DevCardPage from './pages/DevCardPage';
+import ResourcesPage from './pages/ResourcesPage';
+import RoadmapsPage from './pages/RoadmapsPage';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -51,6 +53,8 @@ function AnimatedRoutes() {
           <Route path="/dsa"       element={<DsaPage />} />
           <Route path="/placements" element={<PlacementsPage />} />
           <Route path="/dev-card" element={<DevCardPage />} />
+          <Route path="/resources" element={<ResourcesPage />} />
+          <Route path="/roadmaps" element={<RoadmapsPage />} />
         </Route>
 
         {/* Redirects */}

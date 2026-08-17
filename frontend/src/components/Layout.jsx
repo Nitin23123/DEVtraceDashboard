@@ -16,6 +16,8 @@ const navLinks = [
   { to: '/dashboard', label: 'Dashboard', icon: I(<><rect x="3" y="3" width="7" height="9" rx="1" /><rect x="14" y="3" width="7" height="5" rx="1" /><rect x="14" y="12" width="7" height="9" rx="1" /><rect x="3" y="16" width="7" height="5" rx="1" /></>) },
   { to: '/dsa', label: 'DSA Tracker', icon: I(<><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M7 15v-3M12 15V9M17 15v-5" /></>) },
   { to: '/placements', label: 'Placement Prep', icon: I(<><path d="M22 10v6M2 10l10-5 10 5-10 5z" /><path d="M6 12v5c3 3 9 3 12 0v-5" /></>) },
+  { to: '/roadmaps', label: 'Roadmaps', icon: I(<><path d="M9 20l-5.4 2.3A1 1 0 0 1 2 21.4V6.6a1 1 0 0 1 .6-.9L9 3z" /><path d="M9 3l6 3 5.4-2.3a1 1 0 0 1 1.6.9v14.8a1 1 0 0 1-.6.9L15 21z" /><path d="M9 3v17M15 6v15" /></>) },
+  { to: '/resources', label: 'Resources', icon: I(<><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" /></>) },
   { to: '/workspace', label: 'Workspace', icon: I(<><path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" /></>) },
   { to: '/snippets', label: 'Snippets', icon: I(<><polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" /></>) },
   { to: '/pomodoro', label: 'Pomodoro', icon: I(<><circle cx="12" cy="13" r="8" /><path d="M12 9v4l2 2" /><path d="M5 3 2 6" /><path d="m22 6-3-3" /></>) },
