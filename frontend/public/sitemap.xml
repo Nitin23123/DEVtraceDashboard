@@ -2,44 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
+  <!--
+    Only publicly crawlable, indexable URLs belong here.
+
+    Excluded on purpose:
+      /placements, /dsa, /roadmaps, /resources, /dev-card
+        - wrapped in <ProtectedRoute> (src/App.jsx); logged-out visitors and
+          crawlers are redirected to /login, so listing them produces
+          "Page with redirect" errors in Search Console.
+      /login, /register
+        - public, but no unique content worth indexing.
+  -->
+
   <!-- Landing Page -->
   <url>
     <loc>https://devtracedash.netlify.app/</loc>
-    <lastmod>2026-08-01</lastmod>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en-IN" href="https://devtracedash.netlify.app/" />
-  </url>
-
-  <!-- GGSIPU Placements Hub — highest public value page -->
-  <url>
-    <loc>https://devtracedash.netlify.app/placements</loc>
-    <lastmod>2026-08-01</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.95</priority>
-  </url>
-
-  <!-- DSA Curriculum Tracker -->
-  <url>
-    <loc>https://devtracedash.netlify.app/dsa</loc>
-    <lastmod>2026-08-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-  </url>
-
-  <!-- Login / Register — public auth pages -->
-  <url>
-    <loc>https://devtracedash.netlify.app/login</loc>
-    <lastmod>2026-08-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://devtracedash.netlify.app/register</loc>
-    <lastmod>2026-08-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
   </url>
 
 </urlset>
