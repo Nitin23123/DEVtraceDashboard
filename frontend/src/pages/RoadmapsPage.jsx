@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { TRACKS, CADENCE, TAGS } from '../data/roadmaps';
+import { usePageMeta } from '../hooks/usePageMeta';
 import { Card, CardHead, Label, Bar, Chip, GhostButton, Page } from '../components/ui';
 
 const pageVariants = {
@@ -28,6 +29,13 @@ const IconCheck = <Icon d={<polyline points="20 6 9 17 4 12" />} size={11} />;
 const IconRepeat = <Icon d={<><path d="M17 2l4 4-4 4" /><path d="M3 11V9a4 4 0 0 1 4-4h14" /><path d="M7 22l-4-4 4-4" /><path d="M21 13v2a4 4 0 0 1-4 4H3" /></>} />;
 
 export default function RoadmapsPage() {
+  usePageMeta({
+    title: 'Developer Roadmaps — Frontend, Backend, DSA & More | DEVtrace',
+    description:
+      'Step-by-step learning roadmaps for frontend, backend, full-stack and DSA. Each track breaks down into phases with concrete milestones you can tick off and track locally.',
+    path: '/roadmaps',
+  });
+
   const [done, setDone] = useState(loadProgress);
   const [activeId, setActiveId] = useState(() => localStorage.getItem('roadmapTrack') || TRACKS[0].id);
   const [tag, setTag] = useState('All');

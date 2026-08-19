@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Card, Label, Chip, GhostButton, Page } from '../components/ui';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const pageVariants = {
   initial: { opacity: 0, y: 16 },
@@ -127,6 +128,13 @@ const IconLink = (
 );
 
 export default function ResourcesPage() {
+  usePageMeta({
+    title: 'Curated Developer Resources — DSA, System Design & LLD | DEVtrace',
+    description:
+      'A hand-picked list of free study material for placement prep: DSA sheets, low-level and system design courses, development guides and AI resources, each with a note on what it is actually good for.',
+    path: '/resources',
+  });
+
   const [group, setGroup] = useState('all');
   const shown = group === 'all' ? RESOURCES : RESOURCES.filter((r) => r.group === group);
 
