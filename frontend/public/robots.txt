@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
+Allow: /placements
 Allow: /roadmaps
 Allow: /resources
 
@@ -12,7 +13,6 @@ Disallow: /profile
 Disallow: /pomodoro
 Disallow: /snippets
 Disallow: /dsa
-Disallow: /placements
 Disallow: /dev-card
 
 Sitemap: https://devtracedash.netlify.app/sitemap.xml

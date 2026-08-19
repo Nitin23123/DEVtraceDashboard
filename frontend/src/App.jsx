@@ -47,6 +47,7 @@ function AnimatedRoutes() {
         <Route element={<Layout />}>
           <Route path="/roadmaps" element={<RoadmapsPage />} />
           <Route path="/resources" element={<ResourcesPage />} />
+          <Route path="/placements" element={<PlacementsPage />} />
         </Route>
 
         {/* Protected routes with Layout nav */}
@@ -58,7 +59,6 @@ function AnimatedRoutes() {
           <Route path="/pomodoro"  element={<PomodoroPage />} />
           <Route path="/snippets"  element={<SnippetsPage />} />
           <Route path="/dsa"       element={<DsaPage />} />
-          <Route path="/placements" element={<PlacementsPage />} />
           <Route path="/dev-card" element={<DevCardPage />} />
         </Route>
 

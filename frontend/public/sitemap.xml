@@ -6,7 +6,8 @@
     Only publicly crawlable, indexable URLs belong here.
 
     Excluded on purpose:
-      /placements, /dsa, /dev-card
+      /dsa, /dev-card, /dashboard, /workspace, /snippets, /pomodoro,
+      /api-tester, /profile
         - wrapped in <ProtectedRoute> (src/App.jsx); logged-out visitors and
           crawlers are redirected to /login. Listing them would produce
           "Page with redirect" errors in Search Console.
@@ -21,6 +22,14 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en-IN" href="https://devtracedash.netlify.app/" />
+  </url>
+
+  <!-- GGSIPU Placements Hub — highest public value page -->
+  <url>
+    <loc>https://devtracedash.netlify.app/placements</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
   </url>
 
   <!-- Learning Roadmaps — public, static content -->

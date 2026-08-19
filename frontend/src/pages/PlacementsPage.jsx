@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
+import { usePageMeta } from '../hooks/usePageMeta';
 import { getCompanies, getInsights } from '../api/placements';
 import { scrollTo } from '../lenis';
 import { tabContentVariants } from '../components/placements/shared';
@@ -39,6 +40,13 @@ const IconMic = <Icon d={<><rect x="9" y="2" width="6" height="12" rx="3" /><pat
 const IconBook = <Icon d={<><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" /></>} />;
 
 export default function PlacementsPage() {
+  usePageMeta({
+    title: 'GGSIPU Placement Prep — Company Interview Experiences | DEVtrace',
+    description:
+      'Real campus placement interview experiences from GGSIPU colleges including USICT, MAIT, MSIT, BVCOE and BPIT. Browse company profiles, round-by-round debriefs, question banks and topic focus for your target company.',
+    path: '/placements',
+  });
+
   const { token } = useAuth();
   const authToken = token || localStorage.getItem('token');
   const [active, setActive] = useState('companies');

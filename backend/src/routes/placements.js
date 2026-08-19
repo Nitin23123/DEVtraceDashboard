@@ -9,6 +9,11 @@ const { companies, experiences, questions, hrQuestions } = require('../data/plac
  * Reads from the static seed dataset. Community-submitted experiences are stored
  * in-memory only (NOT persisted) until a DB migration adds a table. They reset
  * when the server restarts — this is intentional given "no migration yet".
+ *
+ * AUTH BOUNDARY: every GET here is public. None of them read req.user — they
+ * serve the same shared dataset to everyone, and gating them only kept the
+ * content out of search results. POST stays behind verifyToken because it
+ * writes and attributes the submission to req.user.email.
  */
 
 // ── In-memory store for community submissions ──────────────────────────────────
@@ -43,7 +48,7 @@ function conversionRate(funnel) {
 
 // ── GET /api/placements/companies ──────────────────────────────────────────────
 // Directory with aggregated stats per company.
-router.get('/companies', verifyToken, (req, res) => {
+router.get('/companies', (req, res) => {
   const data = companies.map((c) => {
     const exps = allExperiences().filter((e) => e.companySlug === c.slug);
     const rates = exps.map((e) => conversionRate(e.funnel)).filter((r) => r != null);
@@ -65,7 +70,7 @@ router.get('/companies', verifyToken, (req, res) => {
 
 // ── GET /api/placements/companies/:slug ────────────────────────────────────────
 // Full company profile + its experiences + its question bank + topic focus.
-router.get('/companies/:slug', verifyToken, (req, res) => {
+router.get('/companies/:slug', (req, res) => {
   const company = companyBySlug[req.params.slug];
   if (!company) return res.status(404).json({ error: 'Company not found' });
 
@@ -86,7 +91,7 @@ router.get('/companies/:slug', verifyToken, (req, res) => {
 
 // ── GET /api/placements/experiences ────────────────────────────────────────────
 // Feed, filterable by ?company=slug, ?status=, ?q=
-router.get('/experiences', verifyToken, (req, res) => {
+router.get('/experiences', (req, res) => {
   const { company, status, q } = req.query;
   let data = allExperiences();
 
@@ -168,7 +173,7 @@ router.post('/experiences', verifyToken, (req, res) => {
 
 // ── GET /api/placements/questions ──────────────────────────────────────────────
 // Question bank, filterable by ?company, ?topic, ?round, ?difficulty, ?q
-router.get('/questions', verifyToken, (req, res) => {
+router.get('/questions', (req, res) => {
   const { company, topic, round, difficulty, q } = req.query;
   let data = questions.map((item) => ({ ...item, company: companyName(item.companySlug) }));
 
@@ -193,7 +198,7 @@ router.get('/questions', verifyToken, (req, res) => {
 
 // ── GET /api/placements/topics ─────────────────────────────────────────────────
 // Company-wise topic focus + the global topic leaderboard (the "DSA by company" view).
-router.get('/topics', verifyToken, (req, res) => {
+router.get('/topics', (req, res) => {
   const byCompany = companies
     .map((c) => {
       const exps = allExperiences().filter((e) => e.companySlug === c.slug);
@@ -212,7 +217,7 @@ router.get('/topics', verifyToken, (req, res) => {
 
 // ── GET /api/placements/prep/:slug ─────────────────────────────────────────────
 // Auto-generated prep roadmap for a target company.
-router.get('/prep/:slug', verifyToken, (req, res) => {
+router.get('/prep/:slug', (req, res) => {
   const company = companyBySlug[req.params.slug];
   if (!company) return res.status(404).json({ error: 'Company not found' });
 
@@ -237,13 +242,13 @@ router.get('/prep/:slug', verifyToken, (req, res) => {
 });
 
 // ── GET /api/placements/hr-questions ───────────────────────────────────────────
-router.get('/hr-questions', verifyToken, (req, res) => {
+router.get('/hr-questions', (req, res) => {
   res.json(hrQuestions);
 });
 
 // ── GET /api/placements/calendar ───────────────────────────────────────────────
 // Companies grouped by the months they visit campus.
-router.get('/calendar', verifyToken, (req, res) => {
+router.get('/calendar', (req, res) => {
   const order = ['August', 'September', 'October', 'November', 'December', 'January'];
   const byMonth = {};
   companies.forEach((c) => {
@@ -260,7 +265,7 @@ router.get('/calendar', verifyToken, (req, res) => {
 
 // ── GET /api/placements/insights ───────────────────────────────────────────────
 // Aggregate analytics across the whole dataset.
-router.get('/insights', verifyToken, (req, res) => {
+router.get('/insights', (req, res) => {
   const exps = allExperiences();
   const withFunnel = exps.filter((e) => conversionRate(e.funnel) != null);
 

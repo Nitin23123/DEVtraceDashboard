@@ -1,6 +1,8 @@
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
-const authHeaders = (token) => ({ Authorization: `Bearer ${token}` });
+// Reads are public, so logged-out visitors call these with no token. Sending
+// "Bearer null" would be worse than sending nothing, hence the guard.
+const authHeaders = (token) => (token ? { Authorization: `Bearer ${token}` } : {});
 
 const qs = (params = {}) => {
   const entries = Object.entries(params).filter(([, v]) => v != null && v !== '');

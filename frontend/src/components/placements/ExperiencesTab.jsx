@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getExperiences, createExperience, getCompanies } from '../../api/placements';
 import Spinner from '../Spinner';
@@ -257,9 +258,17 @@ export default function ExperiencesTab({ token }) {
           <option value="selected">Selected</option>
           <option value="pending">Pending</option>
         </select>
-        <button onClick={() => setShowModal(true)} className="px-4 py-2 rounded-lg text-sm font-semibold transition hover:opacity-90" style={{ backgroundColor: 'var(--accent)', color: 'var(--accent-fg)' }}>
-          + Share yours
-        </button>
+        {/* Reading is public; submitting is not. Send logged-out visitors to
+            login rather than letting the modal fail with a 401 on save. */}
+        {token ? (
+          <button onClick={() => setShowModal(true)} className="px-4 py-2 rounded-lg text-sm font-semibold transition hover:opacity-90" style={{ backgroundColor: 'var(--accent)', color: 'var(--accent-fg)' }}>
+            + Share yours
+          </button>
+        ) : (
+          <Link to="/login" className="px-4 py-2 rounded-lg text-sm font-semibold transition hover:opacity-90" style={{ backgroundColor: 'var(--accent)', color: 'var(--accent-fg)' }}>
+            Sign in to share
+          </Link>
+        )}
       </div>
 
       {loading ? (

@@ -28,7 +28,7 @@ const navLinks = [
 
 // Routes that render for logged-out visitors (and therefore for crawlers).
 // Keep in sync with the public route group in App.jsx.
-const PUBLIC_PATHS = new Set(['/roadmaps', '/resources']);
+const PUBLIC_PATHS = new Set(['/placements', '/roadmaps', '/resources']);
 
 const Wordmark = () => (
   <span className="flex flex-col leading-none">
