@@ -42,6 +42,13 @@ function AnimatedRoutes() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
 
+        {/* Public content routes — indexable by crawlers, rendered in the app
+            shell with a trimmed nav. Keep in sync with PUBLIC_PATHS in Layout. */}
+        <Route element={<Layout />}>
+          <Route path="/roadmaps" element={<RoadmapsPage />} />
+          <Route path="/resources" element={<ResourcesPage />} />
+        </Route>
+
         {/* Protected routes with Layout nav */}
         <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
           <Route path="/dashboard" element={<DashboardPage />} />
@@ -53,8 +60,6 @@ function AnimatedRoutes() {
           <Route path="/dsa"       element={<DsaPage />} />
           <Route path="/placements" element={<PlacementsPage />} />
           <Route path="/dev-card" element={<DevCardPage />} />
-          <Route path="/resources" element={<ResourcesPage />} />
-          <Route path="/roadmaps" element={<RoadmapsPage />} />
         </Route>
 
         {/* Redirects */}

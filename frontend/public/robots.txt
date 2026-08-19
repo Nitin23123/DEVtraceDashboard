@@ -1,14 +1,18 @@
 User-agent: *
 Allow: /
-Allow: /placements
-Allow: /dsa
+Allow: /roadmaps
+Allow: /resources
 
-# Private authenticated pages — exclude from indexing
+# Auth-gated pages — they redirect logged-out crawlers to /login,
+# so keep them out of the index entirely.
 Disallow: /dashboard
 Disallow: /workspace
 Disallow: /api-tester
 Disallow: /profile
 Disallow: /pomodoro
 Disallow: /snippets
+Disallow: /dsa
+Disallow: /placements
+Disallow: /dev-card
 
 Sitemap: https://devtracedash.netlify.app/sitemap.xml

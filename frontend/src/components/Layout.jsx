@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
+import { Link, NavLink, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import Logo from './Logo';
 import Footer from './Footer';
@@ -26,6 +26,10 @@ const navLinks = [
   { to: '/profile', label: 'Profile', icon: I(<><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0" /></>) },
 ];
 
+// Routes that render for logged-out visitors (and therefore for crawlers).
+// Keep in sync with the public route group in App.jsx.
+const PUBLIC_PATHS = new Set(['/roadmaps', '/resources']);
+
 const Wordmark = () => (
   <span className="flex flex-col leading-none">
     <span className="text-[17px] font-bold tracking-tight grad-text">DevTrace</span>
@@ -35,10 +39,10 @@ const Wordmark = () => (
   </span>
 );
 
-function NavList({ onItemClick }) {
+function NavList({ links, onItemClick }) {
   return (
     <nav className="flex-1 px-3 py-3 space-y-1 overflow-y-auto" data-lenis-prevent>
-      {navLinks.map(({ to, label, icon }) => (
+      {links.map(({ to, label, icon }) => (
         <NavLink
           key={to}
           to={to}
@@ -100,13 +104,35 @@ function SidebarFooter({ name, email, logout }) {
   );
 }
 
+function SignInFooter() {
+  return (
+    <div className="px-4 py-4 shrink-0" style={{ borderTop: '1px solid var(--border)' }}>
+      <p className="text-[12px] leading-snug mb-3" style={{ color: 'var(--muted)' }}>
+        Sign in to save your progress and unlock the full dashboard.
+      </p>
+      <Link
+        to="/login"
+        className="flex items-center justify-center h-9 rounded-lg text-[13px] font-semibold"
+        style={{ backgroundImage: 'var(--grad)', color: 'var(--accent-fg)' }}
+      >
+        Sign in
+      </Link>
+    </div>
+  );
+}
+
 const SIDEBAR = 'w-64 flex flex-col shrink-0';
 
 const Layout = () => {
-  const { user, logout } = useAuth();
+  const { user, token, logout } = useAuth();
   const { displayName } = useDisplayName();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const name = displayName || (user?.email || '').split('@')[0];
+
+  // Logged-out visitors reach this shell only through the public routes, so
+  // hide the links that would just bounce them back to /login.
+  const isAuthed = Boolean(token);
+  const links = isAuthed ? navLinks : navLinks.filter(({ to }) => PUBLIC_PATHS.has(to));
 
   const sidebarStyle = { backgroundColor: 'var(--surface)', borderRight: '1px solid var(--border)' };
 
@@ -130,11 +156,11 @@ const Layout = () => {
           <Logo size={30} />
           <Wordmark />
         </div>
-        <NavList />
+        <NavList links={links} />
         <div className="px-3 pb-2">
           <ThemeToggle variant="item" />
         </div>
-        <SidebarFooter name={name} email={user?.email} logout={logout} />
+        {isAuthed ? <SidebarFooter name={name} email={user?.email} logout={logout} /> : <SignInFooter />}
       </aside>
 
       {/* Mobile drawer */}
@@ -148,9 +174,9 @@ const Layout = () => {
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
               </button>
             </div>
-            <NavList onItemClick={() => setDrawerOpen(false)} />
+            <NavList links={links} onItemClick={() => setDrawerOpen(false)} />
             <div className="px-3 pb-2"><ThemeToggle variant="item" /></div>
-            <SidebarFooter name={name} email={user?.email} logout={logout} />
+            {isAuthed ? <SidebarFooter name={name} email={user?.email} logout={logout} /> : <SignInFooter />}
           </aside>
         </div>
       )}
