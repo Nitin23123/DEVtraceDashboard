@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { predictPlacementReadiness, getReadinessBenchmarks } from '../../api/readiness';
 import { getProblems } from '../../api/dsa';
 import { tabContentVariants, Badge, inputClass, inputStyle } from './shared';
-import { Card, CardHead, Chip, GradButton } from '../ui';
+import { Card, CardHead } from '../ui';
 
 const STAR_LEVELS = [1, 2, 3, 4, 5];
 
@@ -13,7 +13,7 @@ export default function PredictorTab({ authToken, defaultCompanySlug = 'nagarro'
   const [selectedCompany, setSelectedCompany] = useState(defaultCompanySlug);
   const [loading, setLoading] = useState(false);
   const [prediction, setPrediction] = useState(null);
-  const [isSynced, setIsSynced] = useState(true);
+  const [isSynced] = useState(true);
 
   // Simulation state
   const [cgpa, setCgpa] = useState(7.8);
@@ -112,6 +112,9 @@ export default function PredictorTab({ authToken, defaultCompanySlug = 'nagarro'
               ✦ ML Placement Predictor
             </span>
             <span className="mono text-xs" style={{ color: 'var(--muted)' }}>v1.0 (Calibrated Model)</span>
+            {loading && (
+              <span className="mono text-xs animate-pulse" style={{ color: 'var(--accent)' }}>recalculating</span>
+            )}
           </div>
           <h2 className="text-xl font-bold mt-1" style={{ color: 'var(--text)' }}>
             Company Fit & Clearance Predictor
