@@ -12,6 +12,7 @@ import QuestionsTab from '../components/placements/QuestionsTab';
 import PrepTab from '../components/placements/PrepTab';
 import CalendarTab from '../components/placements/CalendarTab';
 import InsightsTab from '../components/placements/InsightsTab';
+import PredictorTab from '../components/placements/PredictorTab';
 import { Card, CardHead, Label, Bar, Chip, GradButton, Page } from '../components/ui';
 
 const pageVariants = {
@@ -22,6 +23,7 @@ const pageVariants = {
 
 const tabs = [
   { id: 'companies', label: 'Companies', Comp: CompaniesSplit },
+  { id: 'predictor', label: '✦ Fit Predictor (ML)', Comp: PredictorTab },
   { id: 'experiences', label: 'Experiences', Comp: ExperiencesTab },
   { id: 'questions', label: 'Questions', Comp: QuestionsTab },
   { id: 'prep', label: 'Prep', Comp: PrepTab },
@@ -141,6 +143,23 @@ export default function PlacementsPage() {
 
           {/* Side stack */}
           <div className="space-y-5">
+            <Card className="p-5" style={{ borderLeft: '3px solid #8b5cf6' }}>
+              <span className="text-xs font-semibold px-2 py-0.5 rounded" style={{ backgroundColor: 'rgba(139,92,246,0.15)', color: '#a78bfa' }}>
+                ✦ ML Feature
+              </span>
+              <h3 className="text-[17px] font-semibold mt-2" style={{ color: 'var(--text)' }}>Placement Fit Predictor</h3>
+              <p className="text-[13px] mt-2 leading-relaxed" style={{ color: 'var(--text-soft)' }}>
+                Calculate clearance probability, round bottlenecks, and high-yield DSA improvements.
+              </p>
+              <button
+                onClick={() => goToTab('predictor')}
+                className="mono text-[11.5px] mt-4 font-semibold transition-opacity hover:opacity-70 block"
+                style={{ color: '#a78bfa' }}
+              >
+                Launch ML Predictor →
+              </button>
+            </Card>
+
             <Card className="p-5">
               <span style={{ color: 'var(--accent)' }}>{IconCard}</span>
               <h3 className="text-[17px] font-semibold mt-3" style={{ color: 'var(--text)' }}>Developer Card</h3>
@@ -150,21 +169,6 @@ export default function PlacementsPage() {
               <Link to="/dev-card" className="inline-block mt-4">
                 <GradButton>Build your card</GradButton>
               </Link>
-            </Card>
-
-            <Card className="p-5" style={{ borderLeft: '3px solid var(--accent-2)' }}>
-              <span style={{ color: 'var(--accent-2)' }}>{IconMic}</span>
-              <h3 className="text-[17px] font-semibold mt-3" style={{ color: 'var(--text)' }}>HR & Behavioural</h3>
-              <p className="text-[13px] mt-2 leading-relaxed" style={{ color: 'var(--text-soft)' }}>
-                The HR questions that actually come up in IPU rounds, with prep roadmaps per company.
-              </p>
-              <button
-                onClick={() => goToTab('prep')}
-                className="mono text-[11.5px] mt-4 transition-opacity hover:opacity-70"
-                style={{ color: 'var(--accent)' }}
-              >
-                Open prep roadmaps →
-              </button>
             </Card>
           </div>
         </div>
@@ -220,7 +224,12 @@ export default function PlacementsPage() {
 
         <AnimatePresence mode="wait">
           <motion.div key={active} variants={tabContentVariants} initial="initial" animate="animate" exit="exit">
-            <Active token={authToken} initialSlug={active === 'companies' ? focusCompany : undefined} />
+            <Active
+              token={authToken}
+              authToken={authToken}
+              initialSlug={active === 'companies' ? focusCompany : undefined}
+              defaultCompanySlug={focusCompany || 'nagarro'}
+            />
           </motion.div>
         </AnimatePresence>
       </Page>
