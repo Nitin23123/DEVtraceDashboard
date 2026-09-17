@@ -178,15 +178,27 @@ export default function DsaPage() {
                       </h3>
                       <div className="mt-5 flex flex-wrap items-center gap-3">
                         <GradButton onClick={() => toggle(focus.id)}>Mark as solved</GradButton>
-                        <a
-                          href={`https://leetcode.com/problemset/?search=${encodeURIComponent(focus.title)}`}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="mono text-[11.5px]"
-                          style={{ color: 'var(--muted)' }}
-                        >
-                          Find on LeetCode ↗
-                        </a>
+                        {focus.url ? (
+                          <a
+                            href={focus.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mono text-[11.5px] hover:underline"
+                            style={{ color: 'var(--accent)' }}
+                          >
+                            Open Problem ↗️
+                          </a>
+                        ) : (
+                          <a
+                            href={`https://leetcode.com/problemset/?search=${encodeURIComponent(focus.title)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mono text-[11.5px] hover:underline"
+                            style={{ color: 'var(--muted)' }}
+                          >
+                            Find on LeetCode ↗️
+                          </a>
+                        )}
                       </div>
                     </>
                   ) : (
@@ -290,7 +302,20 @@ export default function DsaPage() {
                                     className="flex-1 text-[13px] truncate"
                                     style={{ color: problem.completed ? 'var(--muted)' : 'var(--text)', textDecoration: problem.completed ? 'line-through' : 'none' }}
                                   >
-                                    {problem.title}
+                                    {problem.url ? (
+                                      <a
+                                        href={problem.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        onClick={(e) => e.stopPropagation()}
+                                        className="hover:underline"
+                                        style={{ color: 'inherit' }}
+                                      >
+                                        {problem.title}
+                                      </a>
+                                    ) : (
+                                      <span>{problem.title}</span>
+                                    )}
                                   </span>
                                   <Chip tone={DIFF_TONE[problem.difficulty]}>{problem.difficulty}</Chip>
                                 </div>

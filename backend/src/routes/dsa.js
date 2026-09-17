@@ -9,6 +9,7 @@ router.get('/problems', verifyToken, async (req, res) => {
     const { rows } = await query(
       `SELECT
          p.id, p.day_number, p.topic, p.title, p.difficulty,
+         p.url,
          COALESCE(udp.completed, FALSE) AS completed
        FROM dsa_problems p
        LEFT JOIN user_dsa_progress udp
@@ -28,6 +29,7 @@ router.get('/problems', verifyToken, async (req, res) => {
         title: row.title,
         difficulty: row.difficulty,
         completed: row.completed,
+        url: row.url
       });
     });
 
