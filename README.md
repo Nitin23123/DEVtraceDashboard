@@ -35,7 +35,7 @@ Currently covering **16 companies**, **22 interview debriefs** and **50 tagged q
 
 ### DSA Tracker
 
-A **79-problem curriculum across 23 days**, grouped by topic from arrays through dynamic programming. Tick problems off and your progress follows you across devices. Today's Focus surfaces the next unsolved problem, so you never open the app wondering where you left off.
+**Striver's A2Z DSA Sheet: 455 problems across 18 steps**, grouped by step and lecture from the basics through dynamic programming, each linked to its problem page and video. Tick problems off and your progress follows you across devices. Today's Focus surfaces the next unsolved problem, so you never open the app wondering where you left off.
 
 ### Developer Card
 

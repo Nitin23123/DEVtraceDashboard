@@ -50,7 +50,7 @@ router.post('/predict', optionalAuth, async (req, res) => {
     if (req.user && (!req.body.dsa || req.body.useDbStats)) {
       try {
         const { rows: progressRows } = await query(
-          `SELECT p.difficulty, p.topic, udp.completed
+          `SELECT p.difficulty, p.topic, p.sub_topic, udp.completed
            FROM user_dsa_progress udp
            JOIN dsa_problems p ON p.id = udp.problem_id
            WHERE udp.user_id = $1 AND udp.completed = TRUE`,
@@ -67,6 +67,8 @@ router.post('/predict', optionalAuth, async (req, res) => {
           else if (r.difficulty === 'Medium') medium++;
           else if (r.difficulty === 'Hard') hard++;
           if (r.topic) topics.add(r.topic);
+          // A2Z lectures carry topics the step name doesn't (e.g. "Learn Basic Hashing").
+          if (r.sub_topic) topics.add(r.sub_topic);
         });
 
         dsaStats = {

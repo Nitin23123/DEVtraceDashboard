@@ -149,8 +149,8 @@ const STATS = [
   { n: '16', label: 'companies' },
   { n: '22', label: 'interview debriefs' },
   { n: '50', label: 'tagged questions' },
-  { n: '79', label: 'DSA problems' },
-  { n: '23', label: 'day curriculum' },
+  { n: '455', label: 'DSA problems' },
+  { n: '18', label: 'step A2Z sheet' },
 ];
 
 const FEATURES = [
@@ -171,34 +171,34 @@ const FEATURES = [
   },
 ];
 
-// Real problems and days from the seeded DSA curriculum.
+// Real problems from the seeded Striver A2Z sheet (Step 13 · Binary Trees).
 const DSA_DAYS = [
   {
-    day: 15,
-    topic: 'Trees Basic',
+    day: 13,
+    topic: 'Traversals',
     problems: [
-      { title: 'Invert Binary Tree', diff: 'Easy', done: true },
-      { title: 'Maximum Depth of Binary Tree', diff: 'Easy', done: true },
-      { title: 'Diameter of Binary Tree', diff: 'Easy', done: true },
-      { title: 'Balanced Binary Tree', diff: 'Easy', done: true },
+      { title: 'Preorder Traversal of Binary Tree', diff: 'Easy', done: true },
+      { title: 'Inorder Traversal of Binary Tree', diff: 'Easy', done: true },
+      { title: 'Post-order Traversal of Binary Tree', diff: 'Easy', done: true },
+      { title: 'Iterative Preorder Traversal of Binary Tree', diff: 'Easy', done: true },
     ],
   },
   {
-    day: 16,
-    topic: 'Trees Traversal',
+    day: 13,
+    topic: 'Medium Problems',
     problems: [
-      { title: 'Binary Tree Level Order Traversal', diff: 'Medium', done: true },
-      { title: 'Binary Tree Zigzag Level Order', diff: 'Medium', done: true },
-      { title: 'Binary Tree Right Side View', diff: 'Medium', done: false },
+      { title: 'Height of a Binary Tree', diff: 'Easy', done: true },
+      { title: 'Zig Zag Traversal of Binary Tree', diff: 'Medium', done: true },
+      { title: 'Vertical Order Traversal of Binary Tree', diff: 'Hard', done: false },
     ],
   },
   {
-    day: 17,
-    topic: 'BST',
+    day: 13,
+    topic: 'Hard Problems',
     problems: [
-      { title: 'Validate Binary Search Tree', diff: 'Medium', done: false },
-      { title: 'Lowest Common Ancestor of BST', diff: 'Medium', done: false },
-      { title: 'Kth Smallest Element in a BST', diff: 'Medium', done: false },
+      { title: 'Root to Node Path in Binary Tree', diff: 'Medium', done: false },
+      { title: 'LCA in Binary Tree', diff: 'Medium', done: false },
+      { title: 'Maximum width of a Binary Tree', diff: 'Medium', done: false },
     ],
   },
 ];
@@ -280,7 +280,7 @@ function ProductMock() {
         ))}
 
         <div className="grid grid-cols-2 gap-2 pt-1">
-          {[{ k: 'DSA solved', v: '42 / 79' }, { k: 'Active streak', v: '7 days' }].map((s) => (
+          {[{ k: 'DSA solved', v: '241 / 455' }, { k: 'Active streak', v: '7 days' }].map((s) => (
             <div key={s.k} className="rounded-lg px-3 py-2" style={{ backgroundColor: C.surface2 }}>
               <div className="mono text-[9px] uppercase tracking-wider" style={{ color: C.muted }}>{s.k}</div>
               <div className="mono text-xs font-semibold mt-0.5" style={{ color: C.text }}>{s.v}</div>
@@ -326,12 +326,12 @@ export default function LandingPage() {
         });
       } else if (apiUrl.includes('dsa')) {
         setApiResponse({
-          curriculum: '79 problems across 23 days',
-          activeDay: 16,
-          topic: 'Trees Traversal',
+          curriculum: "Striver's A2Z sheet — 455 problems across 18 steps",
+          activeStep: 13,
+          topic: 'Binary Trees',
           problems: [
-            { title: 'Binary Tree Level Order Traversal', difficulty: 'Medium', status: 'completed' },
-            { title: 'Binary Tree Right Side View', difficulty: 'Medium', status: 'pending' },
+            { title: 'Zig Zag Traversal of Binary Tree', difficulty: 'Medium', status: 'completed' },
+            { title: 'Right/Left View of Binary Tree', difficulty: 'Medium', status: 'pending' },
           ],
         });
       } else {
@@ -551,16 +551,16 @@ export default function LandingPage() {
             <SectionHead
               eyebrow="Structured Practice"
               center={false}
-              title="A 23-day DSA curriculum that tracks itself"
-              body="79 curated problems grouped by day and topic — arrays through dynamic programming. Tick problems off and your progress persists across devices."
+              title="Striver's A2Z DSA Sheet, tracked for you"
+              body="All 455 problems from Striver's A2Z sheet, grouped into 18 steps and their lectures — basics through dynamic programming. Tick problems off and your progress persists across devices."
             />
             <div className="mt-7 flex items-center gap-8">
               <div>
-                <div className="mono text-[28px] font-bold" style={gradientText}>42 / 79</div>
+                <div className="mono text-[28px] font-bold" style={gradientText}>241 / 455</div>
                 <div className="mono text-[10px] uppercase tracking-[0.14em] mt-1" style={{ color: C.muted }}>problems solved</div>
               </div>
               <div>
-                <div className="mono text-[28px] font-bold" style={{ color: C.text }}>Day 16</div>
+                <div className="mono text-[28px] font-bold" style={{ color: C.text }}>Step 13</div>
                 <div className="mono text-[10px] uppercase tracking-[0.14em] mt-1" style={{ color: C.muted }}>currently active</div>
               </div>
             </div>
@@ -572,10 +572,10 @@ export default function LandingPage() {
           <motion.div {...fadeUp}>
             <Panel className="p-5 space-y-5">
               {DSA_DAYS.map((d) => (
-                <div key={d.day}>
+                <div key={d.topic}>
                   <div className="flex items-center justify-between pb-2.5" style={{ borderBottom: `1px solid ${C.border}` }}>
                     <span className="mono text-[11px] font-semibold" style={{ color: C.text }}>
-                      Day {d.day} · {d.topic}
+                      Step {d.day} · {d.topic}
                     </span>
                     <span className="mono text-[10px]" style={{ color: C.muted }}>
                       {d.problems.filter((p) => p.done).length}/{d.problems.length}
@@ -881,7 +881,7 @@ export default function LandingPage() {
               </div>
 
               <div className="mt-4 grid grid-cols-2 gap-4 pt-4" style={{ borderTop: `1px solid ${C.border}` }}>
-                {[{ k: 'DSA solved', v: '42 / 79' }, { k: 'Active streak', v: '7 days' }].map((s) => (
+                {[{ k: 'DSA solved', v: '241 / 455' }, { k: 'Active streak', v: '7 days' }].map((s) => (
                   <div key={s.k}>
                     <div className="mono text-[10px]" style={{ color: C.muted }}>{s.k}</div>
                     <div className="mono text-sm font-bold mt-0.5" style={gradientText}>{s.v}</div>
