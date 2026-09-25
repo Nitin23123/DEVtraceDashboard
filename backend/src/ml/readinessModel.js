@@ -156,10 +156,13 @@ function predictReadiness(input) {
   const targetDsaPoints = benchmark.dsaThresholds.targetWeightedPoints;
   
   // Topic alignment bonus (checks high-weight topics for company)
-  const completedTopics = Array.isArray(dsa.topicsCompleted) ? dsa.topicsCompleted : [];
+  // Normalised so sheet names like "Learn LinkedList" or "Two Pointer" match "Linked List" / "Two Pointers".
+  const norm = (s) => String(s).toLowerCase().replace(/[^a-z]/g, '');
+  const completedTopics = (Array.isArray(dsa.topicsCompleted) ? dsa.topicsCompleted : []).map(norm);
   let topicBonus = 0;
   Object.entries(benchmark.topicWeights).forEach(([topic, weight]) => {
-    if (completedTopics.some(t => t.toLowerCase().includes(topic.toLowerCase()))) {
+    const key = norm(topic).replace(/s$/, '');
+    if (completedTopics.some(t => t.includes(key))) {
       topicBonus += (weight - 1.0) * 8; // bonus points
     }
   });

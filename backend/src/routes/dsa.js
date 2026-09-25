@@ -3,22 +3,22 @@ const router = express.Router();
 const { verifyToken } = require('../middleware/auth');
 const { query } = require('../db');
 
-// GET /api/dsa/problems — return all problems grouped by day with per-user completion status
+// GET /api/dsa/problems — return all problems grouped by A2Z step with per-user completion status
 router.get('/problems', verifyToken, async (req, res) => {
   try {
     const { rows } = await query(
       `SELECT
          p.id, p.day_number, p.topic, p.title, p.difficulty,
-         p.url,
+         p.url, p.sub_topic, p.resource_url,
          COALESCE(udp.completed, FALSE) AS completed
        FROM dsa_problems p
        LEFT JOIN user_dsa_progress udp
          ON udp.problem_id = p.id AND udp.user_id = $1
-       ORDER BY p.day_number, p.id`,
+       ORDER BY p.day_number, p.position, p.id`,
       [req.user.id]
     );
 
-    // Group flat rows into days
+    // Group flat rows into steps (day_number holds the A2Z step)
     const days = {};
     rows.forEach(row => {
       if (!days[row.day_number]) {
@@ -29,7 +29,9 @@ router.get('/problems', verifyToken, async (req, res) => {
         title: row.title,
         difficulty: row.difficulty,
         completed: row.completed,
-        url: row.url
+        url: row.url,
+        sub_topic: row.sub_topic,
+        resource_url: row.resource_url
       });
     });
 

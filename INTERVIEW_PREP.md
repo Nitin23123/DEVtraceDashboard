@@ -63,7 +63,7 @@ It's a mini-Postman inside the app: pick a method (GET/POST/PUT/PATCH/DELETE), U
 One row per user in `streaks` (`UNIQUE(user_id)`) with `current_streak`, `longest_streak`, `last_active_date`. On activity, compare today with `last_active_date`: same day → no change; yesterday → increment; older → reset to 1; update `longest_streak = GREATEST(longest, current)`.
 
 ### Q14. How does the DSA tracker model progress?
-`dsa_problems` is shared seed data (79 problems, day_number, topic, difficulty with a CHECK constraint). `user_dsa_progress` is a join table: `(user_id, problem_id, completed, completed_at)` with `UNIQUE(user_id, problem_id)` — a classic many-to-many resolved by a junction table. Toggling a problem is an UPSERT (`INSERT ... ON CONFLICT (user_id, problem_id) DO UPDATE`), so double-clicks can't create duplicates.
+`dsa_problems` is shared seed data (Striver's A2Z sheet: 455 problems; day_number holds the step, plus topic, sub_topic, position, and difficulty with a CHECK constraint). `user_dsa_progress` is a join table: `(user_id, problem_id, completed, completed_at)` with `UNIQUE(user_id, problem_id)` — a classic many-to-many resolved by a junction table. Toggling a problem is an UPSERT (`INSERT ... ON CONFLICT (user_id, problem_id) DO UPDATE`), so double-clicks can't create duplicates.
 
 ### Q15. Explain your internship/experience work in the same structured way.
 Use this template for each experience: (1) one-line context — team, product, users; (2) your specific responsibility; (3) one concrete technical contribution with the stack named; (4) one measurable or verifiable outcome; (5) one thing you learned. Never claim metrics you can't defend — the interviewer will drill into any number you say.
@@ -410,7 +410,7 @@ All non-mutating (return new arrays) — which matters in React because state up
 Arrays (every list), objects/hash maps (O(1) lookup — e.g., grouping DSA problems by day: `problems.reduce(...)` into `{1: [...], 2: [...]}`), Sets (fast membership — completed problem IDs for O(1) "is solved?" checks instead of O(n) `.includes` per render), and the DB's B-tree indexes (Q20). Being able to point at hash-map-for-grouping and Set-for-membership *in your own code* beats reciting definitions.
 
 ### Q90. Time complexity of common operations you rely on?
-Array push O(1), search/includes O(n), sort O(n log n). Hash map/Set get/has O(1) average. B-tree index lookup O(log n). Practical example: checking 79 problems against a completed-Set is 79 × O(1) instead of 79 × O(n) with an array — small here, but it's the habit that matters.
+Array push O(1), search/includes O(n), sort O(n log n). Hash map/Set get/has O(1) average. B-tree index lookup O(log n). Practical example: checking 455 problems against a completed-Set is 455 × O(1) instead of 455 × O(n) with an array — small here, but it's the habit that matters.
 
 ---
 
@@ -491,7 +491,7 @@ Asking about code review + growth signals you care about craft, not just an offe
 | Render cold start | ~23s |
 | JWT expiry / bcrypt cost | 24h / 12 |
 | DB tables | users, tasks, notes, goals, snippets, api_logs, streaks, dsa_problems, user_dsa_progress |
-| DSA seed | 79 problems, 23 days |
+| DSA seed | 455 problems, 18 steps (Striver A2Z) |
 | Hosting | Netlify (FE) + Render (BE) + Neon (PG 15) |
 
 **Never claim:** RBAC, sub-100ms latency, "25%/40% improvement" metrics, real-time tracking, Lighthouse scores — these were removed from the resume because they aren't verifiable.

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
 import { getProblems, toggleProblem as toggleProblemApi } from '../api/dsa';
@@ -78,7 +78,7 @@ export default function DsaPage() {
     return { diff, total: set.length, done: set.filter((p) => p.completed).length };
   });
 
-  // Categories = topics, ordered by size.
+  // Categories = A2Z steps, in sheet order.
   const topicMap = {};
   days.forEach((d) => {
     const key = d.topic || 'Other';
@@ -88,9 +88,9 @@ export default function DsaPage() {
       if (p.completed) topicMap[key].done += 1;
     });
   });
-  const categories = Object.values(topicMap).sort((a, b) => b.total - a.total);
+  const categories = Object.values(topicMap);
 
-  // Today's focus = first unsolved problem in the earliest incomplete day.
+  // Today's focus = first unsolved problem in the earliest incomplete step.
   let focus = null;
   for (const d of days) {
     const next = (d.problems || []).find((p) => !p.completed);
@@ -107,7 +107,7 @@ export default function DsaPage() {
             DSA Tracker
           </h1>
           <p className="mt-2 text-[15px]" style={{ color: 'var(--text-soft)' }}>
-            Mastery metrics and daily algorithms.
+            Striver's A2Z DSA Sheet — {days.length || 18} steps from the basics to dynamic programming.
           </p>
         </div>
 
@@ -137,7 +137,7 @@ export default function DsaPage() {
                   {[
                     { k: 'Solved', v: solved, tone: '#4ADE80' },
                     { k: 'Unsolved', v: total - solved, tone: 'var(--muted)' },
-                    { k: 'Days finished', v: `${daysComplete} / ${days.length}`, tone: 'var(--accent)' },
+                    { k: 'Steps finished', v: `${daysComplete} / ${days.length}`, tone: 'var(--accent)' },
                   ].map((row) => (
                     <div key={row.k} className="flex items-center justify-between">
                       <span className="flex items-center gap-2.5 text-[13.5px]" style={{ color: 'var(--text-soft)' }}>
@@ -171,7 +171,7 @@ export default function DsaPage() {
                   {focus ? (
                     <>
                       <div className="mono text-[11px]" style={{ color: 'var(--accent)' }}>
-                        Day {focus.day} · {focus.topic}
+                        Step {focus.day} · {focus.sub_topic || focus.topic}
                       </div>
                       <h3 className="text-[21px] font-bold mt-2 leading-snug" style={{ color: 'var(--text)' }}>
                         {focus.title}
@@ -197,6 +197,17 @@ export default function DsaPage() {
                             style={{ color: 'var(--muted)' }}
                           >
                             Find on LeetCode ↗️
+                          </a>
+                        )}
+                        {focus.resource_url && (
+                          <a
+                            href={focus.resource_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mono text-[11.5px] hover:underline"
+                            style={{ color: 'var(--muted)' }}
+                          >
+                            Watch Video ↗️
                           </a>
                         )}
                       </div>
@@ -225,9 +236,9 @@ export default function DsaPage() {
               </Card>
             </div>
 
-            {/* ── Day accordion ─────────────────────────────────────── */}
+            {/* ── Step accordion ────────────────────────────────────── */}
             <Card>
-              <CardHead title="Curriculum" subtitle={`${days.length} days · ${total} problems`} />
+              <CardHead title="Curriculum" subtitle={`${days.length} steps · ${total} problems`} />
               <div className="p-3 space-y-1.5">
                 {days.map((day) => {
                   const isExpanded = expandedDays.has(day.day_number);
@@ -278,47 +289,68 @@ export default function DsaPage() {
                           >
                             <div style={{ borderTop: '1px solid var(--border)' }}>
                               {day.problems.map((problem, i) => (
-                                <div
-                                  key={problem.id}
-                                  onClick={() => toggle(problem.id)}
-                                  className="flex items-center gap-3 px-4 py-2.5 cursor-pointer"
-                                  style={{ borderBottom: i < day.problems.length - 1 ? '1px solid var(--border)' : 'none' }}
-                                >
-                                  <span
-                                    className="h-4 w-4 rounded flex items-center justify-center shrink-0"
-                                    style={
-                                      problem.completed
-                                        ? { backgroundImage: 'var(--grad)', color: 'var(--accent-fg)' }
-                                        : { border: '1px solid var(--border)' }
-                                    }
+                                <Fragment key={problem.id}>
+                                  {problem.sub_topic && problem.sub_topic !== day.problems[i - 1]?.sub_topic && (
+                                    <div
+                                      className="px-4 pt-3 pb-1.5 mono text-[10.5px] uppercase tracking-wider"
+                                      style={{ color: 'var(--accent)', backgroundColor: 'var(--surface-2)', borderBottom: '1px solid var(--border)' }}
+                                    >
+                                      {problem.sub_topic}
+                                    </div>
+                                  )}
+                                  <div
+                                    onClick={() => toggle(problem.id)}
+                                    className="flex items-center gap-3 px-4 py-2.5 cursor-pointer"
+                                    style={{ borderBottom: i < day.problems.length - 1 ? '1px solid var(--border)' : 'none' }}
                                   >
-                                    {problem.completed && (
-                                      <svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2.5">
-                                        <polyline points="2,6 5,9 10,3" />
-                                      </svg>
-                                    )}
-                                  </span>
-                                  <span
-                                    className="flex-1 text-[13px] truncate"
-                                    style={{ color: problem.completed ? 'var(--muted)' : 'var(--text)', textDecoration: problem.completed ? 'line-through' : 'none' }}
-                                  >
-                                    {problem.url ? (
+                                    <span
+                                      className="h-4 w-4 rounded flex items-center justify-center shrink-0"
+                                      style={
+                                        problem.completed
+                                          ? { backgroundImage: 'var(--grad)', color: 'var(--accent-fg)' }
+                                          : { border: '1px solid var(--border)' }
+                                      }
+                                    >
+                                      {problem.completed && (
+                                        <svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                          <polyline points="2,6 5,9 10,3" />
+                                        </svg>
+                                      )}
+                                    </span>
+                                    <span
+                                      className="flex-1 text-[13px] truncate"
+                                      style={{ color: problem.completed ? 'var(--muted)' : 'var(--text)', textDecoration: problem.completed ? 'line-through' : 'none' }}
+                                    >
+                                      {problem.url ? (
+                                        <a
+                                          href={problem.url}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          onClick={(e) => e.stopPropagation()}
+                                          className="hover:underline"
+                                          style={{ color: 'inherit' }}
+                                        >
+                                          {problem.title}
+                                        </a>
+                                      ) : (
+                                        <span>{problem.title}</span>
+                                      )}
+                                    </span>
+                                    {problem.resource_url && (
                                       <a
-                                        href={problem.url}
+                                        href={problem.resource_url}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         onClick={(e) => e.stopPropagation()}
-                                        className="hover:underline"
-                                        style={{ color: 'inherit' }}
+                                        className="mono text-[10.5px] hover:underline shrink-0"
+                                        style={{ color: 'var(--muted)' }}
                                       >
-                                        {problem.title}
+                                        Video
                                       </a>
-                                    ) : (
-                                      <span>{problem.title}</span>
                                     )}
-                                  </span>
-                                  <Chip tone={DIFF_TONE[problem.difficulty]}>{problem.difficulty}</Chip>
-                                </div>
+                                    <Chip tone={DIFF_TONE[problem.difficulty]}>{problem.difficulty}</Chip>
+                                  </div>
+                                </Fragment>
                               ))}
                             </div>
                           </motion.div>
